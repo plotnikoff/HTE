@@ -1,0 +1,15 @@
+What is it.
+Attempt to create rich text editor that doesn't use browser's design mode or 
+content editable to gain more control over output markup, and get possibility 
+to generate different markups in the future.
+
+Aim of initial commit.
+Place source under version control, as long as it's size now exceeds 500 lines.
+
+Currently tested under FF3.6, Chrome, Safari, Opera. Needs code clean-up and 
+documentation.
+
+TODO: 
+ - test under IE (from version 7)
+ - refactoring (also split source in logical modules, single file is a no-no)
+ - documenting
