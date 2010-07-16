@@ -15,5 +15,22 @@
         <div id="hte-workbench" style="width:900px;padding: 10px 40px 10px 40px"><div id="hte-cursor" style="display:block;"></div></div>
         <div id="hte-measurer"></div>
         <script src="js/hte.js" type="text/javascript"></script>
+        <script src="js/hte.mouseHandler.js" type="text/javascript"></script>
+        <script src="js/hte.tracker.js" type="text/javascript"></script>
+        <script src="js/hte.cursor.js" type="text/javascript"></script>
+        <script src="js/hte.measurer.js" type="text/javascript"></script>
+        <script src="js/hte.workbench.js" type="text/javascript"></script>
+        <script src="js/hte.styling.js" type="text/javascript"></script>
+        <script src="js/hte.line.js" type="text/javascript"></script>
+        <script src="js/hte.keyHandler.js" type="text/javascript"></script>
+        <script>
+            (function () {
+                hte2.Workbench.render();
+                hte2.Tracker.addListener(hte2.Cursor);
+                hte2.Tracker.setLineByOrdinal(hte2.$CN('hte-line', hte2.Workbench.getWorkbench())[0], 1);
+                new hte2.MouseHandler();
+                new hte2.KeyHandler();
+            }());
+        </script>
     </body>
 </html>
