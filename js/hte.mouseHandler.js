@@ -36,20 +36,22 @@ hte2.MouseHandler.prototype = {
     },
     
     selectText : function (ev) {
-        var range = '', selectedText, rangeLength, rangeStart, rangeEnd;
+        var range = '', selectedText, rangeLength, rangeStart, rangeEnd, currentNode, siblingsLength = 0;
         if (window.getSelection) {
             range = window.getSelection();
         } else if (document.selection) {
             range = document.selection.createRange();
         }
         rangeLength = range.focusOffset - range.anchorOffset;
-        rangeStart = hte2.Tracker.getOffset() - (hte2.Tracker.getOrdinal() - range.anchorOffset);
+        currentNode = range.anchorNode.parentNode;
+        while (currentNode) {
+            currentNode = currentNode.previousSibling;
+            if (currentNode) {
+                siblingsLength += currentNode.firstChild.nodeValue.length;
+            }
+        }
+        rangeStart = hte2.Tracker.getOffset() - (hte2.Tracker.getOrdinal() - (range.anchorOffset + siblingsLength));
         rangeEnd = rangeStart + rangeLength;
-        hte2.Styling.addStyle(rangeStart, rangeEnd, ["font-weight: bold"]);
-        hte2.Workbench.render();
-        /*console.log(range.anchorNode);
-        console.log("range start " + rangeStart);
-        console.log("range length  " + rangeLength);
-        console.log("range end " + rangeEnd);*/
+        hte2.pubsub.publish('rangeReady', rangeStart, rangeEnd, ["font-weight: bold"]);
     }
 };

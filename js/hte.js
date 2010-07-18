@@ -3,7 +3,7 @@
 var hte2 = {};
 
 hte2.dataStorage = {
-    docText : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mauris dui, cursus in tincidunt vitae, tempus vel purus. Nam adipiscing porta mattis. Praesent fermentum commodo dignissim. Curabitur consectetur dolor quis libero cursus tempus. Vestibulum ante ipsum primis in faucibus orci luctus et ucltrices posuere cubilia Curae; Aenean vulputate massa nulla. Sed felis ligula, ullamcorper ut commodo at, tincidunt quis purus. Nulla facilisi. Quisque\nFusce quam nibh, suscipit et tempor ac, pharetra consectetur leo. Aliquam sit amet mi ante, sed accumsan mi. Proin suscipit dictum augue, at placerat lorem fermentum eu. Praesent tortor justo, posuere quis fermentum nec, blandit quis odio. Vestibulum eget cursus neque. Donec quam nunc, ultricies quis tempus in, volutpat nec ipsum. Aenean consequat, diam non viverra rhoncus, justo tortor tempor mi, fermentum euismod nisl ipsum vel tellus. Sed auctor, tellus et imperdiet lobortis, orci urna malesuada felis, quis rhoncus ligula nisi ut risus. Nam commodo mattis vulputate. Suspendisse ac quam enim, non aliquam turpis. Suspendisse congue faucibus mi, et pulvinar nisi commodo quis. Nunc tincidunt eros convallis mi molestie posuere eu vel felis. Duis suscipit sapien vitae tortor euismod dignissim. Maecenas mi neque, euismod eu scelerisque sed, luctus nec orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce scelerisque, velit ac mattis eleifend, diam augue lacinia eros, eu ornare est erat et erat. Donec condimentum viverra euismod. Donec et nibh sit amet risus vestibulum interdum.\n",
+    docText : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mauris dui, cursus in tincidunt vitae, tempus vel purus. Nam adipiscing porta mattis. Praesent fermentum commodo dignissim. Curabitur consectetur dolor quis libero cursus tempus. Vestibulum ante ipsum primis in faucibus orci luctus et ucltrices posuere cubilia Curae; Aenean vulputate massa nulla. Sed felis ligula, ullamcorper ut commodo at, tincidunt quis purus. Nulla facilisi. Quisque\nFusce quam nibh, suscipit et tempor ac, pharetra consectetur leo. Aliquam sit amet mi ante, sed accumsan mi. Proin suscipit dictum augue, at placerat lorem fermentum eu. Praesent tortor justo, posuere quis fermentum nec, blandit quis odio. Vestibulum eget cursus neque. Donec quam nunc, ultricies quis tempus in, volutpat nec ipsum. Aenean consequat, diam non viverra rhoncus,\n justo tortor tempor mi, fermentum euismod nisl ipsum vel tellus. Sed auctor, tellus et imperdiet lobortis, orci urna malesuada felis, quis rhoncus ligula nisi ut risus. Nam commodo mattis vulputate. Suspendisse ac quam enim, non aliquam turpis. Suspendisse congue faucibus mi, et pulvinar nisi commodo quis. Nunc tincidunt eros convallis mi molestie posuere eu vel felis. Duis suscipit sapien vitae tortor euismod dignissim. Maecenas mi neque, euismod eu scelerisque sed, luctus nec orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce scelerisque, velit ac mattis eleifend, diam augue lacinia eros, eu ornare est erat et erat. Donec condimentum viverra euismod. Donec et nibh sit amet risus vestibulum interdum.\n",
     styling : [
         {
             style : [""],
@@ -52,7 +52,15 @@ hte2.dataStorage = {
         }, {
             style : [""],
             start : 251,
-            end : 1607
+            end : 475
+        }, {
+            style : ["font-weight:bold"],
+            start : 476,
+            end : 483
+        }, {
+            style : [""],
+            start : 484,
+            end : 1697
         }
     ]
 };

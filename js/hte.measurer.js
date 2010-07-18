@@ -33,7 +33,7 @@ hte2.Measurer = (function () {
     Measurer = {
         
         calculatePosition : function (condition, useCoord) {
-            var i = 0, j, curPos = 0, charComparator, coordComparator, comparator, line, str, strParts, ordinal = 0, xCorrection;
+            var i = 0, j, curPos = 0, charComparator, coordComparator, comparator, line, str, strParts, ordinal = 1, xCorrection;
             curPos = parseInt(hte2.Workbench.getWorkbench().style.paddingLeft, 10);
             line = hte2.Tracker.getLine();
             strParts = line.childNodes;

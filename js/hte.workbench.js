@@ -1,3 +1,4 @@
+/*global hte2*/
 
 hte2.Workbench = (function () {
     var Workbench, container, containerWidth, splitted, redraw, splitByWhiteSpace;
@@ -31,48 +32,52 @@ hte2.Workbench = (function () {
                 currentFr = wsSplitted[i] + String.fromCharCode(160);
                 frstart = offset;
                 frend = offset + (currentFr.length - 1);
-                if (styles[j].start < frstart && frend <= styles[j].end) {
-                    if (currentFr !==  ('\n' + String.fromCharCode(160))) {
+                if (currentFr !== ('\n' + String.fromCharCode(160))) {
+                    if (styles[j].start < frstart && frend <= styles[j].end) {
+                    
                         currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr + "</span>");
                         if ((lineWidth + currentFrWidth) < containerWidth) {
                             lineWidth += currentFrWidth;
                             textBuffer += currentFr;
-                        } else {
+                        }
+                        else {
                             i -= 1;
                             pushline = true;
                             offset -= currentFr.length;
                         }
                     }
-                } else if (frend > styles[j].end) {
-                    if (currentFr !== '\n') {
-                        while (currentFr.length !== 0) {
-                            frend -= 1;
-                            currentFr = currentFr.split('');
-                            currentFr.pop();
-                            currentFr = currentFr.join('');
-                            if (frend === styles[j].end) {
-                                if (frstart <= styles[j].start) {
-                                    currentFr = currentFr.split('');
-                                    currentFr.splice(0, styles[j].start - frstart);
-                                    currentFr = currentFr.join('');
-                                    lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr + "</span>");
-                                    textBuffer += "<span style=\"" + styles[j].style + "\">" + currentFr + "</span>";
-                                } else {
-                                    lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr + "</span>");
-                                    textBuffer += currentFr + "</span>";
+                    else 
+                        if (frend > styles[j].end) {
+                            while (currentFr.length !== 0) {
+                                frend -= 1;
+                                currentFr = currentFr.split('');
+                                currentFr.pop();
+                                currentFr = currentFr.join('');
+                                if (frend === styles[j].end) {
+                                    if (frstart <= styles[j].start) {
+                                        currentFr = currentFr.split('');
+                                        currentFr.splice(0, styles[j].start - frstart);
+                                        currentFr = currentFr.join('');
+                                        lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr + "</span>");
+                                        textBuffer += "<span style=\"" + styles[j].style + "\">" + currentFr + "</span>";
+                                    }
+                                    else {
+                                        lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr + "</span>");
+                                        textBuffer += currentFr + "</span>";
+                                    }
+                                    j += 1;
+                                    i -= 1;
+                                    break;
                                 }
-                                j += 1;
-                                i -= 1;
-                                break;
                             }
+                            offset -= currentFr.length;
                         }
-                        offset -= currentFr.length;
-                    }
+                        else {
+                            lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr.substr(styles[j].start - frstart) + "</span>");
+                            textBuffer += "<span style=\"" + styles[j].style + "\">" + currentFr.substr(styles[j].start - frstart);
+                        }
                 } else {
-                    if (currentFr !== '\n') {
-                        lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr.substr(styles[j].start - frstart) + "</span>");
-                        textBuffer += "<span style=\"" + styles[j].style + "\">" + currentFr.substr(styles[j].start - frstart);
-                    }
+                    offset -= 2
                 }
                 offset += currentFr.length;
                 if (pushline || currentFr === ('\n' + String.fromCharCode(160))) {
@@ -104,18 +109,18 @@ hte2.Workbench = (function () {
         },
         
         removeLetter : function (position) {
-            splitted.splice(position + 1, 1);
-            hte2.Styling.updatePositins(position + 1, 'remove');
+            splitted.splice(position, 1);
+            hte2.Styling.updatePositins(position, 'remove');
             Workbench.render();
         },
         
         addLetter : function (charCode, position) {
             var symb = String.fromCharCode(charCode), part1, part2;
-            part1 = splitted.slice(0, position + 2);
-            part2 = splitted.slice(position + 2);
+            part1 = splitted.slice(0, position + 1);
+            part2 = splitted.slice(position + 1);
             part1.push(symb);
             splitted = part1.concat(part2);
-            hte2.Styling.updatePositins(position + 1, 'add');
+            hte2.Styling.updatePositins(position, 'add');
             Workbench.render();
         },
         
