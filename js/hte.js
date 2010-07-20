@@ -70,13 +70,6 @@ hte2.CONST = {};
 hte2.CONST.ELEMENT_NODE = 1;
 hte2.CONST.TEXT_NODE = 3;
 
-hte2.CONST.ARR_UP = 38;
-hte2.CONST.ARR_DOWN = 40;
-hte2.CONST.ARR_LEFT = 37;
-hte2.CONST.ARR_RIGHT = 39;
-hte2.CONST.DELETE = 46;
-hte2.CONST.BACKSPACE = 8;
-
 hte2.$ = function (string) {
     return document.getElementById(string);
 };

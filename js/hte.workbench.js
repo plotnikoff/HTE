@@ -1,9 +1,9 @@
 /*global hte2*/
 
 hte2.Workbench = (function () {
-    var Workbench, container, containerWidth, splitted, redraw, splitByWhiteSpace;
+    var Workbench, container, containerWidth, splitted, redraw, splitByWhiteSpace, dh = new goog.dom.DomHelper();
     
-    container = hte2.$('hte-workbench');
+    container = dh.$('hte-workbench');
     containerWidth = parseInt(container.style.width, 10);
 
     splitted = hte2.dataStorage.docText.split('');
@@ -111,7 +111,7 @@ hte2.Workbench = (function () {
         removeLetter : function (position) {
             splitted.splice(position, 1);
             hte2.Styling.updatePositins(position, 'remove');
-            Workbench.render();
+            hte2.pubsub.publish('rerender');
         },
         
         addLetter : function (charCode, position) {
@@ -121,7 +121,7 @@ hte2.Workbench = (function () {
             part1.push(symb);
             splitted = part1.concat(part2);
             hte2.Styling.updatePositins(position, 'add');
-            Workbench.render();
+            hte2.pubsub.publish('rerender');
         },
         
         getWorkbench : function () {

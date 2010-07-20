@@ -1,22 +1,13 @@
 /*global hte2, window, document */
 
+goog.require('goog.events');
+goog.require('goog.dom.DomHelper');
+goog.require('goog.dom.Range');
+
 hte2.MouseHandler = function () {
     this.wb = hte2.Workbench.getWorkbench();
-    this.wb.onclick = (function (that) {
-        return function (ev) {
-            that.setCursor(ev);
-        };
-    }(this));
-    this.wb.ondblclick = (function (that) {
-        return function (ev) {
-            that.selectText(ev);
-        };
-    }(this));
-    this.wb.ondblclick = (function (that) {
-        return function (ev) {
-            that.selectText(ev);
-        };
-    }(this));
+    goog.events.listen(this.wb, goog.events.EventType.CLICK, this.setCursor);
+    goog.events.listen(this.wb, goog.events.EventType.DBLCLICK, this.selectText);
 };
 
 hte2.MouseHandler.prototype = {
@@ -30,27 +21,24 @@ hte2.MouseHandler.prototype = {
             posX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
             posY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
         }
+        posX -= hte2.Workbench.getWorkbench().offsetLeft;
         if (targ.nodeName === 'SPAN') {
             hte2.Tracker.setLine(targ.parentNode, (posX - 8));
         }
     },
     
     selectText : function (ev) {
-        var range = '', selectedText, rangeLength, rangeStart, rangeEnd, currentNode, siblingsLength = 0;
-        if (window.getSelection) {
-            range = window.getSelection();
-        } else if (document.selection) {
-            range = document.selection.createRange();
-        }
-        rangeLength = range.focusOffset - range.anchorOffset;
-        currentNode = range.anchorNode.parentNode;
+        var range = '', selectedText, rangeLength, rangeStart, rangeEnd, currentNode, siblingsLength = 0, dh = goog.dom.getDomHelper();
+        range = goog.dom.Range.createFromWindow();
+        rangeLength = range.getFocusOffset() - range.getAnchorOffset();
+        currentNode = range.getContainerElement();
         while (currentNode) {
-            currentNode = currentNode.previousSibling;
+            currentNode = dh.getPreviousElementSibling(currentNode);
             if (currentNode) {
                 siblingsLength += currentNode.firstChild.nodeValue.length;
             }
         }
-        rangeStart = hte2.Tracker.getOffset() - (hte2.Tracker.getOrdinal() - (range.anchorOffset + siblingsLength));
+        rangeStart = hte2.Tracker.getOffset() - (hte2.Tracker.getOrdinal() - (range.getAnchorOffset() + siblingsLength));
         rangeEnd = rangeStart + rangeLength;
         hte2.pubsub.publish('rangeReady', rangeStart, rangeEnd, ["font-weight: bold"]);
     }

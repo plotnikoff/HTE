@@ -47,7 +47,7 @@ hte2.Styling = (function () {
                     }
                 }
             }
-            hte2.Workbench.render();
+            hte2.pubsub.publish('rerender');
         }
     };
     

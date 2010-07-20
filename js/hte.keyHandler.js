@@ -1,40 +1,54 @@
+/*global hte2, goog, document, window*/
+
+goog.require('goog.events');
+goog.require('goog.events.KeyHandler');
+goog.require('goog.events.KeyCodes');
+
 
 hte2.KeyHandler = function () {
-    document.onkeypress = this.intercept;
+    var handler = new goog.events.KeyHandler(document);
+    goog.events.listen(handler, 'key', this.intercept);
+
+    //document.onkeypress = this.intercept;
 };
 
 hte2.KeyHandler.prototype = {
     intercept : function (ev) {
-        var code, e, curPos;
-        e = ev ? ev : window.event;
-        if (e.keyCode) {
+        
+        var codes = goog.events.KeyCodes, e, curPos;
+        if (ev.keyCode === codes.SPACE) {
+            ev.preventDefault();
+        }
+        //e = ev ? ev : window.event;
+        /*if (e.keyCode) {
             code = e.keyCode;
         } else if (e.which) {
             code = e.which;
-        }
-        switch (code) {
-        case hte2.CONST.ARR_LEFT:
+        }*/
+        switch (ev.keyCode) {
+        case codes.LEFT:
             hte2.Tracker.symbolLeft();
             break;
-        case hte2.CONST.ARR_RIGHT:
+        case codes.RIGHT:
             hte2.Tracker.symbolRight();
             break;
-        case hte2.CONST.ARR_UP:
+        case codes.UP:
             hte2.Tracker.lineUp();
             break;
-        case hte2.CONST.ARR_DOWN:
+        case codes.DOWN:
             hte2.Tracker.lineDown();
             break;
-        case hte2.CONST.BACKSPACE:
+        case codes.BACKSPACE:
             hte2.Tracker.symbolLeft();
             hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset);
             break;
-        case hte2.CONST.DELETE:
+        case codes.DELETE:
             hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset);
             break;
         default:
-            if (code !== undefined) {
-                hte2.Workbench.addLetter(code, hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset - 1);
+            if (ev.charCode !== undefined) {
+                //hte2.Workbench.addLetter(code, hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset - 1);
+                hte2.Workbench.addLetter(ev.charCode, hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset - 1);
                 hte2.Tracker.symbolRight();
             }
             break; 
