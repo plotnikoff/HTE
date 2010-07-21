@@ -1,7 +1,8 @@
-/*global hte2*/
+/*global hte2, goog*/
 
 hte2.Workbench = (function () {
-    var Workbench, container, containerWidth, splitted, redraw, splitByWhiteSpace, dh = new goog.dom.DomHelper();
+    var Workbench, container, containerWidth, splitted, redraw, 
+        splitByWhiteSpace, dh = new goog.dom.DomHelper(), generateStyle;
     
     container = dh.$('hte-workbench');
     containerWidth = parseInt(container.style.width, 10);
@@ -15,11 +16,29 @@ hte2.Workbench = (function () {
         return splittedWS.split(' ');
     };
 
+    generateStyle = function (styleJSON) {
+        var styleProps, prop, output = "";
+        styleProps = {
+            "ff" : ["font-face", ""],
+            "fw" : ["font-weight", ""], 
+            "fs" : ["font-size", "pt"],
+            "td" : ["text-decoration", ""]
+        };
+        for (prop in styleJSON) {
+            if (styleJSON.hasOwnProperty(prop)) {
+                output += styleProps[prop][0] + ':' + styleJSON[prop] + 
+                styleProps[prop][1] + ';';
+            }
+        }
+        return output;
+    };
+
     Workbench = {
         
         render : function () {
-            var styles = hte2.Styling.getStyles(), i, j, k = 0, lineWidth, textBuffer = "", 
-                textHolder, offset = 0, wsSplitted, frstart, frend, currentFr, oldLines, pushline, currentFrWidth;
+            var styles = hte2.Styling.getStyles(), i, j, k = 0, lineWidth, 
+                textBuffer = "", textHolder, offset = 0, wsSplitted, frstart, 
+                frend, currentFr, oldLines, pushline, currentFrWidth;
             wsSplitted = splitByWhiteSpace();
             j = 0;
             frstart = 0;
@@ -35,7 +54,7 @@ hte2.Workbench = (function () {
                 if (currentFr !== ('\n' + String.fromCharCode(160))) {
                     if (styles[j].start < frstart && frend <= styles[j].end) {
                     
-                        currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr + "</span>");
+                        currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr + "</span>");
                         if ((lineWidth + currentFrWidth) < containerWidth) {
                             lineWidth += currentFrWidth;
                             textBuffer += currentFr;
@@ -45,39 +64,35 @@ hte2.Workbench = (function () {
                             pushline = true;
                             offset -= currentFr.length;
                         }
-                    }
-                    else 
-                        if (frend > styles[j].end) {
-                            while (currentFr.length !== 0) {
-                                frend -= 1;
-                                currentFr = currentFr.split('');
-                                currentFr.pop();
-                                currentFr = currentFr.join('');
-                                if (frend === styles[j].end) {
-                                    if (frstart <= styles[j].start) {
-                                        currentFr = currentFr.split('');
-                                        currentFr.splice(0, styles[j].start - frstart);
-                                        currentFr = currentFr.join('');
-                                        lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr + "</span>");
-                                        textBuffer += "<span style=\"" + styles[j].style + "\">" + currentFr + "</span>";
-                                    }
-                                    else {
-                                        lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr + "</span>");
-                                        textBuffer += currentFr + "</span>";
-                                    }
-                                    j += 1;
-                                    i -= 1;
-                                    break;
+                    } else if (frend > styles[j].end) {
+                        while (currentFr.length !== 0) {
+                            frend -= 1;
+                            currentFr = currentFr.split('');
+                            currentFr.pop();
+                            currentFr = currentFr.join('');
+                            if (frend === styles[j].end) {
+                                if (frstart <= styles[j].start) {
+                                    currentFr = currentFr.split('');
+                                    currentFr.splice(0, styles[j].start - frstart);
+                                    currentFr = currentFr.join('');
+                                    lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr + "</span>");
+                                    textBuffer += "<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr + "</span>";
+                                } else {
+                                    lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr + "</span>");
+                                    textBuffer += currentFr + "</span>";
                                 }
+                                j += 1;
+                                i -= 1;
+                                break;
                             }
-                            offset -= currentFr.length;
                         }
-                        else {
-                            lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + styles[j].style + "\">" + currentFr.substr(styles[j].start - frstart) + "</span>");
-                            textBuffer += "<span style=\"" + styles[j].style + "\">" + currentFr.substr(styles[j].start - frstart);
-                        }
+                        offset -= currentFr.length;
+                    } else {
+                        lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr.substr(styles[j].start - frstart) + "</span>");
+                        textBuffer += "<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr.substr(styles[j].start - frstart);
+                    }
                 } else {
-                    offset -= 2
+                    offset -= 2;
                 }
                 offset += currentFr.length;
                 if (pushline || currentFr === ('\n' + String.fromCharCode(160))) {
@@ -97,7 +112,7 @@ hte2.Workbench = (function () {
                             textHolder.innerHTML = textBuffer;
                         }
                     }
-                    textBuffer = "<span style=\"" + styles[j].style + "\">";
+                    textBuffer = "<span style=\"" + generateStyle(styles[j].style) + "\">";
                     lineWidth = 0;
                 }
             }

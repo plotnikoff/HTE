@@ -40,6 +40,6 @@ hte2.MouseHandler.prototype = {
         }
         rangeStart = hte2.Tracker.getOffset() - (hte2.Tracker.getOrdinal() - (range.getAnchorOffset() + siblingsLength));
         rangeEnd = rangeStart + rangeLength;
-        hte2.pubsub.publish('rangeReady', rangeStart, rangeEnd, ["font-weight: bold"]);
+        hte2.pubsub.publish('rangeReady', rangeStart, rangeEnd, {"fw" : "bold"});
     }
 };
