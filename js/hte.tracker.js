@@ -64,12 +64,10 @@ hte2.Tracker = (function () {
             position = hte2.Measurer.calculatePosition(ordinal);
             offset = position.offset;
             notifyListeners(position);
-            console.log(offset);
         },
         
         symbolRight : function () {
             var strParts, i, length = 0, firstWordLength, position;
-            console.log(ordinal)
             ordinal += 1;
             strParts = line.childNodes;
             for (i = 0; i < strParts.length; i += 1) {

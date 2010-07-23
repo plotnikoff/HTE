@@ -1,7 +1,7 @@
 /*global hte2, goog*/
 
 hte2.Workbench = (function () {
-    var Workbench, container, containerWidth, splitted, redraw, 
+    var Workbench, container, containerWidth, splitted, redraw, addSymbol,
         splitByWhiteSpace, dh = new goog.dom.DomHelper(), generateStyle;
     
     container = dh.$('hte-workbench');
@@ -16,22 +16,17 @@ hte2.Workbench = (function () {
         return splittedWS.split(' ');
     };
 
-    generateStyle = function (styleJSON) {
-        var styleProps, prop, output = "";
-        styleProps = {
-            "ff" : ["font-face", ""],
-            "fw" : ["font-weight", ""], 
-            "fs" : ["font-size", "pt"],
-            "td" : ["text-decoration", ""]
-        };
-        for (prop in styleJSON) {
-            if (styleJSON.hasOwnProperty(prop)) {
-                output += styleProps[prop][0] + ':' + styleJSON[prop] + 
-                styleProps[prop][1] + ';';
-            }
-        }
-        return output;
+    addSymbol = function (symbol, position) {
+        var part1, part2;
+        part1 = splitted.slice(0, position + 1);
+        part2 = splitted.slice(position + 1);
+        part1.push(symbol);
+        splitted = part1.concat(part2);
+        hte2.Styling.updatePositins(position, 'add');
+        hte2.pubsub.publish('rerender');
     };
+
+    generateStyle = hte2.Styling.generateStyle;
 
     Workbench = {
         
@@ -53,7 +48,6 @@ hte2.Workbench = (function () {
                 frend = offset + (currentFr.length - 1);
                 if (currentFr !== ('\n' + String.fromCharCode(160))) {
                     if (styles[j].start < frstart && frend <= styles[j].end) {
-                    
                         currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr + "</span>");
                         if ((lineWidth + currentFrWidth) < containerWidth) {
                             lineWidth += currentFrWidth;
@@ -78,6 +72,7 @@ hte2.Workbench = (function () {
                                     lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr + "</span>");
                                     textBuffer += "<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr + "</span>";
                                 } else {
+                                    console.log(currentFr);
                                     lineWidth += hte2.Measurer.getGlyphWidth("<span style=\"" + generateStyle(styles[j].style) + "\">" + currentFr + "</span>");
                                     textBuffer += currentFr + "</span>";
                                 }
@@ -94,6 +89,7 @@ hte2.Workbench = (function () {
                 } else {
                     offset -= 2;
                 }
+                
                 offset += currentFr.length;
                 if (pushline || currentFr === ('\n' + String.fromCharCode(160))) {
                     pushline = false;
@@ -129,14 +125,12 @@ hte2.Workbench = (function () {
             hte2.pubsub.publish('rerender');
         },
         
+        addParagraph : function (position) {
+            addSymbol('\n', position);
+        },
+        
         addLetter : function (charCode, position) {
-            var symb = String.fromCharCode(charCode), part1, part2;
-            part1 = splitted.slice(0, position + 1);
-            part2 = splitted.slice(position + 1);
-            part1.push(symb);
-            splitted = part1.concat(part2);
-            hte2.Styling.updatePositins(position, 'add');
-            hte2.pubsub.publish('rerender');
+            addSymbol(String.fromCharCode(charCode), position);
         },
         
         getWorkbench : function () {

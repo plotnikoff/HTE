@@ -1,7 +1,13 @@
 /*global hte2, window, document */
 
 hte2.Styling = (function () {
-    var Styling, styles = hte2.dataStorage.styling;
+    var Styling, styles = hte2.dataStorage.styling, dict;
+    
+    dict = {"ff" : ["font-family", "", "fontFamily"],
+            "fw" : ["font-weight", "", "fontWeight"], 
+            "fs" : ["font-size", "pt", "fontSize"],
+            "td" : ["text-decoration", "", "textDecoration"]
+        };
     
     Styling = {
         
@@ -48,6 +54,30 @@ hte2.Styling = (function () {
                 }
             }
             hte2.pubsub.publish('rerender');
+        },
+        
+        generateStyle : function (styleJSON) {
+            var prop, output = "";
+            
+            for (prop in styleJSON) {
+                if (styleJSON.hasOwnProperty(prop)) {
+                    output += dict[prop][0] + ':' + styleJSON[prop] + 
+                    dict[prop][1] + ';';
+                }
+            }
+            return output;
+        },
+        
+        copyStyleToString : function (domEl) {
+            var prop, output = "";
+            for (prop in dict) {
+                if (dict.hasOwnProperty(prop)) {
+                    if (domEl.style[dict[prop][2]])
+                    output += dict[prop][0] + ":" + 
+                        domEl.style[dict[prop][2]] + ";";
+                }
+            }
+            return output;
         }
     };
     

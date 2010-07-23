@@ -1,3 +1,4 @@
+/*global hte2*/
 
 hte2.Measurer = (function () {
     var Measurer, holder, calculateOffset, calculateYPosition, calculateHeight;
@@ -22,18 +23,20 @@ hte2.Measurer = (function () {
         return offset - 1;
     };
     
-    calculateYPosition = function (direction) {
-        return hte2.Tracker.getLine().offsetTop;
+    calculateYPosition = function (currentNode) {
+        return currentNode.offsetTop;
     };
     
-    calculateHeight = function () {
-        return hte2.Tracker.getLine().firstChild.offsetHeight;
+    calculateHeight = function (currentNode) {
+        return currentNode.offsetHeight;
     };
     
     Measurer = {
         
         calculatePosition : function (condition, useCoord) {
-            var i = 0, j, curPos = 0, charComparator, coordComparator, comparator, line, str, strParts, ordinal = 1, xCorrection;
+            var i = 0, j, curPos = 0, charComparator, coordComparator, 
+                comparator, line, str, strParts, ordinal = 1, xCorrection,
+                currentNode;
             curPos = parseInt(hte2.Workbench.getWorkbench().style.paddingLeft, 10);
             line = hte2.Tracker.getLine();
             strParts = line.childNodes;
@@ -44,15 +47,19 @@ hte2.Measurer = (function () {
                 return curPos <= condition;
             };
             comparator = useCoord ? coordComparator : charComparator;
+            
             for (j = 0; j < strParts.length; j += 1) {
                 str = strParts[j].firstChild;
                 if (str !== null) {
                     str = str.nodeValue;
                     while (comparator()) {
-                        holder.innerHTML = "<span style=\"font-weight:" + strParts[j].style.fontWeight + "\">" + str.charAt(i) + "</span>";
+                        holder.innerHTML = "<span style=\"" + 
+                            hte2.Styling.copyStyleToString(strParts[j]) + 
+                            "\">" + str.charAt(i) + "</span>";
                         curPos += holder.firstChild.offsetWidth;
                         i += 1;
                         ordinal += 1;
+                        currentNode = strParts[j];
                         if (i === str.length) {
                             break;
                         }
@@ -60,7 +67,13 @@ hte2.Measurer = (function () {
                 }
                 i = 0;
             }
-            return {x : curPos, y : calculateYPosition(), height : calculateHeight(), ordinal : ordinal, offset : calculateOffset() + ordinal};
+            if (!currentNode) {
+                currentNode = strParts[0];
+            }
+            return {x : curPos, y : calculateYPosition(currentNode), 
+                height : calculateHeight(currentNode), 
+                ordinal : ordinal, 
+                offset : calculateOffset() + ordinal};
         },
         
         getGlyphWidth : function (glyph) {
