@@ -46,5 +46,6 @@ hte2.KeyHandler.prototype = {
             }
             break; 
         }
+        hte2.Tracker.reNotify();
     }
 };

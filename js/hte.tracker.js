@@ -20,6 +20,11 @@ hte2.Tracker = (function () {
             return offset;
         },
         
+        setOffset : function (offst) {
+            offset = offst;
+            hte2.pubsub.publish('positionSet', offset);
+        },
+        
         addListener : function (listener, xPosition) {
             listeners.push(listener);
         },
@@ -28,7 +33,7 @@ hte2.Tracker = (function () {
             line = target;
             var position = hte2.Measurer.calculatePosition(xPosition, true);
             ordinal = position.ordinal;
-            offset = position.offset;
+            Tracker.setOffset(position.offset);
             notifyListeners(position);
         },
         
@@ -36,7 +41,7 @@ hte2.Tracker = (function () {
             line = target;
             var position = hte2.Measurer.calculatePosition(ord);
             ordinal = position.ordinal;
-            offset = position.offset;
+            Tracker.setOffset(position.offset);
             notifyListeners(position);
         },
         
@@ -62,7 +67,7 @@ hte2.Tracker = (function () {
                 ordinal = line.firstChild.firstChild.nodeValue.length;
             }
             position = hte2.Measurer.calculatePosition(ordinal);
-            offset = position.offset;
+            Tracker.setOffset(position.offset);
             notifyListeners(position);
         },
         
@@ -80,7 +85,11 @@ hte2.Tracker = (function () {
                 ordinal = ordinal - length;
             }
             position = hte2.Measurer.calculatePosition(ordinal);
-            offset = position.offset;
+            Tracker.setOffset(position.offset);
+            notifyListeners(hte2.Measurer.calculatePosition(ordinal));
+        },
+        
+        reNotify : function () {
             notifyListeners(hte2.Measurer.calculatePosition(ordinal));
         }
     };

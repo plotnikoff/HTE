@@ -11,8 +11,16 @@ hte2.Styling = (function () {
     
     Styling = {
         
-        getStyles : function () {
-            return styles;
+        getStyles : function (offset) {
+            var i, st = styles;
+            if (offset) {
+                for (i = 0;i < styles.length; i += 1) {
+                    if (styles[i].start <= offset) {
+                        st = styles[i];
+                    }
+                }
+            }
+            return st;
         },
         
         updatePositins : function (offset, operation) {
