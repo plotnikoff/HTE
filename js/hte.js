@@ -1,4 +1,9 @@
-/*global document, setInterval, window */
+/*global document, setInterval, window, goog */
+
+goog.require('goog.dom.DomHelper');
+goog.require('goog.pubsub.PubSub');
+goog.require('goog.ui.Toolbar');
+goog.require('goog.ui.ToolbarToggleButton');
 
 var hte2 = {};
 
