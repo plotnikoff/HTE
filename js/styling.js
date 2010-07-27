@@ -6,7 +6,8 @@ hte2.Styling = (function () {
     dict = {"ff" : ["font-family", "", "fontFamily"],
             "fw" : ["font-weight", "", "fontWeight"], 
             "fs" : ["font-size", "pt", "fontSize"],
-            "td" : ["text-decoration", "", "textDecoration"]
+            "td" : ["text-decoration", "", "textDecoration"],
+            "fst" : ["font-style", "", "fontStyle"]
         };
     
     Styling = {

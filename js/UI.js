@@ -7,18 +7,38 @@ hte2.UI = (function () {
     boldButton = new goog.ui.ToolbarToggleButton("B");
     italicButton = new goog.ui.ToolbarToggleButton("I");
     underlineButton = new goog.ui.ToolbarToggleButton("U");
+    fontsizeSelect = new goog.ui.ToolbarSelect("Size");
+    fontsizeSelect.addItem(new goog.ui.MenuItem("8"));
+    fontsizeSelect.addItem(new goog.ui.MenuItem("10"));
+    fontsizeSelect.addItem(new goog.ui.MenuItem("11"));
+    fontsizeSelect.addItem(new goog.ui.MenuItem("12"));
+    fontsizeSelect.addItem(new goog.ui.MenuItem("14"));
     tb = new goog.ui.Toolbar();
     
     tb.addChild(boldButton, true);
     tb.addChild(italicButton, true);
     tb.addChild(underlineButton, true);
-    tb.render(dh.$("hte-panel"));
+    tb.addChild(fontsizeSelect, true);
+    tb.render(dh.$("hte-panel")); 
 
     UI = {
         setPosition : function (offset) {
-            var style = hte2.Styling.getStyles(offset);
-            console.log(style);
-            console.log(offset);
+            var style = hte2.Styling.getStyles(offset).style;
+            if (style["fw"] === "bold") {
+                boldButton.setChecked(true);
+            } else {
+                boldButton.setChecked(false);
+            }
+            if (style["td"] === "underline") {
+                underlineButton.setChecked(true);
+            } else {
+                underlineButton.setChecked(false);
+            }
+            if (style["fst"] === "italic") {
+                italicButton.setChecked(true);
+            } else {
+                italicButton.setChecked(false);
+            }
         }
     };
     return UI;
