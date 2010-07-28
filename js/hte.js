@@ -5,6 +5,7 @@ goog.require('goog.pubsub.PubSub');
 goog.require('goog.ui.Toolbar');
 goog.require('goog.ui.ToolbarToggleButton');
 goog.require('goog.ui.ToolbarSelect');
+goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuItem');
 
 
@@ -60,7 +61,7 @@ hte2.dataStorage = {
             start : 179,
             end : 250
         }, {
-            style : {"fs" : 25, "ff" : "Arial", "fw" : "normal", "fst" : "normal"},
+            style : {"fs" : 24, "ff" : "Arial", "fw" : "normal", "fst" : "normal"},
             start : 251,
             end : 475
         }, {

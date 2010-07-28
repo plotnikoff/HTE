@@ -51,12 +51,16 @@ hte2.Tracker = (function () {
         
         lineUp : function () {
             line = line.previousSibling;
-            notifyListeners(hte2.Measurer.calculatePosition(ordinal));
+            var position = hte2.Measurer.calculatePosition(ordinal);
+            hte2.pubsub.publish('positionSet', position.offset);
+            notifyListeners(position);
         },
         
         lineDown : function () {
             line = line.nextSibling;
-            notifyListeners(hte2.Measurer.calculatePosition(ordinal));
+            var position = hte2.Measurer.calculatePosition(ordinal);
+            hte2.pubsub.publish('positionSet', position.offset);
+            notifyListeners(position);
         },
         
         symbolLeft : function () {
@@ -86,7 +90,7 @@ hte2.Tracker = (function () {
             }
             position = hte2.Measurer.calculatePosition(ordinal);
             Tracker.setOffset(position.offset);
-            notifyListeners(hte2.Measurer.calculatePosition(ordinal));
+            notifyListeners(position);
         },
         
         reNotify : function () {
