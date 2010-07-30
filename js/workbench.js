@@ -22,7 +22,7 @@ hte2.Workbench = (function () {
         part2 = splitted.slice(position + 1);
         part1.push(symbol);
         splitted = part1.concat(part2);
-        hte2.Styling.updatePositins(position, 'add');
+        hte2.Styling.updatePositions(position, 'add');
         hte2.pubsub.publish('rerender');
     };
 
@@ -150,7 +150,7 @@ hte2.Workbench = (function () {
         
         removeLetter : function (position) {
             splitted.splice(position, 1);
-            hte2.Styling.updatePositins(position, 'remove');
+            hte2.Styling.updatePositions(position, 'remove');
             hte2.pubsub.publish('rerender');
         },
         
