@@ -39,9 +39,9 @@ hte2.KeyHandler.prototype = {
             hte2.Tracker.symbolRight();
             break;
         default:
-            if (ev.charCode !== undefined) {
-                hte2.Workbench.addLetter(ev.charCode, 
-                    hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset - 1);
+            if (ev.charCode !== undefined && ev.charCode !== 0) {
+                curPos = hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset - 1;
+                hte2.Workbench.addLetter(ev.charCode, curPos);
                 hte2.Tracker.symbolRight();
             }
             break; 

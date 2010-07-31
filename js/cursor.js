@@ -1,3 +1,4 @@
+/*global hte2, setInterval*/
 
 hte2.Cursor = (function () {
     var cur, Cursor, ordinal = 0, cx, cy;
