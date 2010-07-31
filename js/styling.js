@@ -1,8 +1,11 @@
-/*global hte2, window, document */
+/*global hte2, window, document, goog */
+
+/*jslint sub:true*/
 
 hte2.Styling = (function () {
     var Styling, styles = hte2.dataStorage.styling, dict, computedStyle,
-        currentStyle, isStyleModified = false;
+        currentStyle, isStyleModified = false, 
+        paragraphStyles = hte2.dataStorage.paragraph;
     
     currentStyle = computedStyle = {
             style : {"fs" : 12, "ff" : "Arial", "fw" : "normal", 
@@ -54,9 +57,7 @@ hte2.Styling = (function () {
                 if (offset <= styles[i].end) {
                     styles[i].end += operation === 'add' ? 1 : -1;
                 }
-                if (!(styles[i].end < styles[i].start)) {
-                    tmp.push(styles[i]);
-                }
+                tmp.push(styles[i]);
             }
             styles = tmp;
             if (isStyleModified) {
@@ -111,6 +112,19 @@ hte2.Styling = (function () {
                 }
             }
             return output;
+        },
+        
+        getParagraphStyles : function () {
+            return paragraphStyles;
+        },
+        
+        setParagraphStyle : function (width, left, right) {
+            if (paragraphStyles["width"] !== width) {
+                paragraphStyles["width"] = width;
+                paragraphStyles["pl"] = left;
+                paragraphStyles["pr"] = right;
+                hte2.pubsub.publish('rerender');
+            }
         }
     };
     

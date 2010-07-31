@@ -5,9 +5,9 @@ goog.require('goog.dom.DomHelper');
 goog.require('goog.dom.Range');
 
 hte2.MouseHandler = function () {
-    this.wb = hte2.Workbench.getWorkbench();
-    goog.events.listen(this.wb, goog.events.EventType.CLICK, this.setCursor);
-    goog.events.listen(this.wb, goog.events.EventType.DBLCLICK, this.selectText);
+    var wb = hte2.Workbench.getWorkbench();
+    goog.events.listen(wb, goog.events.EventType.CLICK, this.setCursor);
+    goog.events.listen(wb, goog.events.EventType.DBLCLICK, this.selectText);
 };
 
 hte2.MouseHandler.prototype = {

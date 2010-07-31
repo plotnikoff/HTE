@@ -1,9 +1,9 @@
 
-hte2.Line = function (text) {
+hte2.Line = function (left) {
     var lineCont, stringCont, textNode;
     lineCont = document.createElement('div');
     lineCont.className = 'hte-line';
-    this.text = text;
+    lineCont.style.paddingLeft = left + "px";
     this.lineCont = lineCont;
 };
 

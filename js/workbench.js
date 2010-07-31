@@ -5,7 +5,7 @@ hte2.Workbench = (function () {
         splitByWhiteSpace, dh = new goog.dom.DomHelper(), generateStyle;
     
     container = dh.$('hte-workbench');
-    containerWidth = parseInt(container.style.width, 10);
+    //containerWidth = parseInt(container.style.width, 10);
 
     splitted = hte2.dataStorage.docText.split('');
     
@@ -34,7 +34,9 @@ hte2.Workbench = (function () {
             var styles = hte2.Styling.getStyles(), i, j, k = 0, lineWidth, 
                 textBuffer = "", textHolder, offset = 0, wsSplitted, frstart, 
                 frend, currentFr, oldLines, pushline, currentFrWidth, 
-                currentFrMU, wordPart, partWidth;
+                currentFrMU, wordPart, partWidth, 
+                paragraphStyle = hte2.Styling.getParagraphStyles();
+            containerWidth = parseInt(paragraphStyle["width"], 10);
             wsSplitted = splitByWhiteSpace();
             j = 0;
             frstart = 0;
@@ -124,15 +126,16 @@ hte2.Workbench = (function () {
                     pushline = false;
                     textBuffer += "</span>";
                     if (oldLines.length === 0) {
-                        textHolder = new hte2.Line('').get();
+                        textHolder = new hte2.Line(paragraphStyle["pl"]).get();
                         container.appendChild(textHolder);
                         textHolder.innerHTML = textBuffer;
                     } else {
                         if (oldLines[k]) {
+                            oldLines[k].style.paddingLeft = paragraphStyle["pl"] + "px";
                             oldLines[k].innerHTML = textBuffer;
                             k += 1;
                         } else {
-                            textHolder = new hte2.Line('').get();
+                            textHolder = new hte2.Line(paragraphStyle["pl"]).get();
                             container.appendChild(textHolder);
                             textHolder.innerHTML = textBuffer;
                         }

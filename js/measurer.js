@@ -70,7 +70,8 @@ hte2.Measurer = (function () {
             if (!currentNode) {
                 currentNode = strParts[0];
             }
-            return {x : curPos, y : calculateYPosition(currentNode), 
+            return {x : curPos + parseInt(line.style.paddingLeft, 10), 
+                y : calculateYPosition(currentNode), 
                 height : calculateHeight(currentNode), 
                 ordinal : ordinal, 
                 offset : calculateOffset() + ordinal};

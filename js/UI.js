@@ -1,8 +1,11 @@
 /*global hte2, goog*/
 
+/*jslint sub:true*/
+
 hte2.UI = (function () {
     var UI, tb, dh = new goog.dom.DomHelper(), boldButton, italicButton, 
-        underlineButton, fontsizeSelect, fontfaceSelect;
+        underlineButton, lineThroughButton, fontsizeSelect, fontfaceSelect, 
+        ruler, rulerStyle;
     
     boldButton = new goog.ui.ToolbarToggleButton("B");
     hte2.pubsub.subscribe('styleChanged', function (cStyle) {
@@ -13,11 +16,11 @@ hte2.UI = (function () {
         } 
     });
     goog.events.listen(boldButton, goog.ui.Component.EventType.ACTION,
-        function(e) {
+        function (e) {
             if (boldButton.isChecked()) {
-                hte2.pubsub.publish('updateComputedStyle', ["fw", "bold"])
+                hte2.pubsub.publish('updateComputedStyle', ["fw", "bold"]);
             } else {
-                hte2.pubsub.publish('updateComputedStyle', ["fw", "normal"])
+                hte2.pubsub.publish('updateComputedStyle', ["fw", "normal"]);
             }
         }
     );
@@ -31,11 +34,11 @@ hte2.UI = (function () {
         } 
     });
     goog.events.listen(italicButton, goog.ui.Component.EventType.ACTION,
-        function(e) {
+        function (e) {
             if (italicButton.isChecked()) {
-                hte2.pubsub.publish('updateComputedStyle', ["fst", "italic"])
+                hte2.pubsub.publish('updateComputedStyle', ["fst", "italic"]);
             } else {
-                hte2.pubsub.publish('updateComputedStyle', ["fst", "normal"])
+                hte2.pubsub.publish('updateComputedStyle', ["fst", "normal"]);
             }
         }
     );
@@ -49,11 +52,29 @@ hte2.UI = (function () {
         } 
     });
     goog.events.listen(underlineButton, goog.ui.Component.EventType.ACTION,
-        function(e) {
+        function (e) {
             if (underlineButton.isChecked()) {
-                hte2.pubsub.publish('updateComputedStyle', ["td", "underline"])
+                hte2.pubsub.publish('updateComputedStyle', ["td", "underline"]);
             } else {
-                hte2.pubsub.publish('updateComputedStyle', ["td", "none"])
+                hte2.pubsub.publish('updateComputedStyle', ["td", "none"]);
+            }
+        }
+    );
+    
+    lineThroughButton = new goog.ui.ToolbarToggleButton("S");
+    hte2.pubsub.subscribe('styleChanged', function (cStyle) {
+        if (cStyle["td"] === "line-through") {
+            lineThroughButton.setChecked(true);
+        } else {
+            lineThroughButton.setChecked(false);
+        } 
+    });
+    goog.events.listen(lineThroughButton, goog.ui.Component.EventType.ACTION,
+        function (e) {
+            if (lineThroughButton.isChecked()) {
+                hte2.pubsub.publish('updateComputedStyle', ["td", "line-through"]);
+            } else {
+                hte2.pubsub.publish('updateComputedStyle', ["td", "none"]);
             }
         }
     );
@@ -71,9 +92,9 @@ hte2.UI = (function () {
         fontsizeSelect.setValue(cStyle["fs"]);
     });
     goog.events.listen(fontsizeSelect, goog.ui.Component.EventType.ACTION,
-        function(e) {
+        function (e) {
             hte2.pubsub.publish('updateComputedStyle', ["fs", 
-                fontsizeSelect.getValue()])
+                fontsizeSelect.getValue()]);
         }
     );
     
@@ -84,9 +105,9 @@ hte2.UI = (function () {
         fontfaceSelect.setValue(cStyle["ff"]);
     });
     goog.events.listen(fontfaceSelect, goog.ui.Component.EventType.ACTION,
-        function(e) {
+        function (e) {
             hte2.pubsub.publish('updateComputedStyle', ["ff", 
-                fontfaceSelect.getValue()])
+                fontfaceSelect.getValue()]);
         }
     );
     
@@ -94,10 +115,26 @@ hte2.UI = (function () {
     tb.addChild(boldButton, true);
     tb.addChild(italicButton, true);
     tb.addChild(underlineButton, true);
+    tb.addChild(lineThroughButton, true);
     tb.addChild(fontsizeSelect, true);
     tb.addChild(fontfaceSelect, true);
     tb.render(dh.$("hte-panel"));
-     
+    
+    ruler = new goog.ui.TwoThumbSlider();
+    ruler.createDom();
+    rulerStyle = ruler.getElement();
+    rulerStyle.style.width = '100%';
+    rulerStyle.style.height = '10px';
+    ruler.setStep(1);
+    ruler.addEventListener(goog.ui.Component.EventType.CHANGE, function () {
+        var stepWidth, left, right;
+        stepWidth = parseInt(hte2.Workbench.getWorkbench().style.width, 10) / 100;
+        left = ruler.getValue() * stepWidth;
+        right = (ruler.getValue() + ruler.getExtent()) * stepWidth;
+        hte2.pubsub.publish("pWidth", (right - left), left, right);
+    });
+    ruler.render(dh.$("hte-slider"));
+    
     UI = {};
     return UI;
 }());

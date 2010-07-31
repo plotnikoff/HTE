@@ -1,0 +1,12 @@
+body{background:#EEE;margin:0;padding:0;}
+#hte-panel{position: relative; left: 50%; margin-left: -450px; width: 1000px; border: 1px solid #DDD;}
+#sandbox, #hte-workbench{position:relative;border:1px solid #999;left:50%;margin-left:-450px; background:white;height:1000px;}
+#hte-cursor{position:absolute;width:2px;background:#000;height:10px;}
+.hte-line{width:auto;}
+.hte-line span{white-space:normal;line-height:1.15;}
+#hte-measurer{position:absolute;left: -10000px;}
+#hte-slider{position:relative;border:none;left:50%;margin-left:-450px;height:10px;width:900px;padding:5px 50px 5px;}
+.goog-twothumbslider-horizontal{background: #FFF;position: relative;overflow: visible;}
+.goog-twothumbslider-value-thumb, .goog-twothumbslider-extent-thumb{height: 16px;width: 16px;background:url('/icons/ruler.png');position: absolute;overflow: hidden;}
+.goog-twothumbslider-value-thumb{margin-left:-8px;}
+.goog-twothumbslider-extent-thumb{margin-left:8px;}
