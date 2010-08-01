@@ -50,17 +50,21 @@ hte2.Tracker = (function () {
         },
         
         lineUp : function () {
-            line = line.previousSibling;
-            var position = hte2.Measurer.calculatePosition(ordinal);
-            hte2.pubsub.publish('positionSet', position.offset);
-            notifyListeners(position);
+            if (line.previousSibling.id !== "hte-cursor") {
+                line = line.previousSibling;
+                var position = hte2.Measurer.calculatePosition(ordinal);
+                hte2.pubsub.publish('positionSet', position.offset);
+                notifyListeners(position);
+            }
         },
         
         lineDown : function () {
-            line = line.nextSibling;
-            var position = hte2.Measurer.calculatePosition(ordinal);
-            hte2.pubsub.publish('positionSet', position.offset);
-            notifyListeners(position);
+            if (line.nextSibling) {
+                line = line.nextSibling;
+                var position = hte2.Measurer.calculatePosition(ordinal);
+                hte2.pubsub.publish('positionSet', position.offset);
+                notifyListeners(position);
+            }
         },
         
         symbolLeft : function () {

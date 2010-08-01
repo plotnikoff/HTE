@@ -146,7 +146,9 @@ hte2.Workbench = (function () {
             }
             if (oldLines.length !== 0 && oldLines.length > k) {
                 for (i = k; i < oldLines.length; i += 1) {
-                    oldLines[k].parentNode.removeChild(oldLines[k]);
+                    if (oldLines[k].parentNode) {
+                        oldLines[k].parentNode.removeChild(oldLines[k]);
+                    }
                 }
             }
         },

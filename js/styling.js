@@ -51,7 +51,7 @@ hte2.Styling = (function () {
         updatePositions : function (offset, operation) {
             var i, tmp = [];
             for (i = 0; i < styles.length; i += 1) {
-                if (offset < styles[i].start) {
+                if (offset < styles[i].start && styles[i].start !== 0) {
                     styles[i].start += operation === 'add' ? 1 : -1;
                 }
                 if (offset <= styles[i].end) {
