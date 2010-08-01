@@ -1,3 +1,9 @@
+Following license applies to all source code except:
+ 1) Google closure library http://code.google.com/closure/library (Apache 
+    License Version 2.0)
+ 2) Icons in /icons directory http://famfamfam.com/lab/icons/silk/ (Creative 
+    Commons Attribution 2.5 License)
+
 Copyright (c) 2010 Konstantin Plotnikov
 
  Permission is hereby granted, free of charge, to any person obtaining a copy

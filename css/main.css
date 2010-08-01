@@ -6,7 +6,13 @@ body{background:#EEE;margin:0;padding:0;}
 .hte-line span{white-space:normal;line-height:1.15;}
 #hte-measurer{position:absolute;left: -10000px;}
 #hte-slider{position:relative;border:none;left:50%;margin-left:-450px;height:10px;width:900px;padding:5px 50px 5px;}
+#hte-boldbutton, #hte-italicbutton, #hte-underlinebutton, #hte-linethroughbutton{width:16px;height:16px;}
+#hte-boldbutton{background:url(/icons/text_bold.png) no-repeat;}
+#hte-italicbutton{background:url(/icons/text_italic.png) no-repeat;}
+#hte-underlinebutton{background:url(/icons/text_underline.png) no-repeat;}
+#hte-linethroughbutton{background:url(/icons/text_strikethrough.png) no-repeat;}
 .goog-twothumbslider-horizontal{background: #FFF;position: relative;overflow: visible;}
 .goog-twothumbslider-value-thumb, .goog-twothumbslider-extent-thumb{height: 16px;width: 16px;background:url('/icons/ruler.png');position: absolute;overflow: hidden;}
 .goog-twothumbslider-value-thumb{margin-left:-8px;}
 .goog-twothumbslider-extent-thumb{margin-left:8px;}
+.goog-toolbar-menu-button-inner-box{height:16px;}

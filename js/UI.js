@@ -7,7 +7,9 @@ hte2.UI = (function () {
         underlineButton, lineThroughButton, fontsizeSelect, fontfaceSelect, 
         ruler, rulerStyle;
     
-    boldButton = new goog.ui.ToolbarToggleButton("B");
+    boldButton = new goog.ui.ToolbarToggleButton(dh.createDom('div', 
+        {"id" : "hte-boldbutton"},
+        dh.createTextNode(String.fromCharCode(160))));
     hte2.pubsub.subscribe('styleChanged', function (cStyle) {
         if (cStyle["fw"] === "bold") {
             boldButton.setChecked(true);
@@ -25,7 +27,9 @@ hte2.UI = (function () {
         }
     );
     
-    italicButton = new goog.ui.ToolbarToggleButton("I");
+    italicButton = new goog.ui.ToolbarToggleButton(dh.createDom('div', 
+        {"id" : "hte-italicbutton"},
+        dh.createTextNode(String.fromCharCode(160))));
     hte2.pubsub.subscribe('styleChanged', function (cStyle) {
         if (cStyle["fst"] === "italic") {
             italicButton.setChecked(true);
@@ -43,7 +47,9 @@ hte2.UI = (function () {
         }
     );
     
-    underlineButton = new goog.ui.ToolbarToggleButton("U");
+    underlineButton = new goog.ui.ToolbarToggleButton(dh.createDom('div', 
+        {"id" : "hte-underlinebutton"},
+        dh.createTextNode(String.fromCharCode(160))));
     hte2.pubsub.subscribe('styleChanged', function (cStyle) {
         if (cStyle["td"] === "underline") {
             underlineButton.setChecked(true);
@@ -61,7 +67,9 @@ hte2.UI = (function () {
         }
     );
     
-    lineThroughButton = new goog.ui.ToolbarToggleButton("S");
+    lineThroughButton = new goog.ui.ToolbarToggleButton(dh.createDom('div', 
+        {"id" : "hte-linethroughbutton"},
+        dh.createTextNode(String.fromCharCode(160))));
     hte2.pubsub.subscribe('styleChanged', function (cStyle) {
         if (cStyle["td"] === "line-through") {
             lineThroughButton.setChecked(true);
@@ -79,7 +87,7 @@ hte2.UI = (function () {
         }
     );
     
-    fontsizeSelect = new goog.ui.ToolbarSelect("Size");
+    fontsizeSelect = new goog.ui.ToolbarSelect("");
     fontsizeSelect.addItem(new goog.ui.MenuItem("8"));
     fontsizeSelect.addItem(new goog.ui.MenuItem("10"));
     fontsizeSelect.addItem(new goog.ui.MenuItem("11"));
@@ -88,6 +96,7 @@ hte2.UI = (function () {
     fontsizeSelect.addItem(new goog.ui.MenuItem("18"));
     fontsizeSelect.addItem(new goog.ui.MenuItem("24"));
     fontsizeSelect.addItem(new goog.ui.MenuItem("36"));
+    fontsizeSelect.setValue("12");
     hte2.pubsub.subscribe('styleChanged', function (cStyle) {
         fontsizeSelect.setValue(cStyle["fs"]);
     });
@@ -98,9 +107,11 @@ hte2.UI = (function () {
         }
     );
     
-    fontfaceSelect = new goog.ui.ToolbarSelect("FontFace");
+    fontfaceSelect = new goog.ui.ToolbarSelect("");
     fontfaceSelect.addItem(new goog.ui.MenuItem("Arial"));
+    fontfaceSelect.addItem(new goog.ui.MenuItem("Courier new"));
     fontfaceSelect.addItem(new goog.ui.MenuItem("Times New Roman"));
+    fontfaceSelect.setValue("Arial");
     hte2.pubsub.subscribe('styleChanged', function (cStyle) {
         fontfaceSelect.setValue(cStyle["ff"]);
     });
