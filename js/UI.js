@@ -5,7 +5,7 @@
 hte2.UI = (function () {
     var UI, tb, dh = new goog.dom.DomHelper(), boldButton, italicButton, 
         underlineButton, lineThroughButton, fontsizeSelect, fontfaceSelect, 
-        ruler, rulerStyle;
+        ruler, rulerStyle, rulerPxStep;
     
     boldButton = new goog.ui.ToolbarToggleButton(dh.createDom('div', 
         {"id" : "hte-boldbutton"},
@@ -137,15 +137,24 @@ hte2.UI = (function () {
     rulerStyle.style.width = '100%';
     rulerStyle.style.height = '10px';
     ruler.setStep(1);
+    rulerPxStep = parseInt(hte2.Workbench.getWorkbench().style.width, 10) / 100;
     ruler.addEventListener(goog.ui.Component.EventType.CHANGE, function () {
-        var stepWidth, left, right;
-        stepWidth = parseInt(hte2.Workbench.getWorkbench().style.width, 10) / 100;
-        left = ruler.getValue() * stepWidth;
-        right = (ruler.getValue() + ruler.getExtent()) * stepWidth;
+        var left, right;
+        left = ruler.getValue() * rulerPxStep;
+        right = (ruler.getValue() + ruler.getExtent()) * rulerPxStep;
         hte2.pubsub.publish("pWidth", (right - left), left, right);
     });
     ruler.render(dh.$("hte-slider"));
     
-    UI = {};
+    UI = {
+        updateRuler : function (offset) {
+            var style = hte2.Styling.getParagraphByOffset(offset);
+            ruler.setExtent((style["pr"] - style["pl"]) / rulerPxStep);
+            ruler.setValue(style["pl"] / rulerPxStep);
+            console.log(style["pr"]);
+            console.log((style["pr"] - style["pl"]) / rulerPxStep);
+            
+        }
+    };
     return UI;
 }());

@@ -5,7 +5,7 @@
 hte2.Styling = (function () {
     var Styling, styles = hte2.dataStorage.styling, dict, computedStyle,
         currentStyle, isStyleModified = false, 
-        paragraphStyles = hte2.dataStorage.paragraph;
+        paragraphStyles = hte2.dataStorage.paragraphs;
     
     currentStyle = computedStyle = {
             style : {"fs" : 12, "ff" : "Arial", "fw" : "normal", 
@@ -114,15 +114,31 @@ hte2.Styling = (function () {
             return output;
         },
         
-        getParagraphStyles : function () {
-            return paragraphStyles;
+        getParagraphStyles : function (paragraphOrdinal) {
+            if (paragraphStyles[paragraphOrdinal]) {
+                return paragraphStyles[paragraphOrdinal];
+            } else {
+                return paragraphStyles[paragraphStyles.length - 1];
+            }
+        },
+        
+        getParagraphByOffset : function (offset) {
+            var i, paragraphOrdinal = 0, cursorOffset = offset;
+            for (i = 0; i < paragraphStyles.length; i += 1) {
+                if (paragraphStyles[i]["start"] <= cursorOffset &&
+                    cursorOffset <= paragraphStyles[i]["end"]) {
+                    paragraphOrdinal = i;
+                }
+            }
+            return paragraphStyles[paragraphOrdinal];
         },
         
         setParagraphStyle : function (width, left, right) {
-            if (paragraphStyles["width"] !== width) {
-                paragraphStyles["width"] = width;
-                paragraphStyles["pl"] = left;
-                paragraphStyles["pr"] = right;
+            var paragraph = Styling.getParagraphByOffset(hte2.Tracker.getOffset());
+            if (paragraph["width"] !== width) {
+                paragraph["width"] = width;
+                paragraph["pl"] = left;
+                paragraph["pr"] = right;
                 hte2.pubsub.publish('rerender');
             }
         }

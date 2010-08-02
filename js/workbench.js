@@ -34,10 +34,8 @@ hte2.Workbench = (function () {
             var styles = hte2.Styling.getStyles(), i, j, k = 0, lineWidth, 
                 textBuffer = "", textHolder, offset = 0, wsSplitted, frstart, 
                 frend, currentFr, oldLines, pushline, currentFrWidth, 
-                currentFrMU, wordPart, partWidth, 
-                paragraphStyle = hte2.Styling.getParagraphStyles();
-            containerWidth = parseInt(paragraphStyle["width"], 10);
-            wsSplitted = splitByWhiteSpace();
+                currentFrMU, wordPart, partWidth, paragraphCounter = 0
+                wsSplitted = splitByWhiteSpace();
             j = 0;
             frstart = 0;
             frend = 0;
@@ -46,6 +44,8 @@ hte2.Workbench = (function () {
             oldLines = hte2.$CN('hte-line', container);
             pushline = false;
             for (i = 0; i < wsSplitted.length; i += 1) {
+                paragraphStyle = hte2.Styling.getParagraphStyles(paragraphCounter);
+                containerWidth = parseInt(paragraphStyle["width"], 10);
                 currentFr = wsSplitted[i] + String.fromCharCode(160);
                 frstart = offset;
                 frend = offset + (currentFr.length - 1);
@@ -142,6 +142,9 @@ hte2.Workbench = (function () {
                     }
                     textBuffer = "<span style=\"" + generateStyle(styles[j].style) + "\">";
                     lineWidth = 0;
+                    if (currentFr === ('\n' + String.fromCharCode(160))) {
+                        paragraphCounter += 1;
+                    }
                 }
             }
             if (oldLines.length !== 0 && oldLines.length > k) {
