@@ -60,6 +60,17 @@ hte2.Styling = (function () {
                 tmp.push(styles[i]);
             }
             styles = tmp;
+            tmp = [];
+            for (i = 0; i < paragraphStyles.length; i += 1) {
+                if (offset < paragraphStyles[i]["start"]) {
+                    paragraphStyles[i]["start"] += operation === 'add' ? 1 : -1;
+                }
+                if (offset <= paragraphStyles[i]["end"]) {
+                    paragraphStyles[i]["end"] += operation === 'add' ? 1 : -1;
+                }
+                tmp.push(paragraphStyles[i]);
+            }
+            paragraphStyles = tmp;
             if (isStyleModified) {
                 Styling.addStyle(offset + 1, offset + 1, goog.object.clone(computedStyle));
             }
@@ -128,6 +139,7 @@ hte2.Styling = (function () {
                 if (paragraphStyles[i]["start"] <= cursorOffset &&
                     cursorOffset <= paragraphStyles[i]["end"]) {
                     paragraphOrdinal = i;
+                    break;
                 }
             }
             return paragraphStyles[paragraphOrdinal];

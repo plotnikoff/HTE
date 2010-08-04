@@ -7,22 +7,18 @@ goog.require('goog.dom.Range');
 hte2.MouseHandler = function () {
     var wb = hte2.Workbench.getWorkbench();
     goog.events.listen(wb, goog.events.EventType.CLICK, this.setCursor);
-    goog.events.listen(wb, goog.events.EventType.DBLCLICK, this.selectText);
+    //goog.events.listen(wb, goog.events.EventType.DBLCLICK, this.selectText);
 };
 
 hte2.MouseHandler.prototype = {
     setCursor : function (ev) {
-        var e = ev ? ev : window.event, targ, posX, posY, substr, curPos, i;
-        targ = e.target ? e.target : e.srcElement;
-        if (e.pageX || e.pageY) {
-            posX = e.pageX;
-            posY = e.pageY;
-        } else if (e.clientX || e.clientY) {
-            posX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-            posY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-        }
+        var targ, posX, posY, substr, curPos, i;
+        targ = ev.target;
+        posX = ev.clientX;
+        posY = ev.clientY;
         posX -= hte2.Workbench.getWorkbench().offsetLeft;
         if (targ.nodeName === 'SPAN') {
+            posX -= parseInt(targ.parentNode.style.paddingLeft, 10)
             hte2.Tracker.setLine(targ.parentNode, (posX - 8));
         }
     },

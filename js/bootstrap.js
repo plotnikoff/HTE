@@ -14,4 +14,5 @@
     hte2.pubsub.subscribe('updateComputedStyle', 
         hte2.Styling.changeComputedStyle);
     hte2.pubsub.subscribe('pWidth', hte2.Styling.setParagraphStyle);
+    hte2.pubsub.subscribe('pWidth', hte2.Tracker.reNotify);
 }());

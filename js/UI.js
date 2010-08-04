@@ -148,12 +148,10 @@ hte2.UI = (function () {
     
     UI = {
         updateRuler : function (offset) {
-            var style = hte2.Styling.getParagraphByOffset(offset);
-            ruler.setExtent((style["pr"] - style["pl"]) / rulerPxStep);
-            ruler.setValue(style["pl"] / rulerPxStep);
-            console.log(style["pr"]);
-            console.log((style["pr"] - style["pl"]) / rulerPxStep);
-            
+            var style = hte2.Styling.getParagraphByOffset(offset), value, extent;
+            extent = (style["pr"] - style["pl"]) / rulerPxStep;
+            value = style["pl"] / rulerPxStep;
+            ruler.setValueAndExtent(value, extent)
         }
     };
     return UI;
