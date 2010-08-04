@@ -1,11 +1,12 @@
 body{background:#EEE;margin:0;padding:0;}
 #hte-panel{position: relative; left: 50%; margin-left: -450px; width: 1000px; border: 1px solid #DDD;}
-#sandbox, #hte-workbench{position:relative;border:1px solid #999;left:50%;margin-left:-450px; background:white;height:1000px;}
+#hte-workbench{position:relative;border:1px solid #999;left:50%;margin-left:-450px; background:white;margin-top:55px;}
 #hte-cursor{position:absolute;width:2px;background:#000;height:10px;}
 .hte-line{width:auto;}
 .hte-line span{white-space:normal;line-height:1.15;}
 #hte-measurer{position:absolute;left: -10000px;}
-#hte-slider{position:relative;border:none;left:50%;margin-left:-450px;height:10px;width:900px;padding:5px 50px 5px;}
+#hte-panels-container{position: fixed; z-index: 101; background: #EEE; left: 50%; margin-left: -450px; width: 902px; top: 0px;}
+#hte-slider{position:relative;border:none;left:50%;margin-left:-450px;height:10px;width:902px;padding:5px 50px 5px;background:#EEE;}
 #hte-boldbutton, #hte-italicbutton, #hte-underlinebutton, #hte-linethroughbutton{width:16px;height:16px;}
 #hte-boldbutton{background:url(/icons/text_bold.png) no-repeat;}
 #hte-italicbutton{background:url(/icons/text_italic.png) no-repeat;}
