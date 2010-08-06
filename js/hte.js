@@ -1,6 +1,11 @@
 /*global document, setInterval, window, goog */
 
+goog.require('goog.dom')
 goog.require('goog.dom.DomHelper');
+goog.require('goog.dom.ViewportSizeMonitor');
+goog.require('goog.style');
+goog.require('goog.events');
+goog.require('goog.events.EventType');
 goog.require('goog.pubsub.PubSub');
 goog.require('goog.ui.Toolbar');
 goog.require('goog.ui.ToolbarToggleButton');
