@@ -23,7 +23,6 @@ hte2.Workbench = (function () {
         part1.push(symbol);
         splitted = part1.concat(part2);
         hte2.Styling.updatePositions(position, 'add');
-        hte2.pubsub.publish('rerender');
     };
 
     generateStyle = hte2.Styling.generateStyle;
@@ -164,10 +163,13 @@ hte2.Workbench = (function () {
         
         addParagraph : function (position) {
             addSymbol('\n', position);
+            hte2.Styling.addParagraph(position);
+            hte2.pubsub.publish('rerender');
         },
         
         addLetter : function (charCode, position) {
             addSymbol(String.fromCharCode(charCode), position);
+            hte2.pubsub.publish('rerender');
         },
         
         getWorkbench : function () {

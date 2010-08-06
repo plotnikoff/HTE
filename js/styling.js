@@ -4,7 +4,7 @@
 
 hte2.Styling = (function () {
     var Styling, styles = hte2.dataStorage.styling, dict, computedStyle,
-        currentStyle, isStyleModified = false, 
+        currentStyle, isStyleModified = false, addStyle, addParagraph,
         paragraphStyles = hte2.dataStorage.paragraphs;
     
     currentStyle = computedStyle = {
@@ -21,10 +21,51 @@ hte2.Styling = (function () {
             "fst" : ["font-style", "", "fontStyle"]
         };
     
+    addStyle = function (start, end, style) {
+        var i, oldStart, oldEnd;
+        for (i = 0; i < styles.length; i += 1) {
+            if (styles[i].start < start && styles[i].end >= start) {
+                oldEnd = styles[i].end;
+                styles[i].end = start - 1;
+                styles.splice(i + 1, 0, {"style" : style, "start" : start, "end" : end});
+                if (styles[i + 2]) {
+                    styles.splice(i + 2, 0, {
+                        "style": styles[i].style,
+                        "start": end + 1,
+                        "end": styles[i + 2].start - 1
+                    });
+                } else {
+                    styles.splice(i + 2, 0, {
+                        "style": styles[i].style,
+                        "start": end + 1,
+                        "end": oldEnd
+                    });
+                }
+            }
+        }
+    };
+    
     Styling = {
         
         getStyles : function () {
             return styles;
+        },
+        
+        addParagraph : function (position) {
+            var i;
+            for (i = 0; i < paragraphStyles.length; i += 1) {
+                if (position < paragraphStyles[i]["end"]) {
+                    paragraphStyles.splice(i + 1, 0, {
+                        "width" : paragraphStyles[i]["width"], 
+                        "pl" : paragraphStyles[i]["pl"], 
+                        "pr" : paragraphStyles[i]["pr"],
+                        "start" : position,
+                        "end" : paragraphStyles[i]["end"]
+                    });
+                    paragraphStyles[i]["end"] = position - 1;
+                    break;
+                }
+            }
         },
         
         setComputedStyle : function (offset) {
@@ -62,6 +103,13 @@ hte2.Styling = (function () {
             styles = tmp;
             tmp = [];
             for (i = 0; i < paragraphStyles.length; i += 1) {
+                if (operation !== 'add' && offset === paragraphStyles[i]["start"]) {
+                    paragraphStyles[i - 1]["end"] = paragraphStyles[i]["end"] - 1;
+                    paragraphStyles[i + 1]["start"] = paragraphStyles[i]["end"] + 1;
+                    console.log(paragraphStyles[i - 1]["end"]);
+                    console.log(paragraphStyles[i + 1]["start"]);
+                    paragraphStyles.splice(i, 1);
+                }
                 if (offset < paragraphStyles[i]["start"]) {
                     paragraphStyles[i]["start"] += operation === 'add' ? 1 : -1;
                 }
@@ -71,34 +119,12 @@ hte2.Styling = (function () {
                 tmp.push(paragraphStyles[i]);
             }
             paragraphStyles = tmp;
+            console.log({'t' : paragraphStyles});
             if (isStyleModified) {
-                Styling.addStyle(offset + 1, offset + 1, goog.object.clone(computedStyle));
+                addStyle(offset + 1, offset + 1, goog.object.clone(computedStyle));
             }
         },
-        
-        addStyle : function (start, end, style) {
-            var i, oldStart, oldEnd;
-            for (i = 0; i < styles.length; i += 1) {
-                if (styles[i].start < start && styles[i].end >= start) {
-                    oldEnd = styles[i].end;
-                    styles[i].end = start - 1;
-                    styles.splice(i + 1, 0, {"style" : style, "start" : start, "end" : end});
-                    if (styles[i + 2]) {
-                        styles.splice(i + 2, 0, {
-                            "style": styles[i].style,
-                            "start": end + 1,
-                            "end": styles[i + 2].start - 1
-                        });
-                    } else {
-                        styles.splice(i + 2, 0, {
-                            "style": styles[i].style,
-                            "start": end + 1,
-                            "end": oldEnd
-                        });
-                    }
-                }
-            }
-        },
+
         
         generateStyle : function (styleJSON) {
             var prop, output = "";
