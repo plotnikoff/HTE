@@ -1,7 +1,8 @@
 /*global hte2, goog*/
 
 (function () {
-    var viewportSizeMonitor = new goog.dom.ViewportSizeMonitor(), setHeight;
+    var viewportSizeMonitor = new goog.dom.ViewportSizeMonitor(), setHeight,
+        mouseHandler, keyHandler;
     setHeight = function () {
         var height = viewportSizeMonitor.getSize().height - 60;
         goog.style.setHeight(goog.dom.getElement('hte-workbench-container'), height);
@@ -15,8 +16,8 @@
     hte2.Tracker.addListener(hte2.Cursor);
     hte2.Tracker.setLineByOrdinal(hte2.$CN('hte-line', 
         hte2.Workbench.getWorkbench())[0], 1);
-    new hte2.MouseHandler();
-    new hte2.KeyHandler();
+    mouseHandler = new hte2.MouseHandler();
+    keyHandler = new hte2.KeyHandler();
 
     hte2.pubsub.subscribe('rerender', hte2.Workbench.render);
     hte2.pubsub.subscribe('rangeReady', hte2.Styling.addStyle);
