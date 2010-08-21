@@ -4,9 +4,12 @@
 
 hte2.UI = (function () {
     var UI, tb, dh = new goog.dom.DomHelper(), boldButton, italicButton, 
-        underlineButton, lineThroughButton, fontsizeSelect, fontfaceSelect, 
-        ruler, rulerStyle, rulerPxStep;
+        saveButton, underlineButton, lineThroughButton, fontsizeSelect, 
+        fontfaceSelect, ruler, rulerStyle, rulerPxStep;
     
+    /*
+     * Bold toggle button
+     */
     boldButton = new goog.ui.ToolbarToggleButton(dh.createDom('div', 
         {"id" : "hte-boldbutton"},
         dh.createTextNode(String.fromCharCode(160))));
@@ -27,6 +30,9 @@ hte2.UI = (function () {
         }
     );
     
+    /*
+     * Italic toggle button
+     */
     italicButton = new goog.ui.ToolbarToggleButton(dh.createDom('div', 
         {"id" : "hte-italicbutton"},
         dh.createTextNode(String.fromCharCode(160))));
@@ -47,6 +53,9 @@ hte2.UI = (function () {
         }
     );
     
+    /*
+     * Underline toggle button
+     */
     underlineButton = new goog.ui.ToolbarToggleButton(dh.createDom('div', 
         {"id" : "hte-underlinebutton"},
         dh.createTextNode(String.fromCharCode(160))));
@@ -67,6 +76,9 @@ hte2.UI = (function () {
         }
     );
     
+    /*
+     * Linethrough toggle button
+     */
     lineThroughButton = new goog.ui.ToolbarToggleButton(dh.createDom('div', 
         {"id" : "hte-linethroughbutton"},
         dh.createTextNode(String.fromCharCode(160))));
@@ -87,6 +99,9 @@ hte2.UI = (function () {
         }
     );
     
+    /*
+     * Font size dropdown
+     */
     fontsizeSelect = new goog.ui.ToolbarSelect("");
     fontsizeSelect.addItem(new goog.ui.MenuItem("8"));
     fontsizeSelect.addItem(new goog.ui.MenuItem("10"));
@@ -107,6 +122,9 @@ hte2.UI = (function () {
         }
     );
     
+    /*
+     * Font-face dropdown
+     */
     fontfaceSelect = new goog.ui.ToolbarSelect("");
     fontfaceSelect.addItem(new goog.ui.MenuItem("Arial"));
     fontfaceSelect.addItem(new goog.ui.MenuItem("Courier new"));
@@ -122,6 +140,25 @@ hte2.UI = (function () {
         }
     );
     
+    /*
+     * Save button
+     */
+    saveButton = new goog.ui.ToolbarButton(dh.createDom('div', 
+        {"id" : "hte-savebutton"},
+        dh.createTextNode("Save")));
+    goog.events.listen(saveButton, goog.ui.Component.EventType.ACTION,
+        function (e) {
+            var data = {"docText" : hte2.Workbench.getSplitted().join(''),
+                "styling" : hte2.Styling.getStyles(),
+                "paragraphs" : hte2.Styling.getAllParagraphStyles()}, 
+                serializer = new goog.json.Serializer();
+            console.log(serializer.serialize(data));
+        }
+    );
+    
+    /*
+     * Ruler
+     */
     tb = new goog.ui.Toolbar();
     tb.addChild(boldButton, true);
     tb.addChild(italicButton, true);
@@ -129,6 +166,7 @@ hte2.UI = (function () {
     tb.addChild(lineThroughButton, true);
     tb.addChild(fontsizeSelect, true);
     tb.addChild(fontfaceSelect, true);
+    tb.addChild(saveButton, true);
     tb.render(dh.$("hte-panel"));
     
     ruler = new goog.ui.TwoThumbSlider();
@@ -146,12 +184,13 @@ hte2.UI = (function () {
     });
     ruler.render(dh.$("hte-slider"));
     
+    
     UI = {
         updateRuler : function (offset) {
             var style = hte2.Styling.getParagraphByOffset(offset), value, extent;
             extent = (style["pr"] - style["pl"]) / rulerPxStep;
             value = style["pl"] / rulerPxStep;
-            ruler.setValueAndExtent(value, extent)
+            ruler.setValueAndExtent(value, extent);
         }
     };
     return UI;
