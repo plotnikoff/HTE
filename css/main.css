@@ -9,12 +9,12 @@ body{background:#EEE;margin:0;padding:0;height:100%;overflow:hidden;}
 #hte-workbench-container{position: relative; overflow-y: scroll; width: 100%;}
 #hte-slider{position:relative;border:none;left:50%;margin-left:-458px;height:10px;width:902px;padding:5px 50px 5px;background:#EEE;}
 #hte-boldbutton, #hte-italicbutton, #hte-underlinebutton, #hte-linethroughbutton{width:16px;height:16px;}
-#hte-boldbutton{background:url(/icons/text_bold.png) no-repeat;}
-#hte-italicbutton{background:url(/icons/text_italic.png) no-repeat;}
-#hte-underlinebutton{background:url(/icons/text_underline.png) no-repeat;}
-#hte-linethroughbutton{background:url(/icons/text_strikethrough.png) no-repeat;}
+#hte-boldbutton{background:url(/ico/text_bold.png) no-repeat;}
+#hte-italicbutton{background:url(/ico/text_italic.png) no-repeat;}
+#hte-underlinebutton{background:url(/ico/text_underline.png) no-repeat;}
+#hte-linethroughbutton{background:url(/ico/text_strikethrough.png) no-repeat;}
 .goog-twothumbslider-horizontal{background: #FFF;position: relative;overflow: visible;}
-.goog-twothumbslider-value-thumb, .goog-twothumbslider-extent-thumb{height: 16px;width: 16px;background:url('/icons/ruler.png');position: absolute;overflow: hidden;}
+.goog-twothumbslider-value-thumb, .goog-twothumbslider-extent-thumb{height: 16px;width: 16px;background:url('/ico/ruler.png');position: absolute;overflow: hidden;}
 .goog-twothumbslider-value-thumb{margin-left:-8px;}
 .goog-twothumbslider-extent-thumb{margin-left:8px;}
 .goog-toolbar-menu-button-inner-box{height:16px;}
