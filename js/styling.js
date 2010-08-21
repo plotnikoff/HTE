@@ -1,11 +1,11 @@
+/*jslint sub : true*/
+
 /*global hte2, window, document, goog */
 
-/*jslint sub:true*/
-
 hte2.Styling = (function () {
-    var Styling, styles = hte2.dataStorage.styling, dict, computedStyle,
+    var Styling, styles = hte2.dataStorage["styling"], dict, computedStyle,
         currentStyle, isStyleModified = false, addStyle, addParagraph,
-        paragraphStyles = hte2.dataStorage.paragraphs;
+        paragraphStyles = hte2.dataStorage["paragraphs"];
     
     currentStyle = computedStyle = {
             style : {"fs" : 12, "ff" : "Arial", "fw" : "normal", 
@@ -24,19 +24,19 @@ hte2.Styling = (function () {
     addStyle = function (start, end, style) {
         var i, oldStart, oldEnd;
         for (i = 0; i < styles.length; i += 1) {
-            if (styles[i].start < start && styles[i].end >= start) {
-                oldEnd = styles[i].end;
-                styles[i].end = start - 1;
+            if (styles[i]["start"] < start && styles[i]["end"] >= start) {
+                oldEnd = styles[i]["end"];
+                styles[i]["end"] = start - 1;
                 styles.splice(i + 1, 0, {"style" : style, "start" : start, "end" : end});
                 if (styles[i + 2]) {
                     styles.splice(i + 2, 0, {
-                        "style": styles[i].style,
+                        "style": styles[i]["style"],
                         "start": end + 1,
-                        "end": styles[i + 2].start - 1
+                        "end": styles[i + 2]["start"] - 1
                     });
                 } else {
                     styles.splice(i + 2, 0, {
-                        "style": styles[i].style,
+                        "style": styles[i]["style"],
                         "start": end + 1,
                         "end": oldEnd
                     });
@@ -72,12 +72,12 @@ hte2.Styling = (function () {
             var i, st = styles;
             if (offset) {
                 for (i = 0;i < styles.length; i += 1) {
-                    if (styles[i].start <= (offset - 1)) {
+                    if (styles[i]["start"] <= (offset - 1)) {
                         st = styles[i];
                     }
                 }
-                currentStyle = st.style;
-                computedStyle = goog.object.clone(st.style);
+                currentStyle = st["style"];
+                computedStyle = goog.object.clone(st["style"]);
                 isStyleModified = false;
                 hte2.pubsub.publish('styleChanged', computedStyle);
             }
@@ -92,11 +92,11 @@ hte2.Styling = (function () {
         updatePositions : function (offset, operation) {
             var i, tmp = [];
             for (i = 0; i < styles.length; i += 1) {
-                if (offset < styles[i].start && styles[i].start !== 0) {
-                    styles[i].start += operation === 'add' ? 1 : -1;
+                if (offset < styles[i]["start"] && styles[i]["start"] !== 0) {
+                    styles[i]["start"] += operation === 'add' ? 1 : -1;
                 }
-                if (offset <= styles[i].end) {
-                    styles[i].end += operation === 'add' ? 1 : -1;
+                if (offset <= styles[i]["end"]) {
+                    styles[i]["end"] += operation === 'add' ? 1 : -1;
                 }
                 tmp.push(styles[i]);
             }
@@ -106,8 +106,6 @@ hte2.Styling = (function () {
                 if (operation !== 'add' && offset === paragraphStyles[i]["start"]) {
                     paragraphStyles[i - 1]["end"] = paragraphStyles[i]["end"] - 1;
                     paragraphStyles[i + 1]["start"] = paragraphStyles[i]["end"] + 1;
-                    console.log(paragraphStyles[i - 1]["end"]);
-                    console.log(paragraphStyles[i + 1]["start"]);
                     paragraphStyles.splice(i, 1);
                 }
                 if (offset < paragraphStyles[i]["start"]) {
@@ -119,7 +117,6 @@ hte2.Styling = (function () {
                 tmp.push(paragraphStyles[i]);
             }
             paragraphStyles = tmp;
-            console.log({'t' : paragraphStyles});
             if (isStyleModified) {
                 addStyle(offset + 1, offset + 1, goog.object.clone(computedStyle));
             }
@@ -149,6 +146,10 @@ hte2.Styling = (function () {
                 }
             }
             return output;
+        },
+        
+        getAllParagraphStyles : function () {
+            return paragraphStyles;
         },
         
         getParagraphStyles : function (paragraphOrdinal) {
