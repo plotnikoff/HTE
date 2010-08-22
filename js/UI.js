@@ -157,18 +157,21 @@ hte2.UI = (function () {
     );
     
     /*
-     * Ruler
+     * Toolbar
      */
     tb = new goog.ui.Toolbar();
+    tb.addChild(saveButton, true);
     tb.addChild(boldButton, true);
     tb.addChild(italicButton, true);
     tb.addChild(underlineButton, true);
     tb.addChild(lineThroughButton, true);
     tb.addChild(fontsizeSelect, true);
     tb.addChild(fontfaceSelect, true);
-    tb.addChild(saveButton, true);
     tb.render(dh.$("hte-panel"));
     
+    /*
+     * Ruler
+     */
     ruler = new goog.ui.TwoThumbSlider();
     ruler.createDom();
     rulerStyle = ruler.getElement();
