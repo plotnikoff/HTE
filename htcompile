@@ -2,8 +2,9 @@
 CLOSURE=~/closure/closure-library-read-only
 CALCDEPS=$CLOSURE/closure/bin
 CLOSURECSS=$CLOSURE/closure/goog/css
-HTE2=~/HTE2/js
-HTE2CSS=~/HTE2/css
+ROOT=~/HTE2
+HTE2=$ROOT/js
+HTE2CSS=$ROOT/css
 HTE2COMP=~/HTE2_Compiled/jsc
 HTE2CSSCOMP=~/HTE2_Compiled/cssc
 COMPILER=~/compiler-latest
@@ -20,6 +21,8 @@ java -jar $COMPILER/compiler.jar  --compilation_level ADVANCED_OPTIMIZATIONS --j
 
 #compiling css
 cat $HTE2CSS/reset.css $CLOSURECSS/common.css $CLOSURECSS/toolbar.css $CLOSURECSS/menu.css $CLOSURECSS/menuitem.css $HTE2CSS/main.css > $HTE2CSSCOMP/css.css
+mv $HTE2CSSCOMP/css.css $ROOT/cssc/css.css
+mv $HTE2COMP/hte_adv.js $ROOT/jsc/hte_adv.js
 
 
 
