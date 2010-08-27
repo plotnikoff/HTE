@@ -15,6 +15,7 @@ goog.require('goog.ui.ToolbarSelect');
 goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuItem');
 goog.require('goog.ui.TwoThumbSlider');
+goog.require('goog.net.XhrIo');
 
 hte2.$ = function (string) {
     return document.getElementById(string);
