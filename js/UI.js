@@ -151,8 +151,8 @@ hte2.UI = (function () {
             var data = {"docText" : hte2.Workbench.getSplitted().join(''),
                 "styling" : hte2.Styling.getStyles(),
                 "paragraphs" : hte2.Styling.getAllParagraphStyles()}, 
-                serializer = new goog.json.Serializer();
-            console.log(serializer.serialize(data));
+                rpc = new hte2.JsonRPC();
+            rpc.request(data, "save");
         }
     );
     
