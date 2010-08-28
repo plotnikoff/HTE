@@ -6,6 +6,9 @@ generate different markups in the future.
 Currently tested under IE6, IE7, IE8, FF3.6, Chrome, Safari, Opera. Needs code 
 clean-up and documentation.
 
+Example: http://hte.plotnikoff.info/
+
 TODO:
  - documenting
  - make css sprite for icons
+ - fix bug in opera 10
