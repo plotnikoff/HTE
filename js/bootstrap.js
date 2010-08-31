@@ -13,7 +13,7 @@
             setHeight();
         });
     hte2.Workbench.render();
-    hte2.Tracker.addListener(hte2.Cursor);
+    hte2.Tracker.addListener(new hte2.Cursor());
     hte2.Tracker.setLineByOrdinal(hte2.$CN('hte-line', 
         hte2.Workbench.getWorkbench())[0], 1);
     mouseHandler = new hte2.MouseHandler();
