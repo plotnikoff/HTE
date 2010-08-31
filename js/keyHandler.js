@@ -4,6 +4,9 @@ goog.require('goog.events');
 goog.require('goog.events.KeyHandler');
 goog.require('goog.events.KeyCodes');
 
+/**
+ * @constructor
+ */
 hte2.KeyHandler = function () {
     var handler = new goog.events.KeyHandler(document);
     goog.events.listen(handler, 'key', this.intercept);

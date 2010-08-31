@@ -1,4 +1,7 @@
 
+/**
+ * @constructor
+ */
 hte2.Line = function (left) {
     var lineCont, stringCont, textNode;
     lineCont = document.createElement('div');

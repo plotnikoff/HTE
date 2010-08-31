@@ -2,6 +2,9 @@
 
 /*global hte2, goog*/
 
+/**
+ * @constructor
+ */
 hte2.JsonRPC = function () {
     this.serializer = new goog.json.Serializer();
     this.req = {

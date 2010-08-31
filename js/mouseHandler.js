@@ -4,6 +4,9 @@ goog.require('goog.events');
 goog.require('goog.dom.DomHelper');
 goog.require('goog.dom.Range');
 
+/**
+ * @constructor
+ */
 hte2.MouseHandler = function () {
     var wb = hte2.Workbench.getWorkbench();
     goog.events.listen(wb, goog.events.EventType.CLICK, this.setCursor);
