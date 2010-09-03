@@ -1,9 +1,10 @@
 /*global hte2*/
 
 hte2.Measurer = (function () {
-    var Measurer, holder, calculateOffset, calculateYPosition, calculateHeight;
+    var Measurer, holder, calculateOffset, calculateYPosition, calculateHeight,
+    dh = new goog.dom.DomHelper();
     
-    holder = hte2.$('hte-measurer');
+    holder = dh.getElement('hte-measurer');
     
     calculateOffset = function () {
         var prevLine, child, strParts, i = 0, j, offset = 0, line;

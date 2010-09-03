@@ -43,7 +43,7 @@ hte2.Workbench = (function () {
             frend = 0;
             currentFr = '';
             lineWidth = 0;
-            oldLines = hte2.$CN('hte-line', container);
+            oldLines = dh.getElementsByClass('hte-line', container);
             pushline = false;
             for (i = 0; i < wsSplitted.length; i += 1) {
                 paragraphStyle = hte2.Styling.getParagraphStyles(paragraphCounter);

@@ -16,19 +16,3 @@ goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuItem');
 goog.require('goog.ui.TwoThumbSlider');
 goog.require('goog.net.XhrIo');
-
-hte2.$ = function (string) {
-    return document.getElementById(string);
-};
-
-hte2.$CN = function (classname, context) {
-    var res = [], tmp, length, i;
-    tmp = context.getElementsByTagName('*');
-    length = tmp.length;
-    for (i = 0; i < length; i += 1) {
-        if (tmp[i].className === classname) {
-            res.push(tmp[i]);
-        }
-    }
-    return res;
-};
