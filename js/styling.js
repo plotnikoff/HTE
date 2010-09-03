@@ -173,7 +173,7 @@ hte2.Styling = (function () {
         },
         
         setParagraphStyle : function (width, left, right) {
-            var paragraph = Styling.getParagraphByOffset(hte2.Tracker.getOffset());
+            var paragraph = Styling.getParagraphByOffset(hte2.TrackerMap.get('_lcl_').getOffset());
             if (paragraph["width"] !== width) {
                 paragraph["width"] = width;
                 paragraph["pl"] = left;

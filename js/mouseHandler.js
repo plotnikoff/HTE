@@ -8,12 +8,18 @@ goog.require('goog.dom.Range');
  * @constructor
  */
 hte2.MouseHandler = function () {
-    var wb = hte2.Workbench.getWorkbench();
-    goog.events.listen(wb, goog.events.EventType.CLICK, this.setCursor);
+    this.wb = hte2.Workbench.getWorkbench();
+    this.wb.tracker = null;
+    goog.events.listen(this.wb, goog.events.EventType.CLICK, this.setCursor);
     //goog.events.listen(wb, goog.events.EventType.DBLCLICK, this.selectText);
+    this.tracker = null;
 };
 
 hte2.MouseHandler.prototype = {
+    setTracker : function (tracker) {
+        this.wb.tracker = tracker;
+    },
+    
     setCursor : function (ev) {
         var targ, posX, posY, substr, curPos, i;
         targ = ev.target;
@@ -22,7 +28,7 @@ hte2.MouseHandler.prototype = {
         posX -= hte2.Workbench.getWorkbench().offsetLeft;
         if (targ.nodeName === 'SPAN') {
             posX -= parseInt(targ.parentNode.style.paddingLeft, 10)
-            hte2.Tracker.setLine(targ.parentNode, (posX - 8));
+            this.tracker.setLine(targ.parentNode, (posX - 8));
         }
     },
     
@@ -37,7 +43,7 @@ hte2.MouseHandler.prototype = {
                 siblingsLength += currentNode.firstChild.nodeValue.length;
             }
         }
-        rangeStart = hte2.Tracker.getOffset() - (hte2.Tracker.getOrdinal() - (range.getAnchorOffset() + siblingsLength));
+        rangeStart = this.tracker.getOffset() - (this.tracker.getOrdinal() - (range.getAnchorOffset() + siblingsLength));
         rangeEnd = rangeStart + rangeLength;
         hte2.pubsub.publish('rangeReady', rangeStart, rangeEnd, {"fw" : "bold"});
     }

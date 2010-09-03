@@ -2,7 +2,7 @@
 
 (function () {
     var viewportSizeMonitor = new goog.dom.ViewportSizeMonitor(), setHeight,
-        mouseHandler, keyHandler, dh = new goog.dom.DomHelper();
+        mouseHandler, keyHandler, dh = new goog.dom.DomHelper(), localTracker;
     setHeight = function () {
         var height = viewportSizeMonitor.getSize().height - 60;
         goog.style.setHeight(goog.dom.getElement('hte-workbench-container'), height);
@@ -12,12 +12,12 @@
         function (e) {
             setHeight();
         });
-    hte2.Workbench.render();
-    hte2.Tracker.addListener(new hte2.Cursor());
-    hte2.Tracker.setLineByOrdinal(dh.getElementsByClass('hte-line', 
-        hte2.Workbench.getWorkbench())[0], 1);
+    localTracker = new hte2.Tracker();
+    localTracker.addListener(new hte2.Cursor());
     mouseHandler = new hte2.MouseHandler();
+    mouseHandler.setTracker(localTracker);
     keyHandler = new hte2.KeyHandler();
+    keyHandler.setTracker(localTracker);
 
     hte2.pubsub.subscribe('rerender', hte2.Workbench.render);
     hte2.pubsub.subscribe('rangeReady', hte2.Styling.addStyle);
@@ -26,5 +26,12 @@
     hte2.pubsub.subscribe('updateComputedStyle', 
         hte2.Styling.changeComputedStyle);
     hte2.pubsub.subscribe('pWidth', hte2.Styling.setParagraphStyle);
-    hte2.pubsub.subscribe('pWidth', hte2.Tracker.reNotify);
+    hte2.pubsub.subscribe('pWidth', localTracker.reNotify, localTracker);
+    
+    hte2.TrackerMap.set('_lcl_', localTracker);
+    hte2.Workbench.render();
+    localTracker.setLineByOrdinal(dh.getElementsByClass('hte-line', 
+        hte2.Workbench.getWorkbench())[0], 1);
+    
+    
 }());

@@ -8,47 +8,52 @@ goog.require('goog.events.KeyCodes');
  * @constructor
  */
 hte2.KeyHandler = function () {
-    var handler = new goog.events.KeyHandler(document);
-    goog.events.listen(handler, 'key', this.intercept);
+    this.handler = new goog.events.KeyHandler(document);
+    this.handler.tracker = null;
+    goog.events.listen(this.handler, 'key', this.intercept);
 };
 
 hte2.KeyHandler.prototype = {
+    
+    setTracker : function (tracker) {
+        this.handler.tracker = tracker;
+    },
+    
     intercept : function (ev) {
-        
         var codes = goog.events.KeyCodes, e, curPos;
         ev.preventDefault();
         switch (ev.keyCode) {
         case codes.LEFT:
-            hte2.Tracker.symbolLeft();
+            this.tracker.symbolLeft();
             break;
         case codes.RIGHT:
-            hte2.Tracker.symbolRight();
+            this.tracker.symbolRight();
             break;
         case codes.UP:
-            hte2.Tracker.lineUp();
+            this.tracker.lineUp();
             break;
         case codes.DOWN:
-            hte2.Tracker.lineDown();
+            this.tracker.lineDown();
             break;
         case codes.BACKSPACE:
-            hte2.Tracker.symbolLeft();
-            hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset);
+            this.tracker.symbolLeft();
+            hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(this.tracker.getOrdinal()).offset);
             break;
         case codes.DELETE:
-            hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset);
+            hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(this.tracker.getOrdinal()).offset);
             break;
         case codes.ENTER:
-            hte2.Workbench.addParagraph(hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset - 1);
-            hte2.Tracker.symbolRight();
+            hte2.Workbench.addParagraph(hte2.Measurer.calculatePosition(this.tracker.getOrdinal()).offset - 1);
+            this.tracker.symbolRight();
             break;
         default:
             if (ev.charCode !== undefined && ev.charCode !== 0) {
-                curPos = hte2.Measurer.calculatePosition(hte2.Tracker.getOrdinal()).offset - 1;
+                curPos = hte2.Measurer.calculatePosition(this.tracker.getOrdinal()).offset - 1;
                 hte2.Workbench.addLetter(ev.charCode, curPos);
-                hte2.Tracker.symbolRight();
+                this.tracker.symbolRight();
             }
             break; 
         }
-        hte2.Tracker.reNotify();
+        this.tracker.reNotify();
     }
 };

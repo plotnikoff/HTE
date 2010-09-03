@@ -8,7 +8,7 @@ hte2.Measurer = (function () {
     
     calculateOffset = function () {
         var prevLine, child, strParts, i = 0, j, offset = 0, line;
-        line = hte2.Tracker.getLine();
+        line = hte2.TrackerMap.get('_lcl_').getLine();
         prevLine = line.previousSibling;
         while (prevLine && prevLine.id !== 'hte-cursor') {
             child = prevLine.childNodes;
@@ -39,7 +39,7 @@ hte2.Measurer = (function () {
                 comparator, line, str, strParts, ordinal = 1, xCorrection,
                 currentNode;
             curPos = parseInt(hte2.Workbench.getWorkbench().style.paddingLeft, 10);
-            line = hte2.Tracker.getLine();
+            line = hte2.TrackerMap.get('_lcl_').getLine();
             strParts = line.childNodes;
             charComparator = function () {
                 return ordinal < condition;

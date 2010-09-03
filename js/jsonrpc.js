@@ -18,7 +18,6 @@ hte2.JsonRPC.prototype = {
         this.req["method"] = method;
         this.req["params"] = {"document" : json};
         goog.net.XhrIo.send('/', function (e) {
-                console.log(e);
             }, 
             'POST', 
             this.serializer.serialize(this.req),
