@@ -20,7 +20,7 @@ java -jar $COMPILER/compiler.jar --js $HTE2COMP/hteconcat.js --js_output_file $H
 java -jar $COMPILER/compiler.jar  --compilation_level ADVANCED_OPTIMIZATIONS --js $HTE2COMP/hteconcat.js --externs $ROOT/externs/externs.js  --js_output_file $HTE2COMP/hte_adv.js
 
 #compiling css
-cat $HTE2CSS/reset.css $CLOSURECSS/common.css $CLOSURECSS/toolbar.css $CLOSURECSS/menu.css $CLOSURECSS/menuitem.css $HTE2CSS/main.css > $HTE2CSSCOMP/css.css
+cat $HTE2CSS/reset.css $CLOSURECSS/common.css $CLOSURECSS/toolbar.css $CLOSURECSS/menu.css $CLOSURECSS/menuitem.css $CLOSURECSS/dialog.css $HTE2CSS/main.css > $HTE2CSSCOMP/css.css
 mv $HTE2CSSCOMP/css.css $ROOT/cssc/css.css
 mv $HTE2COMP/hte_adv.js $ROOT/jsc/hte_adv.js
 
