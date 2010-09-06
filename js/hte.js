@@ -17,3 +17,4 @@ goog.require('goog.ui.MenuItem');
 goog.require('goog.ui.TwoThumbSlider');
 goog.require('goog.net.XhrIo');
 goog.require('goog.structs.Map');
+goog.require('goog.ui.Dialog');

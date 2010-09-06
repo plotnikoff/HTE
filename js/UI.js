@@ -5,7 +5,7 @@
 hte2.UI = (function () {
     var UI, tb, dh = new goog.dom.DomHelper(), boldButton, italicButton, 
         saveButton, underlineButton, lineThroughButton, fontsizeSelect, 
-        fontfaceSelect, ruler, rulerStyle, rulerPxStep;
+        fontfaceSelect, ruler, rulerStyle, rulerPxStep, openButton;
     
     /*
      * Bold toggle button
@@ -145,7 +145,7 @@ hte2.UI = (function () {
      */
     saveButton = new goog.ui.ToolbarButton(dh.createDom('div', 
         {"id" : "hte-savebutton"},
-        dh.createTextNode("Save")));
+        dh.createTextNode(String.fromCharCode(160))));
     goog.events.listen(saveButton, goog.ui.Component.EventType.ACTION,
         function (e) {
             var data = {"docText" : hte2.Workbench.getSplitted().join(''),
@@ -157,10 +157,30 @@ hte2.UI = (function () {
     );
     
     /*
+     * Open button
+     */
+    openButton = new goog.ui.ToolbarButton(dh.createDom('div', 
+        {"id" : "hte-openbutton"},
+        dh.createTextNode(String.fromCharCode(160))));
+    goog.events.listen(openButton, goog.ui.Component.EventType.ACTION,
+        function (e) {
+            var openDialog = new goog.ui.Dialog();
+            goog.net.XhrIo.send('/getall', function (e) {
+                //openDialog.setContent(e);
+                //e.target.getResponseJson();
+            });
+            openDialog.setTitle('Open document');
+            openDialog.setButtonSet(goog.ui.Dialog.ButtonSet.OK_CANCEL);
+            openDialog.setVisible(true);
+        }
+    );
+    
+    /*
      * Toolbar
      */
     tb = new goog.ui.Toolbar();
     tb.addChild(saveButton, true);
+    tb.addChild(openButton, true);
     tb.addChild(boldButton, true);
     tb.addChild(italicButton, true);
     tb.addChild(underlineButton, true);
