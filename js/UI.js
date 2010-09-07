@@ -148,10 +148,8 @@ hte2.UI = (function () {
         dh.createTextNode(String.fromCharCode(160))));
     goog.events.listen(saveButton, goog.ui.Component.EventType.ACTION,
         function (e) {
-            var data = {"docText" : hte2.Workbench.getSplitted().join(''),
-                "styling" : hte2.Styling.getStyles(),
-                "paragraphs" : hte2.Styling.getAllParagraphStyles()}, 
-                rpc = new hte2.JsonRPC();
+            var data = hte2.Workbench.getDocument(), 
+            rpc = new hte2.JsonRPC();
             rpc.request(data, "save");
         }
     );
@@ -164,13 +162,28 @@ hte2.UI = (function () {
         dh.createTextNode(String.fromCharCode(160))));
     goog.events.listen(openButton, goog.ui.Component.EventType.ACTION,
         function (e) {
-            var openDialog = new goog.ui.Dialog();
+            var openDialog = new goog.ui.Dialog("opendoc modal-dialog");
             goog.net.XhrIo.send('/getall', function (e) {
-                //openDialog.setContent(e);
-                //e.target.getResponseJson();
+                var data = e.target.getResponseJson().rows, i, len, docs, 
+                    ItemConstructor;
+                ItemConstructor = goog.ui.MenuItem;
+                docs = new goog.ui.Menu();
+                for (i = 0, len = data.length; i < len; i += 1) {
+                    docs.addItem(new ItemConstructor(data[i].id, data[i].id));
+                }
+                goog.events.listen(docs, goog.ui.Component.EventType.ACTION,
+                    function (ev) {
+                        goog.net.XhrIo.send('/get/' + ev.target.getContent(), 
+                        function (ev) {
+                            hte2.Workbench.setDocument(ev.target.getResponseJson());
+                            openDialog.dispose();
+                        });
+                    });
+                docs.render(openDialog.getContentElement());
+                openDialog.reposition();
             });
             openDialog.setTitle('Open document');
-            openDialog.setButtonSet(goog.ui.Dialog.ButtonSet.OK_CANCEL);
+            openDialog.setButtonSet();
             openDialog.setVisible(true);
         }
     );

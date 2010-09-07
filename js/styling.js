@@ -51,6 +51,10 @@ hte2.Styling = (function () {
             return styles;
         },
         
+        setStyles : function (style) {
+            styles = style;
+        },
+        
         addParagraph : function (position) {
             var i;
             for (i = 0; i < paragraphStyles.length; i += 1) {
@@ -150,6 +154,10 @@ hte2.Styling = (function () {
         
         getAllParagraphStyles : function () {
             return paragraphStyles;
+        },
+        
+        setAllParagraphStyles : function (styles) {
+            paragraphStyles = styles;
         },
         
         getParagraphStyles : function (paragraphOrdinal) {

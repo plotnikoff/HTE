@@ -181,6 +181,19 @@ hte2.Workbench = (function () {
         
         getSplitted : function () {
             return splitted;
+        },
+        
+        getDocument : function () {
+            return {"docText" : hte2.Workbench.getSplitted().join(''),
+                "styling" : hte2.Styling.getStyles(),
+                "paragraphs" : hte2.Styling.getAllParagraphStyles()}
+        },
+        
+        setDocument : function (document) {
+            splitted = document["docText"].split('');
+            hte2.Styling.setStyles(document["styling"]);
+            hte2.Styling.setAllParagraphStyles(document["paragraphs"]);
+            hte2.pubsub.publish('rerender');
         }
     };
     
