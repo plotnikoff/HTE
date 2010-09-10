@@ -23,19 +23,24 @@ hte2.Tracker.prototype = {
             this.listeners[i].onTrackerChanged(data);
         }
     },
+    
     getOrdinal : function () {
         return this.ordinal;
     },
+    
     getOffset : function () {
         return this.offset;
     },
+    
     setOffset : function (offset) {
         this.offset = offset;
         hte2.pubsub.publish('positionSet', offset);
     },
+    
     addListener : function (listener, xPosition) {
         this.listeners.push(listener);
     },
+    
     setLine : function (target, xPosition) {
         this.line = target;
         var position = hte2.Measurer.calculatePosition(xPosition, true);
@@ -43,6 +48,7 @@ hte2.Tracker.prototype = {
         this.setOffset(position.offset);
         this.notifyListeners(position);
     },
+    
     setLineByOrdinal : function (target, ordinal) {
         this.line = target;
         var position = hte2.Measurer.calculatePosition(ordinal);
@@ -50,25 +56,33 @@ hte2.Tracker.prototype = {
         this.setOffset(position.offset);
         this.notifyListeners(position);
     },
+    
     getLine : function () {
         return this.line;
     },
+    
     lineUp : function () {
         if (this.line.previousSibling.id !== "hte-cursor") {
             this.line = this.line.previousSibling;
             var position = hte2.Measurer.calculatePosition(this.ordinal);
+            this.setOffset(position.offset);
+            this.ordinal = position.ordinal;
             hte2.pubsub.publish('positionSet', position.offset);
             this.notifyListeners(position);
         }
     },
+    
     lineDown : function () {
         if (this.line.nextSibling) {
             this.line = this.line.nextSibling;
             var position = hte2.Measurer.calculatePosition(this.ordinal);
+            this.setOffset(position.offset);
+            this.ordinal = position.ordinal;
             hte2.pubsub.publish('positionSet', position.offset);
             this.notifyListeners(position);
         }
     },
+    
     symbolLeft : function () {
         var position;
         this.ordinal -= 1;
@@ -80,6 +94,7 @@ hte2.Tracker.prototype = {
         this.setOffset(position.offset);
         this.notifyListeners(position);
     },
+    
     symbolRight : function () {
         var strParts, i, length = 0, firstWordLength, position;
         this.ordinal += 1;
@@ -97,6 +112,7 @@ hte2.Tracker.prototype = {
         this.setOffset(position.offset);
         this.notifyListeners(position);
     },
+    
     reNotify : function () {
         this.notifyListeners(hte2.Measurer.calculatePosition(this.ordinal));
     }

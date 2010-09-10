@@ -25,8 +25,9 @@
     hte2.pubsub.subscribe('positionSet', hte2.UI.updateRuler);
     hte2.pubsub.subscribe('updateComputedStyle', 
         hte2.Styling.changeComputedStyle);
-    hte2.pubsub.subscribe('pWidth', hte2.Styling.setParagraphStyle);
     hte2.pubsub.subscribe('pWidth', localTracker.reNotify, localTracker);
+    hte2.pubsub.subscribe('pWidth', hte2.Styling.setParagraphStyle);
+
     
     hte2.TrackerMap.set('_lcl_', localTracker);
     hte2.Workbench.render();
