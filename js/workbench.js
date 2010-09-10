@@ -7,7 +7,6 @@ hte2.Workbench = (function () {
         splitByWhiteSpace, dh = new goog.dom.DomHelper(), generateStyle;
     
     container = dh.$('hte-workbench');
-    //containerWidth = parseInt(container.style.width, 10);
 
     splitted = hte2.dataStorage["docText"].split('');
     
@@ -186,13 +185,18 @@ hte2.Workbench = (function () {
         getDocument : function () {
             return {"docText" : hte2.Workbench.getSplitted().join(''),
                 "styling" : hte2.Styling.getStyles(),
-                "paragraphs" : hte2.Styling.getAllParagraphStyles()}
+                "paragraphs" : hte2.Styling.getAllParagraphStyles()};
         },
         
         setDocument : function (document) {
+            var lines = dh.getElementsByClass('hte-line');
+            goog.array.forEach(lines, function (el) {
+                dh.removeNode(el);
+            });
             splitted = document["docText"].split('');
             hte2.Styling.setStyles(document["styling"]);
             hte2.Styling.setAllParagraphStyles(document["paragraphs"]);
+            
             hte2.pubsub.publish('rerender');
         }
     };
