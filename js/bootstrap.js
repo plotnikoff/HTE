@@ -40,7 +40,10 @@
     
     hte2.pubsub.subscribe('trackerChanged', localCursor.onTrackerChanged, 
         localCursor);
-
+    hte2.pubsub.subscribe('trackerChanged', function (data) {
+        var req = new hte2.JsonRPC();
+        req.request(data, 'publish');
+    });
     
     hte2.TrackerMap.set('_lcl_', localTracker);
     hte2.Workbench.render();
