@@ -10,8 +10,6 @@ hte2.Line = function (left) {
     this.lineCont = lineCont;
 };
 
-hte2.Line.prototype = {
-    get : function () {
+hte2.Line.prototype.get = function () {
         return this.lineCont;
-    }
-};
+    };

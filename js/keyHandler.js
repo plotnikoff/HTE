@@ -13,13 +13,12 @@ hte2.KeyHandler = function () {
     goog.events.listen(this.handler, 'key', this.intercept);
 };
 
-hte2.KeyHandler.prototype = {
-    
-    setTracker : function (tracker) {
+
+hte2.KeyHandler.prototype.setTracker = function (tracker) {
         this.handler.tracker = tracker;
-    },
+    };
     
-    intercept : function (ev) {
+hte2.KeyHandler.prototype.intercept = function (ev) {
         var codes = goog.events.KeyCodes, e, curPos;
         ev.preventDefault();
         switch (ev.keyCode) {
@@ -55,5 +54,4 @@ hte2.KeyHandler.prototype = {
             break; 
         }
         this.tracker.reNotify();
-    }
-};
+    };

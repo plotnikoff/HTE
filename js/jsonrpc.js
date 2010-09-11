@@ -14,15 +14,14 @@ hte2.JsonRPC = function (url) {
     };
 };
 
-hte2.JsonRPC.prototype = {
-    request : function (jsonObj, method) {
+
+hte2.JsonRPC.prototype.request = function (jsonObj, method) {
         this.req["method"] = method;
-        this.req["params"] = {"document" : jsonObj};
+        this.req["params"] = {"data" : jsonObj};
         goog.net.XhrIo.send(this.url, function (e) {
         }, 
             'POST', 
             this.serializer.serialize(this.req),
             {'Content-Type' : 'application/json'}
         );
-    }
-};
+    };

@@ -1,4 +1,4 @@
-/*global hte2, window, document */
+/*global hte2, window, document, goog */
 
 goog.require('goog.events');
 goog.require('goog.dom.DomHelper');
@@ -16,24 +16,23 @@ hte2.MouseHandler = function (pubsub) {
     this.pubsub = pubsub;
 };
 
-hte2.MouseHandler.prototype = {
-    setTracker : function (tracker) {
+hte2.MouseHandler.prototype.setTracker = function (tracker) {
         this.wb.tracker = tracker;
-    },
+    };
     
-    setCursor : function (ev) {
+hte2.MouseHandler.prototype.setCursor = function (ev) {
         var targ, posX, posY, substr, curPos, i;
         targ = ev.target;
         posX = ev.clientX;
         posY = ev.clientY;
         posX -= hte2.Workbench.getWorkbench().offsetLeft;
         if (targ.nodeName === 'SPAN') {
-            posX -= parseInt(targ.parentNode.style.paddingLeft, 10)
+            posX -= parseInt(targ.parentNode.style.paddingLeft, 10);
             this.tracker.setLine(targ.parentNode, (posX - 8));
         }
-    },
+    };
     
-    selectText : function (ev) {
+hte2.MouseHandler.prototype.selectText = function (ev) {
         var range = '', selectedText, rangeLength, rangeStart, rangeEnd, currentNode, siblingsLength = 0, dh = goog.dom.getDomHelper();
         range = goog.dom.Range.createFromWindow();
         rangeLength = range.getFocusOffset() - range.getAnchorOffset();
@@ -47,5 +46,4 @@ hte2.MouseHandler.prototype = {
         rangeStart = this.tracker.getOffset() - (this.tracker.getOrdinal() - (range.getAnchorOffset() + siblingsLength));
         rangeEnd = rangeStart + rangeLength;
         this.pubsub.publish('rangeReady', rangeStart, rangeEnd, {"fw" : "bold"});
-    }
-};
+    };

@@ -17,35 +17,34 @@ hte2.Cursor = function () {
     setInterval(blink, 600);
 };
 
-hte2.Cursor.prototype = {
-    setPosition : function (x, y) {
+
+hte2.Cursor.prototype.setPosition = function (x, y) {
         var curStyle = this.cur.style;
         curStyle.left = x + 'px';
         curStyle.top = y + 'px';
         this.cx = x;
         this.cy = y;
         curStyle.display = 'block';
-    },
+    };
     
-    getPosition : function () {
+hte2.Cursor.prototype.getPosition = function () {
         return {x : this.cx, y : this.cy};
-    },
+    };
     
-    setHeight : function (height) {
+hte2.Cursor.prototype.setHeight = function (height) {
         this.cur.style.height = height + 'px';
-    },
+    };
     
-    setOrdinalPosition : function (position) {
+hte2.Cursor.prototype.setOrdinalPosition = function (position) {
         this.ordinal = position;
-    },
+    };
     
-    getOrdinalPosition : function () {
+hte2.Cursor.prototype.getOrdinalPosition = function () {
         return this.ordinal;
-    },
+    };
     
-    onTrackerChanged : function (positionData) {
+hte2.Cursor.prototype.onTrackerChanged = function (positionData) {
         this.setPosition(positionData.x, positionData.y);
         this.setHeight(positionData.height);
         this.setOrdinalPosition(positionData.ordinal);
-    }
-};
+    };

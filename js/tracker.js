@@ -13,46 +13,46 @@ hte2.Tracker = function (pubsub) {
     this.pubsub = pubsub;
 };
 
-hte2.Tracker.prototype = {
+
     
-    getOrdinal : function () {
+hte2.Tracker.prototype.getOrdinal = function () {
         return this.ordinal;
-    },
+    };
     
-    getOffset : function () {
+hte2.Tracker.prototype.getOffset = function () {
         return this.offset;
-    },
+    };
     
-    setOffset : function (offset) {
+hte2.Tracker.prototype.setOffset = function (offset) {
         this.offset = offset;
         this.pubsub.publish('positionSet', offset);
-    },
+    };
     
-    addListener : function (listener, xPosition) {
+hte2.Tracker.prototype.addListener = function (listener, xPosition) {
         this.listeners.push(listener);
-    },
+    };
     
-    setLine : function (target, xPosition) {
+hte2.Tracker.prototype.setLine = function (target, xPosition) {
         this.line = target;
         var position = hte2.Measurer.calculatePosition(xPosition, true);
         this.ordinal = position.ordinal;
         this.setOffset(position.offset);
         this.pubsub.publish('trackerChanged', position);
-    },
+    };
     
-    setLineByOrdinal : function (target, ordinal) {
+hte2.Tracker.prototype.setLineByOrdinal = function (target, ordinal) {
         this.line = target;
         var position = hte2.Measurer.calculatePosition(ordinal);
         this.ordinal = position.ordinal;
         this.setOffset(position.offset);
         this.pubsub.publish('trackerChanged', position);
-    },
+    };
     
-    getLine : function () {
+hte2.Tracker.prototype.getLine = function () {
         return this.line;
-    },
+    };
     
-    lineUp : function () {
+hte2.Tracker.prototype.lineUp = function () {
         if (this.line.previousSibling.id !== "hte-cursor") {
             this.line = this.line.previousSibling;
             var position = hte2.Measurer.calculatePosition(this.ordinal);
@@ -61,9 +61,9 @@ hte2.Tracker.prototype = {
             this.pubsub.publish('positionSet', position.offset);
             this.pubsub.publish('trackerChanged', position);
         }
-    },
+    };
     
-    lineDown : function () {
+hte2.Tracker.prototype.lineDown = function () {
         if (this.line.nextSibling) {
             this.line = this.line.nextSibling;
             var position = hte2.Measurer.calculatePosition(this.ordinal);
@@ -72,9 +72,9 @@ hte2.Tracker.prototype = {
             this.pubsub.publish('positionSet', position.offset);
             this.pubsub.publish('trackerChanged', position);
         }
-    },
+    };
     
-    symbolLeft : function () {
+hte2.Tracker.prototype.symbolLeft = function () {
         var position;
         this.ordinal -= 1;
         if (this.ordinal < 0) {
@@ -84,9 +84,9 @@ hte2.Tracker.prototype = {
         position = hte2.Measurer.calculatePosition(this.ordinal);
         this.setOffset(position.offset);
         this.pubsub.publish('trackerChanged', position);
-    },
+    };
     
-    symbolRight : function () {
+hte2.Tracker.prototype.symbolRight = function () {
         var strParts, i, length = 0, firstWordLength, position;
         this.ordinal += 1;
         strParts = this.line.childNodes;
@@ -102,11 +102,10 @@ hte2.Tracker.prototype = {
         position = hte2.Measurer.calculatePosition(this.ordinal);
         this.setOffset(position.offset);
         this.pubsub.publish('trackerChanged', position);
-    },
+    };
     
-    reNotify : function () {
+hte2.Tracker.prototype.reNotify = function () {
         this.pubsub.publish('trackerChanged', 
             hte2.Measurer.calculatePosition(this.ordinal));
-    }
-};
+    };
 
