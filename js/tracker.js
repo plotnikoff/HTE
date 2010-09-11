@@ -5,24 +5,15 @@ hte2.TrackerMap = new goog.structs.Map();
 /**
  * @constructor
  */
-hte2.Tracker = function () {
+hte2.Tracker = function (pubsub) {
     this.ordinal = 0;
     this.offset = 0;
     this.listeners = [];
     this.line = null;
+    this.pubsub = pubsub;
 };
 
 hte2.Tracker.prototype = {
-    /**
-     * @private
-     * @param {Object} data
-     */
-    notifyListeners : function (data) {
-        var length = this.listeners.length, i;
-        for (i = 0; i < length; i += 1) {
-            this.listeners[i].onTrackerChanged(data);
-        }
-    },
     
     getOrdinal : function () {
         return this.ordinal;
@@ -34,7 +25,7 @@ hte2.Tracker.prototype = {
     
     setOffset : function (offset) {
         this.offset = offset;
-        hte2.pubsub.publish('positionSet', offset);
+        this.pubsub.publish('positionSet', offset);
     },
     
     addListener : function (listener, xPosition) {
@@ -46,7 +37,7 @@ hte2.Tracker.prototype = {
         var position = hte2.Measurer.calculatePosition(xPosition, true);
         this.ordinal = position.ordinal;
         this.setOffset(position.offset);
-        this.notifyListeners(position);
+        this.pubsub.publish('trackerChanged', position);
     },
     
     setLineByOrdinal : function (target, ordinal) {
@@ -54,7 +45,7 @@ hte2.Tracker.prototype = {
         var position = hte2.Measurer.calculatePosition(ordinal);
         this.ordinal = position.ordinal;
         this.setOffset(position.offset);
-        this.notifyListeners(position);
+        this.pubsub.publish('trackerChanged', position);
     },
     
     getLine : function () {
@@ -67,8 +58,8 @@ hte2.Tracker.prototype = {
             var position = hte2.Measurer.calculatePosition(this.ordinal);
             this.setOffset(position.offset);
             this.ordinal = position.ordinal;
-            hte2.pubsub.publish('positionSet', position.offset);
-            this.notifyListeners(position);
+            this.pubsub.publish('positionSet', position.offset);
+            this.pubsub.publish('trackerChanged', position);
         }
     },
     
@@ -78,8 +69,8 @@ hte2.Tracker.prototype = {
             var position = hte2.Measurer.calculatePosition(this.ordinal);
             this.setOffset(position.offset);
             this.ordinal = position.ordinal;
-            hte2.pubsub.publish('positionSet', position.offset);
-            this.notifyListeners(position);
+            this.pubsub.publish('positionSet', position.offset);
+            this.pubsub.publish('trackerChanged', position);
         }
     },
     
@@ -92,7 +83,7 @@ hte2.Tracker.prototype = {
         }
         position = hte2.Measurer.calculatePosition(this.ordinal);
         this.setOffset(position.offset);
-        this.notifyListeners(position);
+        this.pubsub.publish('trackerChanged', position);
     },
     
     symbolRight : function () {
@@ -110,11 +101,12 @@ hte2.Tracker.prototype = {
         }
         position = hte2.Measurer.calculatePosition(this.ordinal);
         this.setOffset(position.offset);
-        this.notifyListeners(position);
+        this.pubsub.publish('trackerChanged', position);
     },
     
     reNotify : function () {
-        this.notifyListeners(hte2.Measurer.calculatePosition(this.ordinal));
+        this.pubsub.publish('trackerChanged', 
+            hte2.Measurer.calculatePosition(this.ordinal));
     }
 };
 

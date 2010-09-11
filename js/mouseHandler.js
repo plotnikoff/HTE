@@ -7,12 +7,13 @@ goog.require('goog.dom.Range');
 /**
  * @constructor
  */
-hte2.MouseHandler = function () {
+hte2.MouseHandler = function (pubsub) {
     this.wb = hte2.Workbench.getWorkbench();
     this.wb.tracker = null;
     goog.events.listen(this.wb, goog.events.EventType.CLICK, this.setCursor);
     //goog.events.listen(wb, goog.events.EventType.DBLCLICK, this.selectText);
     this.tracker = null;
+    this.pubsub = pubsub;
 };
 
 hte2.MouseHandler.prototype = {
@@ -45,6 +46,6 @@ hte2.MouseHandler.prototype = {
         }
         rangeStart = this.tracker.getOffset() - (this.tracker.getOrdinal() - (range.getAnchorOffset() + siblingsLength));
         rangeEnd = rangeStart + rangeLength;
-        hte2.pubsub.publish('rangeReady', rangeStart, rangeEnd, {"fw" : "bold"});
+        this.pubsub.publish('rangeReady', rangeStart, rangeEnd, {"fw" : "bold"});
     }
 };
