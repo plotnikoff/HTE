@@ -1,5 +1,9 @@
 /*global hte2, goog, setInterval*/
 
+/**
+ * @constructor
+ * @param {Object} docId
+ */
 hte2.Comet = function (docId) {
     this.xhr = new goog.net.XhrIo();
     var id = docId, checkState;
