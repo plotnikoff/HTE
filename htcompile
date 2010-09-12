@@ -21,7 +21,7 @@ java -jar $COMPILER/compiler.jar  --compilation_level ADVANCED_OPTIMIZATIONS --j
 
 #compiling css
 cat $HTE2CSS/reset.css $CLOSURECSS/common.css $CLOSURECSS/toolbar.css $CLOSURECSS/menu.css $CLOSURECSS/menuitem.css $CLOSURECSS/dialog.css $HTE2CSS/main.css > $HTE2CSSCOMP/css.css
-mv $HTE2CSSCOMP/css.css $ROOT/cssc/css.css
+java -jar ~/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar -o $ROOT/cssc/css.css $HTE2CSSCOMP/css.css
 mv $HTE2COMP/hte_adv.js $ROOT/jsc/hte_adv.js
 
 
