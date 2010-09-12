@@ -699,6 +699,6 @@ body{background:#EEE;margin:0;padding:0;height:100%;overflow:hidden;}
 .goog-twothumbslider-value-thumb{margin-left:-8px;}
 .goog-twothumbslider-extent-thumb{margin-left:8px;}
 .goog-toolbar-menu-button-inner-box{height:16px;}
-.opendoc .goog-menu{position:relative;border:none;}
+.opendoc .goog-menu{position:relative;border:none;height:400px;overflow-y:scroll;}
 .modal-dialog-title-text{font-family:Arial;font-size:12px;}
 .modal-dialog-title{padding:6px 15px 8px 8px;font-size:100%;}
