@@ -6,9 +6,9 @@ var Connect = require('connect'), couch = require('./lib/nodeCouch/couchdb'),
     hub = require("./lib/tunguska/hub"), rest, comet;
 
 docIO = {
-    save : function (document) {
+    save : function (data) {
         var that = this;
-        db.saveDoc(document, function (er, ok) {
+        db.saveDoc(data, function (er, ok) {
             if (er) {
                 that(er);
             }
@@ -68,7 +68,7 @@ rest = function (app) {
 comet = {
     publish : function (data) {
         //TODO: add channel id
-            hub.publish("channel", Math.random().toString(36) + '\n\n');
+            hub.publish("channel", JSON.stringify(data) + '\n\n');
             this(null, "ok");
     }
 };

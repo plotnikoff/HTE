@@ -196,7 +196,8 @@ hte2.Workbench = (function () {
             splitted = document["docText"].split('');
             hte2.Styling.setStyles(document["styling"]);
             hte2.Styling.setAllParagraphStyles(document["paragraphs"]);
-            
+
+            hte2.pubsub.publish('docLoaded', document["_id"]);
             hte2.pubsub.publish('rerender');
         }
     };

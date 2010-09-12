@@ -3,7 +3,7 @@
 (function () {
     var viewportSizeMonitor = new goog.dom.ViewportSizeMonitor(), setHeight,
         mouseHandler, keyHandler, dh = new goog.dom.DomHelper(), localTracker, 
-        localCursor;
+        localCursor, comet;
     
     setHeight = function () {
         var height = viewportSizeMonitor.getSize().height - 60;
@@ -43,6 +43,13 @@
     hte2.pubsub.subscribe('trackerChanged', function (data) {
         var req = new hte2.JsonRPC();
         req.request(data, 'publish');
+    });
+
+    hte2.pubsub.subscribe('docLoaded', function (docId) {
+        if (comet && comet.isActive()) {
+            comet.abort();
+        }
+        comet = new hte2.Comet(docId);
     });
     
     hte2.TrackerMap.set('_lcl_', localTracker);
