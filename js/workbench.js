@@ -155,6 +155,7 @@ hte2.Workbench = (function () {
                     }
                 }
             }
+            hte2.pubsub.publish('render')
         },
         
         removeLetter : function (position) {
@@ -197,8 +198,8 @@ hte2.Workbench = (function () {
             hte2.Styling.setStyles(document["styling"]);
             hte2.Styling.setAllParagraphStyles(document["paragraphs"]);
 
-            hte2.pubsub.publish('docLoaded', document["_id"]);
             hte2.pubsub.publish('rerender');
+            hte2.pubsub.publish('docLoaded', document["_id"]);
         }
     };
     
