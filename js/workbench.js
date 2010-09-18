@@ -4,11 +4,10 @@
 
 hte2.Workbench = (function () {
     var Workbench, container, containerWidth, splitted, redraw, addSymbol,
-        splitByWhiteSpace, dh = new goog.dom.DomHelper(), generateStyle;
+        splitByWhiteSpace, dh = new goog.dom.DomHelper(), generateStyle, 
+        currentDoc;
     
     container = dh.$('hte-workbench');
-
-    splitted = hte2.dataStorage["docText"].split('');
     
     splitByWhiteSpace = function () {
         var splittedWS;
@@ -155,7 +154,7 @@ hte2.Workbench = (function () {
                     }
                 }
             }
-            hte2.pubsub.publish('render')
+            hte2.pubsub.publish('render');
         },
         
         removeLetter : function (position) {
@@ -184,22 +183,25 @@ hte2.Workbench = (function () {
         },
         
         getDocument : function () {
-            return {"docText" : hte2.Workbench.getSplitted().join(''),
+            return {"_id" : currentDoc.getId(),
+                "_rev" : currentDoc.getRevision(),
+                "docText" : hte2.Workbench.getSplitted().join(''),
                 "styling" : hte2.Styling.getStyles(),
                 "paragraphs" : hte2.Styling.getAllParagraphStyles()};
         },
         
-        setDocument : function (document) {
+        setDocument : function (doc) {
             var lines = dh.getElementsByClass('hte-line');
             goog.array.forEach(lines, function (el) {
                 dh.removeNode(el);
             });
-            splitted = document["docText"].split('');
-            hte2.Styling.setStyles(document["styling"]);
-            hte2.Styling.setAllParagraphStyles(document["paragraphs"]);
+            currentDoc = doc;
+            splitted = doc.getDocText().split('');
+            hte2.Styling.setStyles(doc.getStyling());
+            hte2.Styling.setAllParagraphStyles(doc.getParagraphs());
 
             hte2.pubsub.publish('rerender');
-            hte2.pubsub.publish('docLoaded', document["_id"]);
+            hte2.pubsub.publish('docLoaded', doc.getId());
         }
     };
     

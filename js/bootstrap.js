@@ -15,7 +15,6 @@
             hte2.Workbench.getWorkbench())[0], 1);
     }
     
-    setHeight();
     goog.events.listen(viewportSizeMonitor, goog.events.EventType.RESIZE, 
         function (e) {
             setHeight();
@@ -63,6 +62,7 @@
     });
     
     hte2.TrackerMap.set('_lcl_', localTracker);
+    hte2.Workbench.setDocument(new hte2.Document());
     hte2.Workbench.render();
     setCursorPosition();
 }());

@@ -3,9 +3,8 @@
 /*global hte2, window, document, goog */
 
 hte2.Styling = (function () {
-    var Styling, styles = hte2.dataStorage["styling"], dict, computedStyle,
-        currentStyle, isStyleModified = false, addStyle, addParagraph,
-        paragraphStyles = hte2.dataStorage["paragraphs"];
+    var Styling, styles, dict, computedStyle, currentStyle, 
+        isStyleModified = false, addStyle, addParagraph, paragraphStyles;
     
     currentStyle = computedStyle = {
             style : {"fs" : 12, "ff" : "Arial", "fw" : "normal", 

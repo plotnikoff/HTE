@@ -175,7 +175,8 @@ hte2.UI = (function () {
                     function (ev) {
                         goog.net.XhrIo.send('/get/' + ev.target.getContent(), 
                         function (ev) {
-                            hte2.Workbench.setDocument(ev.target.getResponseJson());
+                            var doc = new hte2.Document(ev.target.getResponseJson());
+                            hte2.Workbench.setDocument(doc);
                             openDialog.dispose();
                         });
                     });
