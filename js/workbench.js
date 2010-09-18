@@ -3,7 +3,7 @@
 /*global hte2, goog*/
 
 hte2.Workbench = (function () {
-    var Workbench, container, containerWidth, splitted, redraw, addSymbol,
+    var Workbench, container, containerWidth, redraw, addSymbol,
         splitByWhiteSpace, dh = new goog.dom.DomHelper(), generateStyle, 
         currentDoc;
     
@@ -11,18 +11,9 @@ hte2.Workbench = (function () {
     
     splitByWhiteSpace = function () {
         var splittedWS;
-        splittedWS = splitted.join('').split('\n');
+        splittedWS = currentDoc.getDocText().split('\n');
         splittedWS = splittedWS.join(' \n ');
         return splittedWS.split(' ');
-    };
-
-    addSymbol = function (symbol, position) {
-        var part1, part2;
-        part1 = splitted.slice(0, position + 1);
-        part2 = splitted.slice(position + 1);
-        part1.push(symbol);
-        splitted = part1.concat(part2);
-        hte2.Styling.updatePositions(position, 'add');
     };
 
     generateStyle = hte2.Styling.generateStyle;
@@ -158,19 +149,19 @@ hte2.Workbench = (function () {
         },
         
         removeLetter : function (position) {
-            splitted.splice(position, 1);
+            currentDoc.deleteSymbol(position, 1);
             hte2.Styling.updatePositions(position, 'remove');
             hte2.pubsub.publish('rerender');
         },
         
         addParagraph : function (position) {
-            addSymbol('\n', position);
+            currentDoc.addSymbol('\n', position);
             hte2.Styling.addParagraph(position);
             hte2.pubsub.publish('rerender');
         },
         
         addLetter : function (charCode, position) {
-            addSymbol(String.fromCharCode(charCode), position);
+            currentDoc.addSymbol(String.fromCharCode(charCode), position);
             hte2.pubsub.publish('rerender');
         },
         
@@ -178,14 +169,10 @@ hte2.Workbench = (function () {
             return container;
         },
         
-        getSplitted : function () {
-            return splitted;
-        },
-        
         getDocument : function () {
             return {"_id" : currentDoc.getId(),
                 "_rev" : currentDoc.getRevision(),
-                "docText" : hte2.Workbench.getSplitted().join(''),
+                "docText" : currentDoc.getDocText(),
                 "styling" : hte2.Styling.getStyles(),
                 "paragraphs" : hte2.Styling.getAllParagraphStyles()};
         },
@@ -196,7 +183,6 @@ hte2.Workbench = (function () {
                 dh.removeNode(el);
             });
             currentDoc = doc;
-            splitted = doc.getDocText().split('');
             hte2.Styling.setStyles(doc.getStyling());
             hte2.Styling.setAllParagraphStyles(doc.getParagraphs());
 
