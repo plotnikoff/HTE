@@ -4,8 +4,7 @@
 
 hte2.Workbench = (function () {
     var Workbench, container, containerWidth, redraw, addSymbol,
-        splitByWhiteSpace, dh = new goog.dom.DomHelper(), generateStyle, 
-        currentDoc;
+        splitByWhiteSpace, dh = new goog.dom.DomHelper(), currentDoc;
     
     container = dh.$('hte-workbench');
     
@@ -15,8 +14,6 @@ hte2.Workbench = (function () {
         splittedWS = splittedWS.join(' \n ');
         return splittedWS.split(' ');
     };
-
-    generateStyle = hte2.Styling.generateStyle;
 
     Workbench = {
         
@@ -43,7 +40,7 @@ hte2.Workbench = (function () {
                 if (currentFr !== ('\n' + String.fromCharCode(160))) {
                     if (styles[j]["start"] < frstart && frend <= styles[j]["end"]) {
                         currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
-                            generateStyle(styles[j]["style"]) + "\">" + currentFr + 
+                            currentDoc.styleToString(styles[j]["style"]) + "\">" + currentFr + 
                             "</span>");
                         if ((lineWidth + currentFrWidth) < containerWidth) {
                             lineWidth += currentFrWidth;
@@ -67,14 +64,14 @@ hte2.Workbench = (function () {
                                     currentFr.splice(0, styles[j]["start"] - frstart);
                                     currentFr = currentFr.join('');
                                     currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
-                                        generateStyle(styles[j]["style"]) + "\">" + 
+                                        currentDoc.styleToString(styles[j]["style"]) + "\">" + 
                                         currentFr + "</span>");
                                     currentFrMU = "<span style=\"" + 
-                                        generateStyle(styles[j]["style"]) + "\">" + 
+                                        currentDoc.styleToString(styles[j]["style"]) + "\">" + 
                                         currentFr + "</span>";
                                 } else {
                                     currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
-                                        generateStyle(styles[j]["style"]) + "\">" + 
+                                        currentDoc.styleToString(styles[j]["style"]) + "\">" + 
                                         currentFr + "</span>");
                                     currentFrMU = currentFr + "</span>";
                                 }
@@ -84,7 +81,7 @@ hte2.Workbench = (function () {
                             }
                         }
                         partWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
-                            generateStyle(styles[j]["style"]) + "\">" + wordPart + 
+                            currentDoc.styleToString(styles[j]["style"]) + "\">" + wordPart + 
                             "</span>");
                         if ((lineWidth + (currentFrWidth + partWidth)) < containerWidth) {
                             lineWidth += currentFrWidth;
@@ -96,10 +93,10 @@ hte2.Workbench = (function () {
                         offset -= currentFr.length;
                     } else {
                         currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
-                            generateStyle(styles[j]["style"]) + "\">" + 
+                            currentDoc.styleToString(styles[j]["style"]) + "\">" + 
                             currentFr.substr(styles[j]["start"] - frstart) + "</span>");
                         if ((lineWidth + currentFrWidth) < containerWidth) {
-                            textBuffer += "<span style=\"" + generateStyle(styles[j]["style"]) + 
+                            textBuffer += "<span style=\"" + currentDoc.styleToString(styles[j]["style"]) + 
                                 "\">" + currentFr.substr(styles[j]["start"] - frstart);
                             lineWidth += currentFrWidth;
                         } else {
@@ -131,7 +128,7 @@ hte2.Workbench = (function () {
                             textHolder.innerHTML = textBuffer;
                         }
                     }
-                    textBuffer = "<span style=\"" + generateStyle(styles[j].style) + "\">";
+                    textBuffer = "<span style=\"" + currentDoc.styleToString(styles[j].style) + "\">";
                     lineWidth = 0;
                     if (currentFr === ('\n' + String.fromCharCode(160))) {
                         paragraphCounter += 1;
@@ -150,13 +147,11 @@ hte2.Workbench = (function () {
         
         removeLetter : function (position) {
             currentDoc.deleteSymbol(position, 1);
-            hte2.Styling.updatePositions(position, 'remove');
             hte2.pubsub.publish('rerender');
         },
         
         addParagraph : function (position) {
             currentDoc.addSymbol('\n', position);
-            hte2.Styling.addParagraph(position);
             hte2.pubsub.publish('rerender');
         },
         
@@ -170,11 +165,7 @@ hte2.Workbench = (function () {
         },
         
         getDocument : function () {
-            return {"_id" : currentDoc.getId(),
-                "_rev" : currentDoc.getRevision(),
-                "docText" : currentDoc.getDocText(),
-                "styling" : hte2.Styling.getStyles(),
-                "paragraphs" : hte2.Styling.getAllParagraphStyles()};
+            return currentDoc.get();
         },
         
         setDocument : function (doc) {
@@ -183,8 +174,6 @@ hte2.Workbench = (function () {
                 dh.removeNode(el);
             });
             currentDoc = doc;
-            hte2.Styling.setStyles(doc.getStyling());
-            hte2.Styling.setAllParagraphStyles(doc.getParagraphs());
 
             hte2.pubsub.publish('rerender');
             hte2.pubsub.publish('docLoaded', doc.getId());
