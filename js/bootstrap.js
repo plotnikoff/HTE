@@ -1,5 +1,11 @@
 /*global hte2, goog*/
 
+/**
+ * @fileoverview
+ * File contains self executing function that sets the environment, and 
+ * initializes classes that are necessary for initial loading.
+ */
+
 (function () {
     var viewportSizeMonitor = new goog.dom.ViewportSizeMonitor(), setHeight,
         mouseHandler, keyHandler, dh = new goog.dom.DomHelper(), localTracker, 
@@ -31,15 +37,10 @@
     keyHandler.setTracker(localTracker);
 
     hte2.pubsub.subscribe('rerender', hte2.Workbench.render);
-    
-    hte2.pubsub.subscribe('positionSet', hte2.Styling.setComputedStyle);
+
     hte2.pubsub.subscribe('positionSet', hte2.UI.updateRuler);
     
-    hte2.pubsub.subscribe('updateComputedStyle', 
-        hte2.Styling.changeComputedStyle);
-    
     hte2.pubsub.subscribe('pWidth', localTracker.reNotify, localTracker);
-    hte2.pubsub.subscribe('pWidth', hte2.Styling.setParagraphStyle);
     
     hte2.pubsub.subscribe('trackerChanged', localCursor.onTrackerChanged, 
         localCursor);

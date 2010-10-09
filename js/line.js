@@ -1,5 +1,8 @@
 
 /**
+ * Document view line generation class
+ * @class
+ * @deprecated library functions should be used instead
  * @constructor
  */
 hte2.Line = function (left) {
