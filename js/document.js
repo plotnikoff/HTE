@@ -25,12 +25,14 @@ hte2.Document = function (data) {
     this.docText = data ? data["docText"] : hte2.dataStorage["docText"];
     this.docText = this.docText.split('');
     
-    hte2.Styling.setStyles(styling);
-    hte2.Styling.setAllParagraphStyles(paragraphs);
-    
-    hte2.pubsub.subscribe('positionSet', hte2.Styling.setComputedStyle);
-    hte2.pubsub.subscribe('pWidth', hte2.Styling.setParagraphStyle);
-    hte2.pubsub.subscribe('updateComputedStyle', hte2.Styling.changeComputedStyle);
+    this.styles = new hte2.Styling(styling, paragraphs);
+
+    hte2.pubsub.subscribe('positionSet', this.styles.setComputedStyle, 
+        this.styles);
+    hte2.pubsub.subscribe('pWidth', this.styles.setParagraphStyle, 
+        this.styles);
+    hte2.pubsub.subscribe('updateComputedStyle', this.styles.changeComputedStyle, 
+        this.styles);
 };
 
 /**
@@ -47,8 +49,8 @@ hte2.Document.prototype.get = function () {
         doc["_rev"] = this.rev;
     }
     doc["docText"] = this.getDocText();
-    doc["paragraphs"] = hte2.Styling.getAllParagraphStyles();
-    doc["styling"] = hte2.Styling.getStyles();
+    doc["paragraphs"] = this.styles.getAllParagraphStyles();
+    doc["styling"] = this.styles.getStyles();
     return doc;
 };
 
@@ -81,7 +83,7 @@ hte2.Document.prototype.getDocText = function () {
  * @returns {Object}
  */
 hte2.Document.prototype.getStyling = function () {
-    return hte2.Styling.getStyles();
+    return this.styles.getStyles();
 };
 
 /**
@@ -90,7 +92,7 @@ hte2.Document.prototype.getStyling = function () {
  * @returns {String}
  */
 hte2.Document.prototype.styleToString = function (obj) {
-    return hte2.Styling.generateStyle(obj);
+    return this.styles.generateStyle(obj);
 };
 
 /**
@@ -103,9 +105,9 @@ hte2.Document.prototype.styleToString = function (obj) {
  */
 hte2.Document.prototype.getParagraphStyle = function (num, isOffset) {
     if (isOffset) {
-        return hte2.Styling.getParagraphByOffset(num);
+        return this.styles.getParagraphByOffset(num);
     } else {
-        return hte2.Styling.getParagraphStyles(num);
+        return this.styles.getParagraphStyles(num);
     }
 };
 
@@ -121,9 +123,9 @@ hte2.Document.prototype.addSymbol = function (symbol, position) {
     part2 = this.docText.slice(position + 1);
     part1.push(symbol);
     this.docText = part1.concat(part2);
-    hte2.Styling.updatePositions(position, 'add');
+    this.styles.updatePositions(position, 'add');
     if (symbol === '\n') {
-        hte2.Styling.addParagraph(position);
+        this.styles.addParagraph(position);
     }
 };
 
@@ -135,5 +137,5 @@ hte2.Document.prototype.addSymbol = function (symbol, position) {
  */
 hte2.Document.prototype.deleteSymbol = function (amount, position) {
     this.docText.splice(position, amount);
-    hte2.Styling.updatePositions(position, 'remove');
+    this.styles.updatePositions(position, 'remove');
 };

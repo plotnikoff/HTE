@@ -18,7 +18,7 @@ hte2.Workbench = (function () {
     Workbench = {
         
         render : function () {
-            var styles = hte2.Styling.getStyles(), i, j, k = 0, lineWidth, 
+            var styles = currentDoc.getStyling(), i, j, k = 0, lineWidth, 
                 textBuffer = "", textHolder, offset = 0, wsSplitted, frstart, 
                 frend, currentFr, oldLines, pushline, currentFrWidth, 
                 currentFrMU, wordPart, partWidth, paragraphCounter = 0,
@@ -32,7 +32,7 @@ hte2.Workbench = (function () {
             oldLines = dh.getElementsByClass('hte-line', container);
             pushline = false;
             for (i = 0; i < wsSplitted.length; i += 1) {
-                paragraphStyle = hte2.Styling.getParagraphStyles(paragraphCounter);
+                paragraphStyle = currentDoc.getParagraphStyle(paragraphCounter);
                 containerWidth = parseInt(paragraphStyle["width"], 10);
                 currentFr = wsSplitted[i] + String.fromCharCode(160);
                 frstart = offset;
@@ -146,7 +146,7 @@ hte2.Workbench = (function () {
         },
         
         removeLetter : function (position) {
-            currentDoc.deleteSymbol(position, 1);
+            currentDoc.deleteSymbol(1, position);
             hte2.pubsub.publish('rerender');
         },
         
@@ -165,7 +165,7 @@ hte2.Workbench = (function () {
         },
         
         getDocument : function () {
-            return currentDoc.get();
+            return currentDoc;
         },
         
         setDocument : function (doc) {

@@ -148,7 +148,7 @@ hte2.UI = (function () {
         dh.createTextNode(String.fromCharCode(160))));
     goog.events.listen(saveButton, goog.ui.Component.EventType.ACTION,
         function (e) {
-            var data = hte2.Workbench.getDocument(), 
+            var data = hte2.Workbench.getDocument().get(), 
             rpc = new hte2.JsonRPC();
             rpc.request(data, "save");
         }
@@ -224,7 +224,8 @@ hte2.UI = (function () {
     
     UI = {
         updateRuler : function (offset) {
-            var style = hte2.Styling.getParagraphByOffset(offset), value, extent;
+            var style = hte2.Workbench.getDocument().getParagraphStyle(offset, 
+                true), value, extent;
             extent = (style["pr"] - style["pl"]) / rulerPxStep;
             value = style["pl"] / rulerPxStep;
             ruler.setValueAndExtent(value, extent);
