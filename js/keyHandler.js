@@ -36,18 +36,18 @@ hte2.KeyHandler.prototype.intercept = function (ev) {
             break;
         case codes.BACKSPACE:
             this.tracker.symbolLeft();
-            hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(this.tracker.getOrdinal()).offset);
+            hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset']);
             break;
         case codes.DELETE:
-            hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(this.tracker.getOrdinal()).offset);
+            hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset']);
             break;
         case codes.ENTER:
-            hte2.Workbench.addParagraph(hte2.Measurer.calculatePosition(this.tracker.getOrdinal()).offset - 1);
+            hte2.Workbench.addParagraph(hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset'] - 1);
             this.tracker.symbolRight();
             break;
         default:
             if (ev.charCode !== undefined && ev.charCode !== 0) {
-                curPos = hte2.Measurer.calculatePosition(this.tracker.getOrdinal()).offset - 1;
+                curPos = hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset'] - 1;
                 hte2.Workbench.addLetter(ev.charCode, curPos);
                 this.tracker.symbolRight();
             }

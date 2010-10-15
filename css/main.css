@@ -1,7 +1,7 @@
 body{background:#EEE;margin:0;padding:0;height:100%;overflow:hidden;}
 #hte-panel{position: relative; left: 50%; margin-left: -458px; width: 1002px; border: 1px solid #DDD;}
 #hte-workbench{position:relative;border:1px solid #999;left:50%;margin-left:-450px; background:white;margin-top:15px;min-height:1000px;}
-#hte-cursor{position:absolute;width:2px;background:#000;height:10px;}
+.hte-cursor{position:absolute;width:2px;background:#000;height:10px;display:block;}
 .hte-line{width:auto;}
 .hte-line span{white-space:normal;line-height:1.15;}
 #hte-measurer{position:absolute;left: -10000px;}

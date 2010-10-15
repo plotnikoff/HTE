@@ -9,7 +9,10 @@
 (function () {
     var viewportSizeMonitor = new goog.dom.ViewportSizeMonitor(), setHeight,
         mouseHandler, keyHandler, dh = new goog.dom.DomHelper(), localTracker, 
-        localCursor, comet, setCursorPosition;
+        localCursor, comet, setCursorPosition, user;
+    
+    //mock user object
+    user = new hte2.User({'id' : Math.round(Math.random() * 100000)});
     
     setHeight = function () {
         var height = viewportSizeMonitor.getSize().height - 60;
@@ -19,7 +22,7 @@
     setCursorPosition = function () {
         localTracker.setLineByOrdinal(dh.getElementsByClass('hte-line', 
             hte2.Workbench.getWorkbench())[0], 1);
-    }
+    };
     
     goog.events.listen(viewportSizeMonitor, goog.events.EventType.RESIZE, 
         function (e) {
@@ -28,7 +31,7 @@
     
     localTracker = new hte2.Tracker(hte2.pubsub);
     
-    localCursor = new hte2.Cursor();
+    localCursor = new hte2.Cursor(user.getId());
     
     mouseHandler = new hte2.MouseHandler(hte2.pubsub);
     mouseHandler.setTracker(localTracker);
@@ -46,7 +49,10 @@
         localCursor);
     hte2.pubsub.subscribe('trackerChanged', function (data) {
         var req = new hte2.JsonRPC();
-        req.request(data, 'publish');
+        req.request({
+            'user': user,
+            'data': data
+        }, 'publish');
     });
 
     hte2.pubsub.subscribe('docLoaded', function (docId) {

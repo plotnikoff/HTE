@@ -1,4 +1,4 @@
-/*global hte2*/
+/*global hte2, goog*/
 
 hte2.Measurer = (function () {
     var Measurer, holder, calculateOffset, calculateYPosition, calculateHeight,
@@ -71,11 +71,11 @@ hte2.Measurer = (function () {
             if (!currentNode) {
                 currentNode = strParts[0];
             }
-            return {x : curPos + parseInt(line.style.paddingLeft, 10), 
-                y : calculateYPosition(currentNode), 
-                height : calculateHeight(currentNode), 
-                ordinal : ordinal, 
-                offset : calculateOffset() + ordinal};
+            return {'x' : curPos + parseInt(line.style.paddingLeft, 10), 
+                'y' : calculateYPosition(currentNode), 
+                'height' : calculateHeight(currentNode), 
+                'ordinal' : ordinal, 
+                'offset' : calculateOffset() + ordinal};
         },
         
         getGlyphWidth : function (glyph) {

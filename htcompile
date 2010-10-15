@@ -13,7 +13,7 @@ COMPILER=~/compiler-latest
 python $CALCDEPS/calcdeps.py -i $HTE2/hte.js -i $HTE2/mouseHandler.js -i $HTE2/keyHandler.js -p $CLOSURE/ -o script > $HTE2COMP/hte_comp.js
 
 #files here should go in the order they appear on the page
-cat $HTE2COMP/hte_comp.js $HTE2/jsonrpc.js $HTE2/pubsub.js $HTE2/mouseHandler.js $HTE2/tracker.js $HTE2/cursor.js $HTE2/measurer.js $HTE2/document.js $HTE2/styling.js $HTE2/workbench.js $HTE2/line.js $HTE2/keyHandler.js $HTE2/UI.js $HTE2/comet.js $HTE2/bootstrap.js | grep -v '\(@author\)\|\(@fileoverview\)' > $HTE2COMP/hteconcat.js
+cat $HTE2COMP/hte_comp.js $HTE2/jsonrpc.js $HTE2/pubsub.js $HTE2/mouseHandler.js $HTE2/tracker.js $HTE2/cursor.js $HTE2/measurer.js $HTE2/document.js $HTE2/styling.js $HTE2/workbench.js $HTE2/line.js $HTE2/keyHandler.js $HTE2/UI.js $HTE2/comet.js $HTE2/user.js $HTE2/bootstrap.js | grep -v '\(@author\)\|\(@fileoverview\)' > $HTE2COMP/hteconcat.js
 
 #compiling with different options
 java -jar $COMPILER/compiler.jar --js $HTE2COMP/hteconcat.js --js_output_file $HTE2COMP/hte.js

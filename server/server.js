@@ -68,7 +68,7 @@ rest = function (app) {
 comet = {
     publish : function (data) {
         //TODO: add channel id
-            hub.publish("channel", JSON.stringify(data) + '\n\n');
+            hub.publish("channel", '\n' + JSON.stringify(data));
             this(null, "ok");
     }
 };

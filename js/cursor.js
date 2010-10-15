@@ -1,11 +1,18 @@
+/*jslint sub : true*/
+
 /*global hte2, setInterval, goog*/
 
 /**
  * @constructor
  */
-hte2.Cursor = function () {
-    var dh = new goog.dom.DomHelper(), blink;
-    this.cur = dh.$('hte-cursor');
+hte2.Cursor = function (id) {
+    var dh = new goog.dom.DomHelper(), blink, parent;
+    parent = dh.getElement('hte-workbench');
+    this.cur = dh.createDom('div', {
+        'id' : 'hte-cursor-' + id,
+        'class' : 'hte-cursor'
+    });
+    dh.appendChild(parent, this.cur);
     blink = (function (cur) {
         return function () {
             cur.style.display = cur.style.display === 'block' ? 'none' : 'block';
@@ -44,7 +51,7 @@ hte2.Cursor.prototype.getOrdinalPosition = function () {
     };
     
 hte2.Cursor.prototype.onTrackerChanged = function (positionData) {
-        this.setPosition(positionData.x, positionData.y);
-        this.setHeight(positionData.height);
-        this.setOrdinalPosition(positionData.ordinal);
+        this.setPosition(positionData['x'], positionData['y']);
+        this.setHeight(positionData['height']);
+        this.setOrdinalPosition(positionData['ordinal']);
     };
