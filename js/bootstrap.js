@@ -51,6 +51,7 @@
         var req = new hte2.JsonRPC();
         req.request({
             'user': user,
+            'docId': hte2.Workbench.getDocument().getId(),
             'data': data
         }, 'publish');
     });
@@ -59,7 +60,9 @@
         if (comet && comet.isActive()) {
             comet.abort();
         }
-        comet = new hte2.Comet(docId);
+        if (docId !== '') {
+            comet = new hte2.Comet(docId);
+        }
     });
     
     hte2.pubsub.subscribe('docLoaded', function () {

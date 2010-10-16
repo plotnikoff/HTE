@@ -1,18 +1,21 @@
 /*global require, module*/
 
-var Connect = require('connect'), couch = require('./lib/nodeCouch/couchdb'),
+var Connect = require('connect'), 
+    couch = require('./lib/nodeCouch/couchdb'),
     client = couch.createClient(5984, 'localhost'),
-    db = client.db('opendocs'), docIO,
-    hub = require("./lib/tunguska/hub"), rest, comet;
+    db = client.db('opendocs'), 
+    url = require('url'),
+    hub = require("./lib/tunguska/hub"), 
+    jsonrpc = require("./lib/connect-jsonrpc"),
+    rest, comet, docIO;
 
 docIO = {
-    save : function (data) {
-        var that = this;
+    save : function (data, fn) {
         db.saveDoc(data, function (er, ok) {
             if (er) {
-                that(er);
+                fn(er);
             }
-            that(null, ok);
+            fn(null, ok);
         });
         
     },
@@ -53,7 +56,7 @@ rest = function (app) {
                 'Content-Type': 'text/plain',
                 'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate'
             });
-        docIO.get(req.params.path.id, res);
+        docIO.get(req.params.id, res);
     });
     
     app.get('/getall', function (req, res, next) {
@@ -66,27 +69,31 @@ rest = function (app) {
 };
 
 comet = {
-    publish : function (data) {
-        //TODO: add channel id
-            hub.publish("channel", '\n' + JSON.stringify(data));
-            this(null, "ok");
+    publish : function (data, fn) {
+        if (data.docId !== '') {
+            hub.publish(data.docId, '\n' + JSON.stringify(data));
+        }
+        fn(null, "ok");
     }
 };
 
 module.exports = Connect.createServer(
-	Connect.staticProvider('../'),
-	Connect.staticProvider('../../closure/closure-library-read-only/closure'),
-    Connect.jsonrpc(docIO, comet),
+    Connect.staticProvider('../'),
+    Connect.staticProvider('../../closure/closure-library-read-only/closure'),
+    jsonrpc(docIO, comet),
     Connect.router(rest),
     function (req, res, next) {
             res.writeHead(200, {
                     'Content-Type': 'text/plain',
                     'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate'
                 });
-            //TODO: add channel id
-            hub.subscribe("channel", function listenerFunction(message) {
-                res.write(message);
-            });
-    }
+            var channelId = url.parse(req.url, true).query.id;
+            if (channelId !== '') {
+                hub.subscribe(channelId, 
+                    function listenerFunction(message) {
+                        res.write(message);
+                    });
+            }
+        }
 );
 
