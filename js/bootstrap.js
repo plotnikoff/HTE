@@ -51,6 +51,7 @@
         var req = new hte2.JsonRPC();
         req.request({
             'user': user,
+            'docId':hte2.Workbench.getDocument().getId(),
             'data': data
         }, 'publish');
     });

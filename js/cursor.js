@@ -55,3 +55,8 @@ hte2.Cursor.prototype.onTrackerChanged = function (positionData) {
         this.setHeight(positionData['height']);
         this.setOrdinalPosition(positionData['ordinal']);
     };
+
+hte2.Cursor.prototype.remove = function () {
+    var dh = new goog.dom.DomHelper();
+    dh.removeNode(this.cur);
+}
