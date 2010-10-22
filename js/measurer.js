@@ -1,5 +1,12 @@
 /*global hte2, goog*/
 
+/**
+ * Singleton class is responsible for calculating text-related data, Such as 
+ * symbol x, y, position, width, height, offset (from the beginning of the 
+ * document), and ordinal (from the beginning of the line)
+ * @class
+ * @name hte2.Measurer
+ */
 hte2.Measurer = (function () {
     var Measurer, holder, calculateOffset, calculateYPosition, calculateHeight,
     dh = new goog.dom.DomHelper();
@@ -34,6 +41,22 @@ hte2.Measurer = (function () {
     
     Measurer = {
         
+        /**
+         * Calculates data for cursor positioning
+         * @memberOf hte2.Measurer#
+         * @param {Number} condition
+         * @param {Boolean} useCoord  if set to true condition must represent 
+         * x-coordinate otherwise it should be ordinal
+         * @returns {Object} 
+         * <code><pre>
+         * {'x' : <x coordinate Number>,
+            'y' : <y coordinate Number>, 
+            'height' : <height Number>, 
+            'ordinal' : <position from the beginning of line Number>, 
+            'offset' : <position from the beginning of document Number>
+            }
+         * </pre></code>
+         */
         calculatePosition : function (condition, useCoord) {
             var i = 0, j, curPos = 0, charComparator, coordComparator, 
                 comparator, line, str, strParts, ordinal = 1, xCorrection,
@@ -78,6 +101,13 @@ hte2.Measurer = (function () {
                 'offset' : calculateOffset() + ordinal};
         },
         
+        /**
+         * Calculates  width of the glyph provided (symbol or string), glyph 
+         * should be wraped by span with desired style.
+         * @memberOf hte2.Measurer#
+         * @param {String} glyph
+         * @returns {Number}
+         */
         getGlyphWidth : function (glyph) {
             holder.innerHTML = glyph;
             return holder.offsetWidth;

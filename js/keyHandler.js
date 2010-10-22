@@ -1,3 +1,5 @@
+/*jslint sub : true*/
+
 /*global hte2, goog, document, window*/
 
 goog.require('goog.events');
@@ -5,6 +7,7 @@ goog.require('goog.events.KeyHandler');
 goog.require('goog.events.KeyCodes');
 
 /**
+ * Class is responsible for interaction with keyboar. 
  * @constructor
  */
 hte2.KeyHandler = function () {
@@ -14,10 +17,19 @@ hte2.KeyHandler = function () {
 };
 
 
+/**
+ * Sets an instance of <code>hte2.Tracker</code> for the handler.
+ * @param {hte2.Tracker} tracker
+ */
 hte2.KeyHandler.prototype.setTracker = function (tracker) {
         this.handler.tracker = tracker;
     };
-    
+
+/**
+ * Method is responsible for key events interception and calling appropriate 
+ * methods of <code>hte2.Tracker</code> and <code>hte2.Workbench</code>.
+ * @param {goog.events.KeyEvent} ev
+ */ 
 hte2.KeyHandler.prototype.intercept = function (ev) {
         var codes = goog.events.KeyCodes, e, curPos;
         ev.preventDefault();

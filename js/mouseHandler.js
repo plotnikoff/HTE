@@ -5,7 +5,9 @@ goog.require('goog.dom.DomHelper');
 goog.require('goog.dom.Range');
 
 /**
+ * Class is responsible for interaction with mouse.
  * @constructor
+ * @param {hte2.pubsub} pubsub
  */
 hte2.MouseHandler = function (pubsub) {
     this.wb = hte2.Workbench.getWorkbench();
@@ -16,10 +18,18 @@ hte2.MouseHandler = function (pubsub) {
     this.pubsub = pubsub;
 };
 
+/**
+ * Sets an instance of <code>hte2.Tracker</code> for the handler.
+ * @param {hte2.Tracker} tracker
+ */
 hte2.MouseHandler.prototype.setTracker = function (tracker) {
         this.wb.tracker = tracker;
     };
-    
+
+/**
+ * Sets the cursor according to the coordinates provided in the click event.
+ * @param {goog.events.Event} ev
+ */
 hte2.MouseHandler.prototype.setCursor = function (ev) {
         var targ, posX, posY, substr, curPos, i;
         targ = ev.target;
@@ -31,7 +41,12 @@ hte2.MouseHandler.prototype.setCursor = function (ev) {
             this.tracker.setLine(targ.parentNode, (posX - 8));
         }
     };
-    
+
+/**
+ * TODO: Reimplement me later
+ * @ignore
+ * @param {Object} ev
+ */
 hte2.MouseHandler.prototype.selectText = function (ev) {
         var range = '', selectedText, rangeLength, rangeStart, rangeEnd, currentNode, siblingsLength = 0, dh = goog.dom.getDomHelper();
         range = goog.dom.Range.createFromWindow();

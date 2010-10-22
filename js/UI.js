@@ -2,6 +2,11 @@
 
 /*jslint sub:true*/
 
+/**
+ * Singleton class is responsible for UI rendering and updating.
+ * @class
+ * @name hte2.UI
+ */
 hte2.UI = (function () {
     var UI, tb, dh = new goog.dom.DomHelper(), boldButton, italicButton, 
         saveButton, underlineButton, lineThroughButton, fontsizeSelect, 
@@ -223,6 +228,12 @@ hte2.UI = (function () {
     
     
     UI = {
+        /**
+         * Callback method is responsible for ruler updates in response to 
+         * cursor position.
+         * @param {Number} offset
+         * @memberOf hte2.UI#
+         */
         updateRuler : function (offset) {
             var style = hte2.Workbench.getDocument().getParagraphStyle(offset, 
                 true), value, extent;

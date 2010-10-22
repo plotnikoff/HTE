@@ -3,6 +3,37 @@
 /*global hte2, window, document, goog */
 
 /**
+ * Class encapsultes document style related data which is represented by two 
+ * objects paragraph related  array
+ * <code>
+ * <pre>
+    "paragraphs" : [
+        {
+            "width" : 900, 
+            "pl" : 0, 
+            "pr" : 900, 
+            "start" : 0, 
+            "end" : 1
+        }
+    ]
+    </pre>
+    </code>
+    and style related array
+    <code><pre>
+    "styling" : [
+        {
+            "style" : {
+                "fs" : 12, 
+                "ff" : "Arial", 
+                "fw" : "normal", 
+                "fst" : 
+                "normal"
+            },
+            "start" : 0,
+            "end" : 1
+        }
+   </pre>
+ * </code>
  * @constructor
  */
 hte2.Styling = function (styles, paragraphStyles) {
@@ -17,6 +48,10 @@ hte2.Styling = function (styles, paragraphStyles) {
     this.isStyleModified = false;
 };
 
+/**
+ * @static
+ * @private
+ */
 hte2.Styling.dict = {"ff" : ["font-family", "", "fontFamily"],
             "fw" : ["font-weight", "", "fontWeight"], 
             "fs" : ["font-size", "pt", "fontSize"],
@@ -55,10 +90,19 @@ hte2.Styling.prototype.addStyle = function (start, end, style) {
     }
 };
 
+/**
+ * Method retruns json that represents data about different styles applied to 
+ * the document and their positions ("styling" field)
+ * @returns {object}
+ */
 hte2.Styling.prototype.getStyles = function () {
     return this.styles;
 };
 
+/**
+ * Method inserts paragraph data at the given position.
+ * @param {Number} position
+ */
 hte2.Styling.prototype.addParagraph = function (position) {
     var i, len = this.paragraphStyles.length;
     for (i = 0; i < len; i += 1) {
@@ -76,6 +120,12 @@ hte2.Styling.prototype.addParagraph = function (position) {
     }
 };
 
+/**
+ * Method sets current active style, that will be used if document data  was 
+ * changed
+ * @param {Number} offset
+ * @returns {Object} json style object
+ */
 hte2.Styling.prototype.setComputedStyle = function (offset) {
     var i, st = this.styles, len = this.styles.length;
     if (offset) {
@@ -92,11 +142,20 @@ hte2.Styling.prototype.setComputedStyle = function (offset) {
     return this.computedStyle;
 };
 
+/**
+ * Method is responsible for manipulations with current active style.
+ * @param {Object} attr
+ */
 hte2.Styling.prototype.changeComputedStyle = function (attr) {
     this.computedStyle[attr[0]] = attr[1];
     this.isStyleModified = true;
 };
 
+/**
+ * Method recalculates paragraph and style data in response to document changes
+ * @param {Number} offset position in the document where action took place
+ * @param {String} operation can be 'remove' or 'add'
+ */
 hte2.Styling.prototype.updatePositions = function (offset, operation) {
     var i, tmp = [], len = this.styles.length;
     for (i = 0; i < len; i += 1) {
@@ -130,6 +189,22 @@ hte2.Styling.prototype.updatePositions = function (offset, operation) {
     }
 };
 
+/**
+ * Generate DOM style attribute string from style JSON. EX:
+ * input:
+ * <code><pre>
+ * "style" : {
+                "fs" : 12, 
+                "ff" : "Arial", 
+                "fw" : "normal", 
+                "fst" : "normal"
+            }
+ * </pre></code>
+ * output:
+ * font-size:12; font-family:Arial; font-weight: normal; font-style: normal;
+ * @param {Object} styleJSON
+ * @returns {String}
+ */
 hte2.Styling.prototype.generateStyle = function (styleJSON) {
     var prop, output = "";
             
@@ -142,6 +217,12 @@ hte2.Styling.prototype.generateStyle = function (styleJSON) {
     return output;
 };
 
+/**
+ * Method for copying DOM style attribute data to string.
+ * @static
+ * @param {Element} domEl
+ * @returns {String}
+ */
 hte2.Styling.copyStyleToString = function (domEl) {
     var prop, output = "";
     for (prop in hte2.Styling.dict) {
@@ -155,10 +236,21 @@ hte2.Styling.copyStyleToString = function (domEl) {
     return output;
 };
 
+/**
+ * Method returns paragraph related data.
+ * @returns {Object} json object
+ */
 hte2.Styling.prototype.getAllParagraphStyles = function () {
     return this.paragraphStyles;
 };
 
+/**
+ * Method returns paragraph related data according to the ordinal number of 
+ * the paragraph, if ordinal is bigger then paragraph data array length method 
+ * returns last element.
+ * @param {Number} paragraphOrdinal
+ * @returns {Object}
+ */
 hte2.Styling.prototype.getParagraphStyles = function (paragraphOrdinal) {
     if (this.paragraphStyles[paragraphOrdinal]) {
         return this.paragraphStyles[paragraphOrdinal];
@@ -167,6 +259,11 @@ hte2.Styling.prototype.getParagraphStyles = function (paragraphOrdinal) {
     }
 };
 
+/**
+ * Method allows To fetch data about paragraph by tracker offset data
+ * @param {Number} offset
+ * @returns {Object} json
+ */
 hte2.Styling.prototype.getParagraphByOffset = function (offset) {
     var i, paragraphOrdinal = 0, cursorOffset = offset, 
     len = this.paragraphStyles.length;
@@ -180,6 +277,12 @@ hte2.Styling.prototype.getParagraphByOffset = function (offset) {
     return this.paragraphStyles[paragraphOrdinal];
 };
 
+/**
+ * Changes paragraph data, and causes document rerendering.
+ * @param {Number} width paragraph width
+ * @param {Number} left padding left
+ * @param {Number} right padding right
+ */
 hte2.Styling.prototype.setParagraphStyle = function (width, left, right) {
     var paragraph = this.getParagraphByOffset(hte2.TrackerMap.get('_lcl_').getOffset());
     if (paragraph["width"] !== width) {

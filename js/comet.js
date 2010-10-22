@@ -1,8 +1,15 @@
 /*global hte2, goog, setInterval, clearInterval*/
 
 /**
+ * @fileoverview
+ * File contains comet client.
+ */
+
+/**
+ * Class represents comet client that listens for the server and gets data 
+ * about other users actions. Class opens channel according to the document UID.
  * @constructor
- * @param {Object} docId
+ * @param {String} docId UUID
  */
 
 hte2.Comet = function (docId) {
@@ -30,12 +37,24 @@ hte2.Comet = function (docId) {
     this.interval = setInterval(checkState, 10000);
 };
 
+/**
+ * Holds data about all foreign cursors. Structure is backed by 
+ * <code>goog.structs.Map</code>
+ * @static
+ */
 hte2.Comet.cursorMap = new goog.structs.Map();
 
+/**
+ * Checks if comet session is still active.
+ * @returns {Boolean}
+ */
 hte2.Comet.prototype.isActive = function () {
     return this.xhr.isActive();
 };
 
+/**
+ * Aborts current comet session and removes all active cursors.
+ */
 hte2.Comet.prototype.abort = function () {
     var iter = hte2.Comet.cursorMap.getValueIterator(), cursor;
     cursor = iter.next();

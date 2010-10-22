@@ -2,12 +2,27 @@
 
 /*global hte2, goog*/
 
+/**
+ * @fileoverview
+ * File contains class that is responsible for visualization of data and 
+ * provides facilities to work with it.
+ */
+
+/**
+ * Singleton class represents workspace and gives facilities to work with it, 
+ * and the document that is associated with it.
+ * @class
+ * @name hte2.Workbench
+ */
 hte2.Workbench = (function () {
     var Workbench, container, containerWidth, redraw, addSymbol,
         splitByWhiteSpace, dh = new goog.dom.DomHelper(), currentDoc;
     
     container = dh.$('hte-workbench');
     
+    /**
+     * @private
+     */
     splitByWhiteSpace = function () {
         var splittedWS;
         splittedWS = currentDoc.getDocText().split('\n');
@@ -17,6 +32,12 @@ hte2.Workbench = (function () {
 
     Workbench = {
         
+        /**
+         * Method gives the structured html output that is suitable for editing.
+         *  Ideally should be replaced to sort of rendering factory, so it will 
+         *  be possible to produce different output.
+         *  @memberOf hte2.Workbench#
+         */
         render : function () {
             var styles = currentDoc.getStyling(), i, j, k = 0, lineWidth, 
                 textBuffer = "", textHolder, offset = 0, wsSplitted, frstart, 
@@ -145,29 +166,66 @@ hte2.Workbench = (function () {
             hte2.pubsub.publish('render');
         },
         
+        /**
+         * Method encapsulates logic for removing symbol from the current 
+         * <code>hte2.Document</code> object so <code>hte2.KeyHandler</code> is 
+         * not aware of document object.
+         * @memberOf hte2.Workbench#
+         * @param {Number} position
+         */
         removeLetter : function (position) {
             currentDoc.deleteSymbol(1, position);
             hte2.pubsub.publish('rerender');
         },
         
+        /**
+         * Special case method for adding EOL symbol for determening end of 
+         * paragraph.
+         * @memberOf hte2.Workbench#
+         * @param {Number} position
+         */
         addParagraph : function (position) {
             currentDoc.addSymbol('\n', position);
             hte2.pubsub.publish('rerender');
         },
         
+        /**
+         * Method encapsulates logic for adding symbol to the current 
+         * <code>hte2.Document</code> object so <code>hte2.KeyHandler</code> is 
+         * not aware of document object.
+         * @memberOf hte2.Workbench#
+         * @param {Number} charCode
+         * @param {Number} position
+         */
         addLetter : function (charCode, position) {
             currentDoc.addSymbol(String.fromCharCode(charCode), position);
             hte2.pubsub.publish('rerender');
         },
         
+        /**
+         * Returns DOM node associated with this workbench
+         * @memberOf hte2.Workbench#
+         * @returns {Element}
+         */
         getWorkbench : function () {
             return container;
         },
         
+        /**
+         * Returns current active document associated with the workbench
+         * @memberOf hte2.Workbench#
+         * @returns {hte2.Document}
+         */
         getDocument : function () {
             return currentDoc;
         },
         
+        /**
+         * Method is responsible for binding workbench with document. Method 
+         * rerenders content of the workbench.
+         * @memberOf hte2.Workbench#
+         * @param {hte2.Document} doc
+         */
         setDocument : function (doc) {
             var lines = dh.getElementsByClass('hte-line');
             goog.array.forEach(lines, function (el) {
