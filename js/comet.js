@@ -12,12 +12,12 @@ hte2.Comet = function (docId) {
         var rt = e.target.getResponseText(), parts, coords, cursor, data;
         parts = rt.split('\n');
         data = goog.json.parse(parts[parts.length - 1]);
-        cursor = hte2.Comet.cursorMap.get(data.user.id);
+        cursor = hte2.Comet.cursorMap.get(data['user']['id']);
         if (!cursor) {
-            cursor = new hte2.Cursor(data.user.id);
-            hte2.Comet.cursorMap.set(data.user.id, cursor);
+            cursor = new hte2.Cursor(data['user']['id']);
+            hte2.Comet.cursorMap.set(data['user']['id'], cursor);
         }
-        cursor.onTrackerChanged(data.data);
+        cursor.onTrackerChanged(data['data']);
     });
     this.xhr.send("/channel?id=" + id + "&seed=" + Math.random());
     checkState = (function (xhr, id) {
