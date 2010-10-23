@@ -10,21 +10,24 @@
  * about other users actions. Class opens channel according to the document UID.
  * @constructor
  * @param {String} docId UUID
+ * @param {String} userId UUID
  */
 
-hte2.Comet = function (docId) {
+hte2.Comet = function (docId, userId) {
     this.xhr = new goog.net.XhrIo();
     var id = docId, checkState;
     goog.events.listen(this.xhr, goog.net.EventType.READY_STATE_CHANGE, function (e) {
         var rt = e.target.getResponseText(), parts, coords, cursor, data;
         parts = rt.split('\n');
         data = goog.json.parse(parts[parts.length - 1]);
-        cursor = hte2.Comet.cursorMap.get(data['user']['id']);
-        if (!cursor) {
-            cursor = new hte2.Cursor(data['user']['id']);
-            hte2.Comet.cursorMap.set(data['user']['id'], cursor);
+        if (data['user']['id'] !== userId) {
+            cursor = hte2.Comet.cursorMap.get(data['user']['id']);
+            if (!cursor) {
+                cursor = new hte2.Cursor(data['user']['id']);
+                hte2.Comet.cursorMap.set(data['user']['id'], cursor);
+            }
+            cursor.onTrackerChanged(data['data']);
         }
-        cursor.onTrackerChanged(data['data']);
     });
     this.xhr.send("/channel?id=" + id + "&seed=" + Math.random());
     checkState = (function (xhr, id) {

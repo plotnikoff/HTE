@@ -61,7 +61,7 @@
             comet.abort();
         }
         if (docId !== '') {
-            comet = new hte2.Comet(docId);
+            comet = new hte2.Comet(docId, user.getId());
         }
     });
     
