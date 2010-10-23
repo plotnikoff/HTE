@@ -120,14 +120,19 @@ exports.createClient = function(port, host, user, pass) {
     return port;
   });
 
+  couchClient._authorizationHeaders = function(headers) {
+    if(user && pass) {
+      headers.authorization = "Basic " + base64.encode(user + ":" + pass);
+    }
+    return headers;
+  };
+
   couchClient._addClientListener = function() {
 	  httpClient.addListener.apply(httpClient, arguments);
   };
 
   couchClient._queueRequest = function(options, cb) {
-    if(user && pass) {
-      options.headers.authorization = "Basic " + base64.encode(user + ":" + pass)
-    }
+    couchClient._authorizationHeaders(options.headers);
 
     if (options.query) {
       options.path += '?'+exports.toQuery(options.query);
@@ -397,7 +402,7 @@ Db.prototype.removeDoc = function(id, rev, cb) {
   return this.request({
     method: 'DELETE',
     path: '/'+id,
-    query: {rev: rev}
+    query: {"rev": rev}
   }, cb);
 };
 
@@ -537,10 +542,25 @@ Db.prototype.viewCleanup = function(cb) {
 };
 
 Db.prototype.view = function(design, view, query, cb) {
-  return this.request({
-    path: ['', ensureDesignId(design), '_view', view].join('/'),
-    query: query
-  }, cb);
+    if (typeof(query) === 'function' && !cb) {
+        cb = query;
+        query = undefined;
+    }
+    return this.request({
+        path: ['', ensureDesignId(design), '_view', view].join('/'),
+        query: query
+    }, cb);
+};
+
+Db.prototype.list = function(design, list, view, query, cb) {
+    if (typeof(query) === 'function' && !cb) {
+        cb = query;
+        query = undefined;
+    }
+    return this.request({
+        path: ['', ensureDesignId(design), '_list', list, view].join('/'),
+        query: query
+    }, cb);
 };
 
 Db.prototype.changes = function(query, cb) {
@@ -564,7 +584,7 @@ Db.prototype.changesStream = function(query, options) {
     stream = new process.EventEmitter(),
     client = http.createClient(this.client.port, this.client.host, this.client.port == 443),
     path = '/'+this.name+'/_changes?'+exports.toQuery(query),
-    headers = {'Host': this.client.host},
+    headers = this.client._authorizationHeaders({'Host': this.client.host}),
     request = client.request('GET', path, headers),
     buffer = '';
 
