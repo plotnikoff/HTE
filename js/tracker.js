@@ -101,7 +101,7 @@ hte2.Tracker.prototype.lineDown = function () {
             this.line = this.line.nextSibling;
             var position = hte2.Measurer.calculatePosition(this.ordinal);
             this.setOffset(position['offset']);
-            this.ordinal = position['ordinal'];
+            this.ordinal = position['ordinal'] - 1;
             this.pubsub.publish('positionSet', position['offset']);
             this.pubsub.publish('trackerChanged', position);
         }
@@ -137,12 +137,14 @@ hte2.Tracker.prototype.symbolRight = function () {
             }
         }
         if (this.ordinal > length) {
+            this.ordinal = this.ordinal - length + 1;
             this.lineDown();
-            this.ordinal = this.ordinal - length;
         }
-        position = hte2.Measurer.calculatePosition(this.ordinal);
-        this.setOffset(position['offset']);
-        this.pubsub.publish('trackerChanged', position);
+        else {
+            position = hte2.Measurer.calculatePosition(this.ordinal);
+            this.setOffset(position['offset']);
+            this.pubsub.publish('trackerChanged', position);
+        }
     };
 
 /**
