@@ -39,7 +39,7 @@
     keyHandler = new hte2.KeyHandler();
     keyHandler.setTracker(localTracker);
 
-    hte2.pubsub.subscribe('rerender', hte2.Workbench.render);
+    hte2.pubsub.subscribe('refresh', hte2.Workbench.render);
 
     hte2.pubsub.subscribe('positionSet', hte2.UI.updateRuler);
     

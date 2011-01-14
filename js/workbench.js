@@ -175,7 +175,7 @@ hte2.Workbench = (function () {
          */
         removeLetter : function (position) {
             currentDoc.deleteSymbol(1, position);
-            hte2.pubsub.publish('rerender');
+            hte2.pubsub.publish('refresh');
         },
         
         /**
@@ -186,7 +186,7 @@ hte2.Workbench = (function () {
          */
         addParagraph : function (position) {
             currentDoc.addSymbol('\n', position);
-            hte2.pubsub.publish('rerender');
+            hte2.pubsub.publish('refresh');
         },
         
         /**
@@ -199,7 +199,7 @@ hte2.Workbench = (function () {
          */
         addLetter : function (charCode, position) {
             currentDoc.addSymbol(String.fromCharCode(charCode), position);
-            hte2.pubsub.publish('rerender');
+            hte2.pubsub.publish('refresh');
         },
         
         /**
@@ -233,7 +233,7 @@ hte2.Workbench = (function () {
             });
             currentDoc = doc;
 
-            hte2.pubsub.publish('rerender');
+            hte2.pubsub.publish('refresh');
             hte2.pubsub.publish('docLoaded', doc.getId());
         }
     };

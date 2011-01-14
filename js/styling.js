@@ -289,6 +289,6 @@ hte2.Styling.prototype.setParagraphStyle = function (width, left, right) {
         paragraph["width"] = width;
         paragraph["pl"] = left;
         paragraph["pr"] = right;
-        hte2.pubsub.publish('rerender');
+        hte2.pubsub.publish('refresh');
     }
 };
