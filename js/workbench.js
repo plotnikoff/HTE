@@ -202,6 +202,15 @@ hte2.Workbench = (function () {
             hte2.pubsub.publish('refresh');
         },
         
+        addFragment : function (str, position) {
+            var localPosition = position, i, len = str.length;
+            for (i = 0; i < len; i += 1) {
+                currentDoc.addSymbol(str[i], localPosition);
+                localPosition += 1;
+            }
+            hte2.pubsub.publish('refresh');
+        },
+        
         /**
          * Returns DOM node associated with this workbench
          * @memberOf hte2.Workbench#

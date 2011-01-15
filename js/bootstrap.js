@@ -48,12 +48,15 @@
     hte2.pubsub.subscribe('trackerChanged', localCursor.onTrackerChanged, 
         localCursor);
     hte2.pubsub.subscribe('trackerChanged', function (data) {
-        var req = new hte2.JsonRPC();
-        req.request({
-            'user': user,
-            'docId': hte2.Workbench.getDocument().getId(),
-            'data': data
-        }, 'publish');
+        var docId = hte2.Workbench.getDocument().getId(), req;
+        if (docId) {
+            req = new hte2.JsonRPC();
+            req.request({
+                'user': user,
+                'docId': docId,
+                'data': data
+            }, 'publish');
+        }
     });
 
     hte2.pubsub.subscribe('docLoaded', function (docId) {
@@ -73,4 +76,5 @@
     hte2.Workbench.setDocument(new hte2.Document());
     hte2.Workbench.render();
     setCursorPosition();
+    hte2.pasteHandler(localTracker);
 }());
