@@ -203,9 +203,14 @@ hte2.Workbench = (function () {
         },
         
         addFragment : function (str, position) {
-            var localPosition = position, i, len = str.length;
+            var localPosition = position, i, len = str.length, symb;
             for (i = 0; i < len; i += 1) {
-                currentDoc.addSymbol(str[i], localPosition);
+                symb = str[i];
+                if (symb === '\n') {
+                    currentDoc.addSymbol('\n', localPosition);
+                } else {
+                    currentDoc.addSymbol(symb, localPosition);
+                }
                 localPosition += 1;
             }
             hte2.pubsub.publish('refresh');
