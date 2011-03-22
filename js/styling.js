@@ -43,7 +43,7 @@ hte2.Styling = function (styles, paragraphStyles) {
         style : {"fs" : 12, "ff" : "Arial", "fw" : "normal", 
             "fst" : "normal"},
         start : 0,
-        end : 13
+        end : 1
     };
     this.isStyleModified = false;
 };
@@ -175,7 +175,7 @@ hte2.Styling.prototype.updatePositions = function (offset, operation) {
             this.paragraphStyles[i + 1]["start"] = this.paragraphStyles[i]["end"] + 1;
             this.paragraphStyles.splice(i, 1);
         }
-        if (offset < this.paragraphStyles[i]["start"]) {
+        if (offset < this.paragraphStyles[i]["start"] && offset !== -1) {
             this.paragraphStyles[i]["start"] += operation === 'add' ? 1 : -1;
         }
         if (offset <= this.paragraphStyles[i]["end"]) {
