@@ -124,28 +124,58 @@ hte2.Tracker.prototype.symbolLeft = function () {
     };
 
 /**
+ * Method calculates cursor related data for the start of the current line
+ */
+hte2.Tracker.prototype.toStartOfLine = function () {
+        var position;
+        this.ordinal = 0;
+        position = hte2.Measurer.calculatePosition(this.ordinal);
+        this.setOffset(position['offset']);
+        this.pubsub.publish('trackerChanged', position);
+    };
+
+/**
  * Method calculates cursor related data for the symbol to the right from the 
  * current
  */
 hte2.Tracker.prototype.symbolRight = function () {
-        var strParts, i, length = 0, firstWordLength, position;
+        var i, length = 0, firstWordLength, position;
         this.ordinal += 1;
-        strParts = this.line.childNodes;
-        for (i = 0; i < strParts.length; i += 1) {
-            if (strParts[i].firstChild) {
-                length += strParts[i].firstChild.nodeValue.length;
-            }
-        }
+        length = this.getLineLength();
         if (this.ordinal > length) {
             this.ordinal = this.ordinal - length + 1;
             this.lineDown();
-        }
-        else {
+        } else {
             position = hte2.Measurer.calculatePosition(this.ordinal);
             this.setOffset(position['offset']);
             this.pubsub.publish('trackerChanged', position);
         }
     };
+
+/**
+ * @private
+ */
+hte2.Tracker.prototype.getLineLength = function () {
+        var strParts = this.line.childNodes, i, length = 0;
+        for (i = 0; i < strParts.length; i += 1) {
+            if (strParts[i].firstChild) {
+                length += strParts[i].firstChild.nodeValue.length;
+            }
+        }
+        return length;
+    };
+
+/**
+ * Method calculates cursor related data for the end of the current line
+ */
+hte2.Tracker.prototype.toEndOfLine = function () {
+        var i, length = 0, firstWordLength, position;
+        this.ordinal = this.getLineLength();
+        position = hte2.Measurer.calculatePosition(this.ordinal);
+        this.setOffset(position['offset']);
+        this.pubsub.publish('trackerChanged', position);
+    };
+
 
 /**
  * Method is responsible for refiring <code>trackerChanged</code> in resopnse 
