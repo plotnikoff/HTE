@@ -15,7 +15,7 @@
  * @name hte2.Workbench
  */
 hte2.Workbench = (function () {
-    var Workbench, container, containerWidth, redraw, addSymbol,
+    var Workbench, container, containerWidth, redraw, addSymbol, cleanUp,
         splitByWhiteSpace, dh = new goog.dom.DomHelper(), currentDoc;
     
     container = dh.$('hte-workbench');
@@ -29,6 +29,10 @@ hte2.Workbench = (function () {
         splittedWS = splittedWS.join(' \n ');
         return splittedWS.split(' ');
     };
+
+    cleanUp = function (text) {
+        return text.replace(/</gi, '&lt;').replace(/>/gi, '&gt;');
+    }
 
     Workbench = {
         
@@ -65,7 +69,7 @@ hte2.Workbench = (function () {
                             "</span>");
                         if ((lineWidth + currentFrWidth) < containerWidth) {
                             lineWidth += currentFrWidth;
-                            textBuffer += currentFr;
+                            textBuffer += cleanUp(currentFr);
                         }
                         else {
                             i -= 1;
@@ -89,12 +93,12 @@ hte2.Workbench = (function () {
                                         currentFr + "</span>");
                                     currentFrMU = "<span style=\"" + 
                                         currentDoc.styleToString(styles[j]["style"]) + "\">" + 
-                                        currentFr + "</span>";
+                                        cleanUp(currentFr) + "</span>";
                                 } else {
                                     currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
                                         currentDoc.styleToString(styles[j]["style"]) + "\">" + 
                                         currentFr + "</span>");
-                                    currentFrMU = currentFr + "</span>";
+                                    currentFrMU = cleanUp(currentFr) + "</span>";
                                 }
                                 j += 1;
                                 i -= 1;
@@ -118,7 +122,7 @@ hte2.Workbench = (function () {
                             currentFr.substr(styles[j]["start"] - frstart) + "</span>");
                         if ((lineWidth + currentFrWidth) < containerWidth) {
                             textBuffer += "<span style=\"" + currentDoc.styleToString(styles[j]["style"]) + 
-                                "\">" + currentFr.substr(styles[j]["start"] - frstart);
+                                "\">" + cleanUp(currentFr.substr(styles[j]["start"] - frstart));
                             lineWidth += currentFrWidth;
                         } else {
                             i -= 1;
