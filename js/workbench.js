@@ -32,7 +32,7 @@ hte2.Workbench = (function () {
 
     cleanUp = function (text) {
         return text.replace(/</gi, '&lt;').replace(/>/gi, '&gt;');
-    }
+    };
 
     Workbench = {
         

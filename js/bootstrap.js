@@ -9,14 +9,16 @@
 (function () {
     var viewportSizeMonitor = new goog.dom.ViewportSizeMonitor(), setHeight,
         mouseHandler, keyHandler, dh = new goog.dom.DomHelper(), localTracker, 
-        localCursor, comet, setCursorPosition, user;
+        localCursor, comet, setCursorPosition, user, wbContainer;
+    
+    wbContainer = goog.dom.getElement('hte-workbench-container');
     
     //mock user object
     user = new hte2.User({'id' : Math.round(Math.random() * 100000)});
     
     setHeight = function () {
         var height = viewportSizeMonitor.getSize().height - 60;
-        goog.style.setHeight(goog.dom.getElement('hte-workbench-container'), height);
+        goog.style.setHeight(wbContainer, height);
     };
     
     setCursorPosition = function () {
@@ -28,7 +30,7 @@
         function (e) {
             setHeight();
         });
-    
+    setHeight();
     localTracker = new hte2.Tracker(hte2.pubsub);
     
     localCursor = new hte2.Cursor(user.getId());
@@ -77,4 +79,6 @@
     hte2.Workbench.render();
     setCursorPosition();
     hte2.pasteHandler(localTracker);
+
+    hte2.pubsub.subscribe('trackerChanged', hte2.Scroller(wbContainer));
 }());

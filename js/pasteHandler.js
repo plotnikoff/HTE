@@ -17,13 +17,14 @@ hte2.pasteHandler = function (tracker) {
         function () {
             var clean, curPos;
             if (this.getCleanContents() !== '') {
+                //console.log(this.getElement())
                 clean = goog.dom.Range.createFromNodeContents(this.getElement());
                 clean = clean.getPastableHtml();
                 curPos = hte2.Measurer.calculatePosition(tracker.getOrdinal())['offset'] - 1;
                 clean = clean.replace(/<div>/gi, '')
-                            .replace(/(<br><\/div>)|(<\/div>)/gi, '\n')
-                            .replace(/\//gi, '\\/');
+                            .replace(/(<br><\/div>)|(<\/div>)|(<br>)/gi, '\n');
                 buffer.innerHTML = clean;
+                //console.log(clean)
                 hte2.Workbench.addFragment(buffer.value, curPos);
                 this.setHtml(false, null, true);
                 window.focus();
@@ -32,7 +33,7 @@ hte2.pasteHandler = function (tracker) {
 
     pasteHandler = new goog.events.KeyHandler(document);
     goog.events.listen(pasteHandler, 'key', function (ev) {
-        if (ev.ctrlKey && ev.keyCode === 86) {
+        if (ev.ctrlKey) {
             cp.focusAndPlaceCursorAtStart();
         }
     });
