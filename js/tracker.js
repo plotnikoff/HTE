@@ -83,7 +83,7 @@ hte2.Tracker.prototype.getLine = function () {
  * Method calculates cursor related data for the line previous to the current
  */
 hte2.Tracker.prototype.lineUp = function () {
-        if (this.line.previousSibling.id !== "hte-cursor") {
+        if (this.line.previousSibling.className !== "hte-cursor") {
             this.line = this.line.previousSibling;
             var position = hte2.Measurer.calculatePosition(this.ordinal);
             this.setOffset(position['offset']);
