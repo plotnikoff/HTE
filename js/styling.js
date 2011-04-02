@@ -170,18 +170,20 @@ hte2.Styling.prototype.updatePositions = function (offset, operation) {
     this.styles = tmp;
     tmp = [];
     for (i = 0, len = this.paragraphStyles.length; i < len; i += 1) {
-        if (operation !== 'add' && offset === this.paragraphStyles[i]["start"]) {
-            this.paragraphStyles[i - 1]["end"] = this.paragraphStyles[i]["end"] - 1;
-            this.paragraphStyles[i + 1]["start"] = this.paragraphStyles[i]["end"] + 1;
-            this.paragraphStyles.splice(i, 1);
+        if (this.paragraphStyles[i] !== undefined) {
+            if (operation !== 'add' && offset === this.paragraphStyles[i]["start"]) {
+                this.paragraphStyles[i - 1]["end"] = this.paragraphStyles[i]["end"] - 1;
+                this.paragraphStyles[i + 1]["start"] = this.paragraphStyles[i]["end"] + 1;
+                this.paragraphStyles.splice(i, 1);
+            }
+            if (offset < this.paragraphStyles[i]["start"] && offset !== -1) {
+                this.paragraphStyles[i]["start"] += operation === 'add' ? 1 : -1;
+            }
+            if (offset <= this.paragraphStyles[i]["end"]) {
+                this.paragraphStyles[i]["end"] += operation === 'add' ? 1 : -1;
+            }
+            tmp.push(this.paragraphStyles[i]);
         }
-        if (offset < this.paragraphStyles[i]["start"] && offset !== -1) {
-            this.paragraphStyles[i]["start"] += operation === 'add' ? 1 : -1;
-        }
-        if (offset <= this.paragraphStyles[i]["end"]) {
-            this.paragraphStyles[i]["end"] += operation === 'add' ? 1 : -1;
-        }
-        tmp.push(this.paragraphStyles[i]);
     }
     this.paragraphStyles = tmp;
     if (this.isStyleModified) {
