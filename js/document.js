@@ -139,3 +139,12 @@ hte2.Document.prototype.deleteSymbol = function (amount, position) {
     this.docText.splice(position, amount);
     this.styles.updatePositions(position, 'remove');
 };
+
+/**
+ * Returns symbol at the given position.
+ * @param {Number} position
+ * @returns {String}
+ */
+hte2.Document.prototype.getSymbol = function (position) {
+    return this.docText[position];
+};

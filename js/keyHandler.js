@@ -31,7 +31,7 @@ hte2.KeyHandler.prototype.setTracker = function (tracker) {
  * @param {goog.events.KeyEvent} ev
  */ 
 hte2.KeyHandler.prototype.intercept = function (ev) {
-        var codes = goog.events.KeyCodes, e, curPos;
+        var codes = goog.events.KeyCodes, e, curPos, offset, symb;
         if (!ev.ctrlKey) {
             ev.preventDefault();
             switch (ev.keyCode) {
@@ -49,10 +49,10 @@ hte2.KeyHandler.prototype.intercept = function (ev) {
                 break;
             case codes.BACKSPACE:
                 this.tracker.symbolLeft();
-                hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset']);
+                hte2.Workbench.removeSymbol(hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset']);
                 break;
             case codes.DELETE:
-                hte2.Workbench.removeLetter(hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset']);
+                hte2.Workbench.removeSymbol(hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset']);
                 break;
             case codes.ENTER:
                 hte2.Workbench.addParagraph(hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset'] - 1);
@@ -67,11 +67,28 @@ hte2.KeyHandler.prototype.intercept = function (ev) {
             default:
                 if (ev.charCode !== undefined && ev.charCode !== 0) {
                     curPos = hte2.Measurer.calculatePosition(this.tracker.getOrdinal())['offset'] - 1;
-                    hte2.Workbench.addLetter(ev.charCode, curPos);
+                    hte2.Workbench.addSymbol(ev.charCode, curPos);
                     this.tracker.symbolRight();
                 }
                 break;
             }
             this.tracker.reNotify();
+        } else {
+            switch (ev.keyCode) {
+            case codes.LEFT:
+                do {
+                    offset = this.tracker.symbolLeft(true).offset;
+                    symb = hte2.Workbench.getSymbol(offset - 1);
+                } while (symb !== ' ');
+                this.tracker.fireSuppressedEvent();
+                break;
+            case codes.RIGHT:
+                do {
+                    offset = this.tracker.symbolRight(true).offset;
+                    symb = hte2.Workbench.getSymbol(offset);
+                } while (symb !== ' ');
+                this.tracker.fireSuppressedEvent();
+                break;
+            }
         }
     };

@@ -34,7 +34,11 @@ hte2.pasteHandler = function (tracker) {
     pasteHandler = new goog.events.KeyHandler(document);
     goog.events.listen(pasteHandler, 'key', function (ev) {
         if (ev.ctrlKey) {
-            cp.focusAndPlaceCursorAtStart();
+            if (ev.keyCode !== goog.events.KeyCodes.LEFT &&
+                ev.keyCode !== goog.events.KeyCodes.RIGHT) {
+                cp.focusAndPlaceCursorAtStart();
+            }
         }
+        
     });
 };

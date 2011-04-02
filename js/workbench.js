@@ -177,7 +177,7 @@ hte2.Workbench = (function () {
          * @memberOf hte2.Workbench#
          * @param {Number} position
          */
-        removeLetter : function (position) {
+        removeSymbol : function (position) {
             currentDoc.deleteSymbol(1, position);
             hte2.pubsub.publish('refresh');
         },
@@ -201,9 +201,18 @@ hte2.Workbench = (function () {
          * @param {Number} charCode
          * @param {Number} position
          */
-        addLetter : function (charCode, position) {
+        addSymbol : function (charCode, position) {
             currentDoc.addSymbol(String.fromCharCode(charCode), position);
             hte2.pubsub.publish('refresh');
+        },
+        
+        /**
+         * Returns symbol at the given position.
+         * @param {Number} position
+         * @returns {String}
+         */
+        getSymbol : function (position) {
+            return currentDoc.getSymbol(position);
         },
         
         addFragment : function (str, position) {

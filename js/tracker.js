@@ -15,6 +15,7 @@ hte2.Tracker = function (pubsub) {
     this.listeners = [];
     this.line = null;
     this.pubsub = pubsub;
+    this.suppressed = {};
 };
 
 /**
@@ -110,8 +111,11 @@ hte2.Tracker.prototype.lineDown = function () {
 /**
  * Method calculates cursor related data for the symbol to the left from the 
  * current
+ * @param {Boolean} [suppressEvent] supresses trackerChanged event, event can be
+ * refired with hte2.Tracker.fireSuppressedEvent
+ * @returns {Object}
  */
-hte2.Tracker.prototype.symbolLeft = function () {
+hte2.Tracker.prototype.symbolLeft = function (suppressEvent) {
         var position;
         this.ordinal -= 1;
         if (this.ordinal < 0) {
@@ -120,7 +124,12 @@ hte2.Tracker.prototype.symbolLeft = function () {
         }
         position = hte2.Measurer.calculatePosition(this.ordinal);
         this.setOffset(position['offset']);
-        this.pubsub.publish('trackerChanged', position);
+        if (!suppressEvent) {
+            this.pubsub.publish('trackerChanged', position);
+        } else {
+            this.suppressed['trackerChanged'] = position;
+        }
+        return position;
     };
 
 /**
@@ -137,8 +146,11 @@ hte2.Tracker.prototype.toStartOfLine = function () {
 /**
  * Method calculates cursor related data for the symbol to the right from the 
  * current
+ * @param {Boolean} [suppressEvent] supresses trackerChanged event, event can be
+ * refired with hte2.Tracker.fireSuppressedEvent
+ * @returns {Object}
  */
-hte2.Tracker.prototype.symbolRight = function () {
+hte2.Tracker.prototype.symbolRight = function (suppressEvent) {
         var i, length = 0, firstWordLength, position;
         this.ordinal += 1;
         length = this.getLineLength();
@@ -148,8 +160,13 @@ hte2.Tracker.prototype.symbolRight = function () {
         } else {
             position = hte2.Measurer.calculatePosition(this.ordinal);
             this.setOffset(position['offset']);
-            this.pubsub.publish('trackerChanged', position);
+            if (!suppressEvent) {
+                this.pubsub.publish('trackerChanged', position);
+            } else {
+                this.suppressed['trackerChanged'] = position;
+            }
         }
+        return position;
     };
 
 /**
@@ -186,3 +203,14 @@ hte2.Tracker.prototype.reNotify = function () {
             hte2.Measurer.calculatePosition(this.ordinal));
     };
 
+/**
+ * Refire last suppressed event.
+ */
+hte2.Tracker.prototype.fireSuppressedEvent = function () {
+    var prop, s = this.suppressed;
+    for (prop in s) {
+        if (s.hasOwnProperty(prop)) {
+            this.pubsub.publish(prop, s[prop]);
+        }
+    }
+};
