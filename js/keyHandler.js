@@ -77,14 +77,14 @@ hte2.KeyHandler.prototype.intercept = function (ev) {
             switch (ev.keyCode) {
             case codes.LEFT:
                 do {
-                    offset = this.tracker.symbolLeft(true).offset;
+                    offset = this.tracker.symbolLeft(true)['offset'];
                     symb = hte2.Workbench.getSymbol(offset - 1);
                 } while (symb !== ' ');
                 this.tracker.fireSuppressedEvent();
                 break;
             case codes.RIGHT:
                 do {
-                    offset = this.tracker.symbolRight(true).offset;
+                    offset = this.tracker.symbolRight(true)['offset'];
                     symb = hte2.Workbench.getSymbol(offset);
                 } while (symb !== ' ');
                 this.tracker.fireSuppressedEvent();
