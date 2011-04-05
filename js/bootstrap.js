@@ -6,7 +6,11 @@
  * initializes classes that are necessary for initial loading.
  */
 
-(function () {
+/**
+ * @param {Boolean} multiUser when set to true enables comet for collaborative
+ * editing
+ */
+(function (multiUser, undefined) {
     var viewportSizeMonitor = new goog.dom.ViewportSizeMonitor(), setHeight,
         mouseHandler, keyHandler, dh = new goog.dom.DomHelper(), localTracker, 
         localCursor, comet, setCursorPosition, user, wbContainer;
@@ -50,23 +54,27 @@
     hte2.pubsub.subscribe('trackerChanged', localCursor.onTrackerChanged, 
         localCursor);
     hte2.pubsub.subscribe('trackerChanged', function (data) {
-        var docId = hte2.Workbench.getDocument().getId(), req;
-        if (docId) {
-            req = new hte2.JsonRPC();
-            req.request({
-                'user': user,
-                'docId': docId,
-                'data': data
-            }, 'publish');
+        if (multiUser) {
+            var docId = hte2.Workbench.getDocument().getId(), req;
+            if (docId) {
+                req = new hte2.JsonRPC();
+                req.request({
+                    'user': user,
+                    'docId': docId,
+                    'data': data
+                }, 'publish');
+            }
         }
     });
 
     hte2.pubsub.subscribe('docLoaded', function (docId) {
-        if (comet && comet.isActive()) {
-            comet.abort();
-        }
-        if (docId !== '') {
-            comet = new hte2.Comet(docId, user.getId());
+        if (multiUser) {
+            if (comet && comet.isActive()) {
+                comet.abort();
+            }
+            if (docId !== '') {
+                comet = new hte2.Comet(docId, user.getId());
+            }
         }
     });
     
@@ -81,4 +89,4 @@
     hte2.pasteHandler(localTracker);
 
     hte2.pubsub.subscribe('trackerChanged', hte2.Scroller(wbContainer));
-}());
+}(false));
