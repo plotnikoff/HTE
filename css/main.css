@@ -3,11 +3,11 @@ body{background:#EEE;margin:0;padding:0;height:100%;overflow:hidden;}
 #hte-panel{position: relative; left: 50%; margin-left: -458px; width: 1002px; border: 1px solid #DDD;}
 #hte-workbench{position:relative;border:1px solid #999;left:50%;margin-left:-450px; background:white;margin-top:15px;min-height:1000px;}
 .hte-cursor{position:absolute;width:2px;background:#000;height:10px;display:block;}
-.hte-line{width:auto;}
+.hte-line{width:auto;position:relative;}
 .hte-line span{white-space:normal;line-height:1.15;}
 #hte-measurer{position:absolute;left: -10000px;}
 /*#hte-panels-container{position: fixed; z-index: 101; background: #EEE; left: 50%; margin-left: -450px; width: 902px; top: 0px;}*/
-#hte-workbench-container{position: relative; overflow-y: scroll; width: 100%;height:100%;}
+#hte-workbench-container{position: relative; overflow-y: scroll; width: 100%;height:100%;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;}
 #hte-slider{position:relative;border:none;left:50%;margin-left:-458px;height:10px;width:902px;padding:5px 50px 5px;background:#EEE;}
 #hte-boldbutton, #hte-italicbutton, #hte-underlinebutton, #hte-linethroughbutton, #hte-savebutton, #hte-openbutton{width:16px;height:16px;}
 #hte-boldbutton{background:url(/ico/spritepng.png) no-repeat -48px 0px;}
@@ -25,3 +25,4 @@ body{background:#EEE;margin:0;padding:0;height:100%;overflow:hidden;}
 .modal-dialog-title-text{font-family:Arial;font-size:12px;}
 .modal-dialog-title{padding:6px 15px 8px 8px;font-size:100%;}
 #hte-clipboard{position:absolute;width:1px;height:1px;top:-10000px;left:-10000px;}
+div.hte-select-overlay{position:absolute;top:0px;background:blue;opacity:0.2;}

@@ -2,7 +2,6 @@
 
 goog.require('goog.events');
 goog.require('goog.dom.DomHelper');
-goog.require('goog.dom.Range');
 
 /**
  * Class is responsible for interaction with mouse.
@@ -11,9 +10,51 @@ goog.require('goog.dom.Range');
  */
 hte2.MouseHandler = function (pubsub) {
     this.wb = hte2.Workbench.getWorkbench();
-    this.wb.tracker = null;
-    goog.events.listen(this.wb, goog.events.EventType.CLICK, this.setCursor);
-    //goog.events.listen(wb, goog.events.EventType.DBLCLICK, this.selectText);
+    this.tracker = null;
+    var down = false, start, range = null, st, et, sp, ep, sy, ey, selection;
+
+    goog.events.listen(this.wb, goog.events.EventType.MOUSEDOWN, function (ev) {
+        if (selection) {
+            selection.destroy();
+            selection = null;
+        }
+        start = this.tracker.getOffset();
+        st = ev.target;
+        sp = ev.offsetX;
+        sy = ev.screenY;
+        down = true;
+    }, false, this);
+
+    goog.events.listen(this.wb, goog.events.EventType.MOUSEUP, function (ev) {
+        var tmp;
+        this.setCursor(ev);
+        down = false;
+        if (range !== null) {
+            et = ev.target;
+            ep = ev.offsetX;
+            ey = ev.screenY;
+            if (ey < sy) {
+                tmp = st;
+                st = et;
+                et = tmp;
+                tmp = sp;
+                sp = ep;
+                ep = sp;
+            }
+            selection = new hte2.selectionUI(st, et, sp, ep);
+            this.pubsub.publish('select', range);
+            range = null;
+        }
+    }, false, this);
+
+    goog.events.listen(this.wb, goog.events.EventType.MOUSEMOVE,
+        function (ev) {
+            if (down) {
+                this.setCursor(ev);
+                range = new hte2.Range(start, this.tracker.getOffset());
+            }
+        }, false, this);
+
     this.tracker = null;
     this.pubsub = pubsub;
 };
@@ -23,7 +64,7 @@ hte2.MouseHandler = function (pubsub) {
  * @param {hte2.Tracker} tracker
  */
 hte2.MouseHandler.prototype.setTracker = function (tracker) {
-        this.wb.tracker = tracker;
+        this.tracker = tracker;
     };
 
 /**
@@ -36,29 +77,8 @@ hte2.MouseHandler.prototype.setCursor = function (ev) {
         posX = ev.clientX;
         posY = ev.clientY;
         posX -= hte2.Workbench.getWorkbench().offsetLeft;
-        if (targ.nodeName === 'SPAN') {
+        if (targ.nodeName.toLowerCase() === 'span') {
             posX -= parseInt(targ.parentNode.style.paddingLeft, 10);
             this.tracker.setLine(targ.parentNode, (posX - 8));
         }
-    };
-
-/**
- * TODO: Reimplement me later
- * @ignore
- * @param {Object} ev
- */
-hte2.MouseHandler.prototype.selectText = function (ev) {
-        var range = '', selectedText, rangeLength, rangeStart, rangeEnd, currentNode, siblingsLength = 0, dh = goog.dom.getDomHelper();
-        range = goog.dom.Range.createFromWindow();
-        rangeLength = range.getFocusOffset() - range.getAnchorOffset();
-        currentNode = range.getContainerElement();
-        while (currentNode) {
-            currentNode = dh.getPreviousElementSibling(currentNode);
-            if (currentNode) {
-                siblingsLength += currentNode.firstChild.nodeValue.length;
-            }
-        }
-        rangeStart = this.tracker.getOffset() - (this.tracker.getOrdinal() - (range.getAnchorOffset() + siblingsLength));
-        rangeEnd = rangeStart + rangeLength;
-        this.pubsub.publish('rangeReady', rangeStart, rangeEnd, {"fw" : "bold"});
     };

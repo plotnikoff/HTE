@@ -32,7 +32,7 @@ hte2.Measurer = (function () {
     };
     
     calculateYPosition = function (currentNode) {
-        return currentNode.offsetTop;
+        return currentNode.parentNode.offsetTop;
     };
     
     calculateHeight = function (currentNode) {
