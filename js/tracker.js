@@ -157,6 +157,7 @@ hte2.Tracker.prototype.symbolRight = function (suppressEvent) {
         if (this.ordinal > length) {
             this.ordinal = this.ordinal - length + 1;
             this.lineDown();
+            position = hte2.Measurer.calculatePosition(this.ordinal);
         } else {
             position = hte2.Measurer.calculatePosition(this.ordinal);
             this.setOffset(position['offset']);
