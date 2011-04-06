@@ -39,7 +39,7 @@ hte2.MouseHandler = function (pubsub) {
                 et = tmp;
                 tmp = sp;
                 sp = ep;
-                ep = sp;
+                ep = tmp;
             }
             selection = new hte2.selectionUI(st, et, sp, ep);
             this.pubsub.publish('select', range);

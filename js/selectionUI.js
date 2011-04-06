@@ -18,16 +18,26 @@ hte2.selectionUI = function (st, et, sp, ep) {
         selection, startOffset = '', width = '';
     while (currentNode !== lastNode) {
         if (currentNode === st) {
-            startOffset = 'left:' + sp + 'px;';
+            if (st === et) {
+                startOffset = 'left:' + (ep > sp ? sp : ep) + 'px;';
+            } else {
+                startOffset = 'left:' + sp + 'px;';
+            }
         } else {
             startOffset = '';
         }
         if (currentNode === et) {
-            width = currentNode.firstChild.offsetWidth > ep ?
-                ('width:' + ep + 'px;') :
-                    ('width:' + currentNode.firstChild.offsetWidt + 'px;');
+            if (st === et) {
+                width = 'width:' + Math.abs(ep - sp) + 'px;'
+            } else {
+                width = currentNode.firstChild.offsetWidth > ep ?
+                    ('width:' + ep + 'px;') :
+                        ('width:' + currentNode.firstChild.offsetWidth + 'px;');
+            }
+        } else if (currentNode === st) {
+            width = 'width:' + (currentNode.firstChild.offsetWidth - sp) + 'px;';
         } else {
-            width = 'width:' + currentNode.firstChild.offsetWidth + 'px;';
+            width = 'width:' + (currentNode.firstChild.offsetWidth) + 'px;';
         }
         selection = dh.createDom('div', {
             'class' : 'hte-select-overlay',
