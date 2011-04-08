@@ -65,7 +65,7 @@ hte2.Workbench = (function () {
                 if (currentFr !== ('\n' + String.fromCharCode(160))) {
                     if (styles[j]["start"] < frstart && frend <= styles[j]["end"]) {
                         currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
-                            currentDoc.styleToString(styles[j]["style"]) + "\">" + currentFr + 
+                            currentDoc.styleToString(styles[j]["style"]) + "\">" + cleanUp(currentFr) + 
                             "</span>");
                         if ((lineWidth + currentFrWidth) < containerWidth) {
                             lineWidth += currentFrWidth;
@@ -90,14 +90,14 @@ hte2.Workbench = (function () {
                                     currentFr = currentFr.join('');
                                     currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
                                         currentDoc.styleToString(styles[j]["style"]) + "\">" + 
-                                        currentFr + "</span>");
+                                        cleanUp(currentFr) + "</span>");
                                     currentFrMU = "<span style=\"" + 
                                         currentDoc.styleToString(styles[j]["style"]) + "\">" + 
                                         cleanUp(currentFr) + "</span>";
                                 } else {
                                     currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
                                         currentDoc.styleToString(styles[j]["style"]) + "\">" + 
-                                        currentFr + "</span>");
+                                        cleanUp(currentFr) + "</span>");
                                     currentFrMU = cleanUp(currentFr) + "</span>";
                                 }
                                 j += 1;
@@ -106,7 +106,7 @@ hte2.Workbench = (function () {
                             }
                         }
                         partWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
-                            currentDoc.styleToString(styles[j]["style"]) + "\">" + wordPart + 
+                            currentDoc.styleToString(styles[j]["style"]) + "\">" + cleanUp(wordPart) + 
                             "</span>");
                         if ((lineWidth + (currentFrWidth + partWidth)) < containerWidth) {
                             lineWidth += currentFrWidth;
@@ -119,7 +119,7 @@ hte2.Workbench = (function () {
                     } else {
                         currentFrWidth = hte2.Measurer.getGlyphWidth("<span style=\"" + 
                             currentDoc.styleToString(styles[j]["style"]) + "\">" + 
-                            currentFr.substr(styles[j]["start"] - frstart) + "</span>");
+                            cleanUp(currentFr.substr(styles[j]["start"] - frstart)) + "</span>");
                         if ((lineWidth + currentFrWidth) < containerWidth) {
                             textBuffer += "<span style=\"" + currentDoc.styleToString(styles[j]["style"]) + 
                                 "\">" + cleanUp(currentFr.substr(styles[j]["start"] - frstart));
